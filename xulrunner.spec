@@ -9,7 +9,7 @@ Source0:	http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/%{version}/so
 # Source0-md5:	d60ccb6cc28afa7d880c8602a2c88450
 Patch0:		%{name}-nss.patch
 Patch1:		%{name}-ldap-with-nss.patch
-URL:		http://www.mozilla.org/projects/xulrunner/
+URL:		http://developer.mozilla.org/en/docs/XULRunner
 BuildRequires:	/bin/csh
 BuildRequires:	/bin/ex
 BuildRequires:	automake
