@@ -23,8 +23,11 @@ BuildRequires:	perl-modules >= 5.6.0
 BuildRequires:	pkgconfig
 BuildRequires:	sed >= 4.0
 BuildRequires:	tar >= 1:1.15.1
-BuildRequires:	xcursor-devel
-BuildRequires:	xft-devel >= 2.1-2
+BuildRequires:	xorg-lib-libXext-devel
+BuildRequires:	xorg-lib-libXft-devel >= 2.1
+BuildRequires:	xorg-lib-libXinerama-devel
+BuildRequires:	xorg-lib-libXp-devel
+BuildRequires:	xorg-lib-libXt-devel
 BuildRequires:	zip >= 2.1
 BuildRequires:	zlib-devel >= 1.0.0
 Requires(post,postun):	/sbin/ldconfig
@@ -92,6 +95,7 @@ MOZILLA_OFFICIAL="1"; export MOZILLA_OFFICIAL
 cp -f %{_datadir}/automake/config.* build/autoconf
 cp -f %{_datadir}/automake/config.* nsprpub/build/autoconf
 cp -f %{_datadir}/automake/config.* directory/c-sdk/config/autoconf
+export ac_cv_visibility_pragma=no
 %configure2_13 \
 	%{!?debug:--disable-debug} \
 	--disable-elf-dynstr-gc \
