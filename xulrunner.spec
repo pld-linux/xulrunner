@@ -30,7 +30,6 @@ BuildRequires:	xorg-lib-libXp-devel
 BuildRequires:	xorg-lib-libXt-devel
 BuildRequires:	zip >= 2.1
 BuildRequires:	zlib-devel >= 1.0.0
-Requires(post,postun):	/sbin/ldconfig
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 %{?with_svg:Requires:	cairo >= 1.0.0}
 Requires:	nspr >= 1:4.6.1
@@ -241,7 +240,6 @@ fi
 %attr(755,root,root) %{_xulrunnerdir}/reg*
 %attr(755,root,root) %{_xulrunnerdir}/xpidl
 
-%attr(755,root,root) %{_xulrunnerdir}/libxpcom.so
 %attr(755,root,root) %{_xulrunnerdir}/libnssckbi.so
 
 %attr(755,root,root) %{_xulrunnerdir}/components/libauth*.so
@@ -417,7 +415,7 @@ fi
 
 %files devel
 %defattr(644,root,root,755)
-%{_includedir}/%{name}
-%{_pkgconfigdir}/*
 %attr(755,root,root) %{_bindir}/reg*
 %attr(755,root,root) %{_bindir}/xpidl
+%{_includedir}/%{name}
+%{_pkgconfigdir}/*
