@@ -1,10 +1,10 @@
-Summary:	XULRunner - Mozilla Runtime Environment
-Summary(pl):	XULRunner - ¦rodowisko Uruchomieniowe Mozilli
+Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
+Summary(pl):	XULRunner - ¶rodowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
 Version:	1.8.0.1
 Release:	0.1
-License:	Mozilla Public License
-Group:		X11/Development/Libraries
+License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
+Group:		X11/Applications
 Source0:	http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/%{version}/source/%{name}-%{version}-source.tar.bz2
 # Source0-md5:	d60ccb6cc28afa7d880c8602a2c88450
 Patch0:		%{name}-nss.patch
@@ -13,13 +13,17 @@ URL:		http://developer.mozilla.org/en/docs/XULRunner
 BuildRequires:	/bin/csh
 BuildRequires:	/bin/ex
 BuildRequires:	automake
+BuildRequires:	cairo-devel >= 1.0.0
 BuildRequires:	freetype-devel >= 1:2.1.8
+BuildRequires:	gtk+2-devel >= 1:2.0.0
+BuildRequires:	libIDL-devel >= 0.8.0
 BuildRequires:	libjpeg-devel >= 6b
-BuildRequires:	libpng-devel >= 1.2.0
+BuildRequires:	libpng-devel >= 1.2.7
 BuildRequires:	libstdc++-devel
 BuildRequires:	nspr-devel >= 1:4.6.1
 BuildRequires:	nss-devel >= 3.10.2
-BuildRequires:	perl-modules >= 5.6.0
+BuildRequires:	pango-devel >= 1:1.6.0
+BuildRequires:	perl-modules >= 1:5.6.0
 BuildRequires:	pkgconfig
 BuildRequires:	sed >= 4.0
 BuildRequires:	tar >= 1:1.15.1
@@ -29,7 +33,7 @@ BuildRequires:	xorg-lib-libXinerama-devel
 BuildRequires:	xorg-lib-libXp-devel
 BuildRequires:	xorg-lib-libXt-devel
 BuildRequires:	zip >= 2.1
-BuildRequires:	zlib-devel >= 1.0.0
+BuildRequires:	zlib-devel >= 1.2.3
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 %{?with_svg:Requires:	cairo >= 1.0.0}
 Requires:	nspr >= 1:4.6.1
@@ -44,29 +48,35 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define		_noautoreqdep	libgtkembedmoz.so libldap50.so libmozjs.so libprldap50.so libssldap50.so libxpcom.so
 
 %description
-XULRunner is a runtime environment that can be used to bootstrap
-multiple XUL+XPCOM applications that are as rich as Firefox and
-Thunderbird.
+XULRunner is a Mozilla runtime package that can be used to bootstrap
+XUL+XPCOM applications that are as rich as Firefox and Thunderbird. It
+will provide mechanisms for installing, upgrading, and uninstalling
+these applications. XULRunner will also provide libxul, a solution
+which allows the embedding of Mozilla technologies in other projects
+and products.
 
 %description -l pl
-XULRunner to ¶rodowisko uruchomieniowe, które mo¿e byæ u¿ywane do
-uruchamiania wielu aplikacji XUL+XPCOM równie zaawansowanych jak
-Firefox czy Thunderbird.
+XULRunner to pakiet uruchomieniowy Mozilli, którego mo¿na u¿yæ do
+uruchamiania aplikacji XUL+XPCOM, nawet takich jak Firefox czy
+Thunderbird. Udostêpni mechanizmy do instalowania, uaktualniania i
+odinstalowywania tych aplikacji. XULRunner bêdzie tak¿e dostarcza³
+libxul - rozwi±zanie umo¿liwiaj±ce osadzanie technologii Mozilli w
+innych projektach i produktach.
 
 %package libs
 Summary:	XULRunner shared libraries
-Summary(pl):	Biblioteki wspó³dzielone XULRunner
-Group:		Libraries
+Summary(pl):	Biblioteki wspó³dzielone XULRunnera
+Group:		X11/Libraries
 
 %description libs
 XULRunner shared libraries.
 
 %description libs -l pl
-Biblioteki wspó³dzielone XULRunner.
+Biblioteki wspó³dzielone XULRunnera.
 
 %package devel
 Summary:	Headers for developing programs that will use XULRunner
-Summary(pl):	XULRunner - pliki nag³ówkowe i biblioteki
+Summary(pl):	Pliki nag³ówkowe do tworzenia programów u¿ywaj±cych XULRunnera
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Requires:	nspr-devel >= 1:4.6.1
@@ -78,7 +88,7 @@ Obsoletes:	seamonkey-devel
 XULRunner development package.
 
 %description devel -l pl
-Biblioteki i pliki nag³ówkowe XULRunner.
+Pakiet programistyczny XULRunnera.
 
 %prep
 %setup -q -c -T
@@ -155,7 +165,7 @@ ln -sf ../../share/%{name}/res $RPM_BUILD_ROOT%{_xulrunnerdir}/res
 ln -sf ../../../share/%{name}/myspell $RPM_BUILD_ROOT%{_xulrunnerdir}/components/myspell
 
 cp -frL dist/bin/chrome/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/chrome
-cp -frL dist/bin/components/{[^m],m[^y]}*	$RPM_BUILD_ROOT%{_xulrunnerdir}/components
+cp -frL dist/bin/components/{[!m],m[!y]}*	$RPM_BUILD_ROOT%{_xulrunnerdir}/components
 cp -frL dist/bin/components/myspell/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/myspell
 cp -frL dist/bin/defaults/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/defaults
 cp -frL dist/bin/res/*		$RPM_BUILD_ROOT%{_datadir}/%{name}/res
@@ -210,7 +220,6 @@ EOF
 rm -rf $RPM_BUILD_ROOT
 
 %post
-umask 022
 %{_sbindir}/%{name}-chrome+xpcom-generate
 
 %postun
