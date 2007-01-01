@@ -2,7 +2,7 @@ Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl):	XULRunner - ¶rodowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
 Version:	1.8.0.4
-Release:	0.2
+Release:	0.3
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
 Source0:	http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/%{version}/source/%{name}-%{version}-source.tar.bz2
@@ -95,8 +95,8 @@ tar jxf %{SOURCE0} --strip-components=1
 
 %patch0 -p1
 %patch1 -p1
-%patch2 -p0
-%patch3 -p0
+%patch2 -p1
+%patch3 -p1
 
 %build
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
@@ -392,18 +392,24 @@ fi
 %dir %{_datadir}/%{name}/chrome
 %{_datadir}/%{name}/chrome/US.jar
 %{_datadir}/%{name}/chrome/classic.jar
+%{_datadir}/%{name}/chrome/classic.manifest
 %{_datadir}/%{name}/chrome/comm.jar
+%{_datadir}/%{name}/chrome/comm.manifest
 %{_datadir}/%{name}/chrome/content-packs.jar
 %{_datadir}/%{name}/chrome/cview.jar
 %{_datadir}/%{name}/chrome/en-US.jar
+%{_datadir}/%{name}/chrome/en-US.manifest
 %{_datadir}/%{name}/chrome/help.jar
 %{_datadir}/%{name}/chrome/modern.jar
 %{_datadir}/%{name}/chrome/pippki.jar
+%{_datadir}/%{name}/chrome/pippki.manifest
 %{_datadir}/%{name}/chrome/reporter.jar
+%{_datadir}/%{name}/chrome/reporter.manifest
 %{_datadir}/%{name}/chrome/sql.jar
 %{_datadir}/%{name}/chrome/sroaming.jar
 %{_datadir}/%{name}/chrome/tasks.jar
 %{_datadir}/%{name}/chrome/toolkit.jar
+%{_datadir}/%{name}/chrome/toolkit.manifest
 
 # not generated automatically ?
 %{_datadir}/%{name}/chrome/chromelist.txt
