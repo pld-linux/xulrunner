@@ -2,13 +2,15 @@ Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl):	XULRunner - ¶rodowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
 Version:	1.8.0.4
-Release:	0.1
+Release:	1
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
 Source0:	http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/%{version}/source/%{name}-%{version}-source.tar.bz2
 # Source0-md5:	4dc09831aa4e94fda5182a4897ed08e9
 Patch0:		%{name}-nss.patch
 Patch1:		%{name}-ldap-with-nss.patch
+Patch2:		%{name}-nsIPermission.patch
+Patch3:		%{name}-nsISidebar.patch
 URL:		http://developer.mozilla.org/en/docs/XULRunner
 BuildRequires:	/bin/csh
 BuildRequires:	/bin/ex
@@ -27,11 +29,8 @@ BuildRequires:	perl-modules >= 1:5.6.0
 BuildRequires:	pkgconfig
 BuildRequires:	sed >= 4.0
 BuildRequires:	tar >= 1:1.15.1
-BuildRequires:	xorg-lib-libXext-devel
-BuildRequires:	xorg-lib-libXft-devel >= 2.1
-BuildRequires:	xorg-lib-libXinerama-devel
-BuildRequires:	xorg-lib-libXp-devel
-BuildRequires:	xorg-lib-libXt-devel
+BuildRequires:	xcursor-devel
+BuildRequires:	xft-devel >= 2.1-2
 BuildRequires:	zip >= 2.1
 BuildRequires:	zlib-devel >= 1.2.3
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
@@ -96,6 +95,8 @@ tar jxf %{SOURCE0} --strip-components=1
 
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
+%patch3 -p1
 
 %build
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
@@ -191,7 +192,6 @@ sed -i -e '/Cflags:/{/{includedir}\/dom/!s,$, -I${includedir}/dom,}' $RPM_BUILD_
 
 rm -f $RPM_BUILD_ROOT%{_pkgconfigdir}/xulrunner-nss.pc $RPM_BUILD_ROOT%{_pkgconfigdir}/xulrunner-nspr.pc
 
-install dist/bin/xulrunner $RPM_BUILD_ROOT%{_bindir}
 install dist/bin/xulrunner-bin $RPM_BUILD_ROOT%{_xulrunnerdir}
 install dist/bin/regxpcom $RPM_BUILD_ROOT%{_xulrunnerdir}
 install dist/bin/xpidl $RPM_BUILD_ROOT%{_xulrunnerdir}
@@ -200,6 +200,16 @@ install dist/bin/xpidl $RPM_BUILD_ROOT%{_bindir}
 
 cp $RPM_BUILD_ROOT%{_chromedir}/installed-chrome.txt \
         $RPM_BUILD_ROOT%{_chromedir}/%{name}-installed-chrome.txt
+
+cat << 'EOF' > $RPM_BUILD_ROOT%{_bindir}/xulrunner
+#!/bin/sh
+
+LD_LIBRARY_PATH=/usr/lib/xulrunner${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
+export LD_LIBRARY_PATH
+
+MOZILLA_FIVE_HOME=/usr/lib/xulrunner
+/usr/lib/xulrunner/xulrunner-bin "$@"
+EOF
 
 cat << 'EOF' > $RPM_BUILD_ROOT%{_sbindir}/%{name}-chrome+xpcom-generate
 #!/bin/sh
@@ -382,18 +392,24 @@ fi
 %dir %{_datadir}/%{name}/chrome
 %{_datadir}/%{name}/chrome/US.jar
 %{_datadir}/%{name}/chrome/classic.jar
+%{_datadir}/%{name}/chrome/classic.manifest
 %{_datadir}/%{name}/chrome/comm.jar
+%{_datadir}/%{name}/chrome/comm.manifest
 %{_datadir}/%{name}/chrome/content-packs.jar
 %{_datadir}/%{name}/chrome/cview.jar
 %{_datadir}/%{name}/chrome/en-US.jar
+%{_datadir}/%{name}/chrome/en-US.manifest
 %{_datadir}/%{name}/chrome/help.jar
 %{_datadir}/%{name}/chrome/modern.jar
 %{_datadir}/%{name}/chrome/pippki.jar
+%{_datadir}/%{name}/chrome/pippki.manifest
 %{_datadir}/%{name}/chrome/reporter.jar
+%{_datadir}/%{name}/chrome/reporter.manifest
 %{_datadir}/%{name}/chrome/sql.jar
 %{_datadir}/%{name}/chrome/sroaming.jar
 %{_datadir}/%{name}/chrome/tasks.jar
 %{_datadir}/%{name}/chrome/toolkit.jar
+%{_datadir}/%{name}/chrome/toolkit.manifest
 
 # not generated automatically ?
 %{_datadir}/%{name}/chrome/chromelist.txt
