@@ -1,14 +1,53 @@
-From: Robert O'Callahan <rocallahan@novell.com>
-Subject: add nsISideBar to xulrunner
-References:
-https://bugzilla.mozilla.org/show_bug.cgi?id=315346
-
-Index: dom/public/idl/sidebar/Makefile.in
-===================================================================
-RCS file: dom/public/idl/sidebar/Makefile.in
-diff -N dom/public/idl/sidebar/Makefile.in
---- /dev/null	1 Jan 1970 00:00:00 -0000
-+++ dom/public/idl/sidebar/Makefile.in	4 Nov 2005 02:35:53 -0000
+diff -urN mozilla.orig/allmakefiles.sh mozilla/allmakefiles.sh
+--- mozilla.orig/allmakefiles.sh	2006-12-31 18:27:47.000000000 +0100
++++ mozilla/allmakefiles.sh	2006-12-31 18:31:49.000000000 +0100
+@@ -715,7 +715,6 @@
+ xpfe/components/search/public/Makefile
+ xpfe/components/search/src/Makefile
+ xpfe/components/sidebar/Makefile
+-xpfe/components/sidebar/public/Makefile
+ xpfe/components/sidebar/src/Makefile
+ xpfe/components/startup/Makefile
+ xpfe/components/startup/public/Makefile
+@@ -915,7 +914,6 @@
+ browser/components/migration/src/Makefile
+ browser/components/preferences/Makefile
+ browser/components/sidebar/Makefile
+-browser/components/sidebar/public/Makefile
+ browser/components/sidebar/src/Makefile
+ browser/components/shell/Makefile
+ browser/components/shell/public/Makefile
+@@ -1928,8 +1926,6 @@
+ 
+ MAKEFILES_shistory="xpcom/Makefile xpcom/string/Makefile webshell/public/Makefile modules/libimg/png/Makefile js/src/fdlibm/Makefile js/src/Makefile js/src/xpconnect/Makefile ipc/ipcd/Makefile xpcom/obsolete/Makefile embedding/components/profilesharingsetup/Makefile modules/libpref/Makefile netwerk/cache/Makefile intl/uconv/native/Makefile widget/src/gtkxtbin/Makefile netwerk/mime/Makefile uriloader/base/Makefile embedding/components/windowwatcher/public/Makefile rdf/util/Makefile intl/unicharutil/Makefile parser/expat/Makefile modules/libutil/Makefile parser/htmlparser/Makefile rdf/Makefile profile/dirserviceprovider/Makefile embedding/components/webbrowserpersist/Makefile db/mdb/public/Makefile db/mork/src/Makefile db/mork/build/Makefile xpfe/browser/public/Makefile xpfe/Makefile embedding/components/ui/progressDlg/Makefile xpfe/components/download-manager/Makefile directory/xpcom/base/Makefile editor/txmgr/Makefile xpfe/components/directory/Makefile xpfe/components/find/public/Makefile xpfe/components/find/src/Makefile xpfe/components/search/datasets/Makefile xpfe/components/search/public/Makefile xpfe/components/search/src/Makefile xpfe/components/related/public/Makefile xpfe/components/related/src/Makefile xpfe/components/intl/Makefile xpfe/components/windowds/Makefile xpfe/components/autocomplete/public/Makefile xpfe/components/autocomplete/src/Makefile xpfe/components/bookmarks/public/Makefile xpfe/components/bookmarks/src/Makefile xpfe/components/urlbarhistory/public/Makefile xpfe/components/urlbarhistory/src/Makefile xpfe/components/build/Makefile xpfe/components/history/public/Makefile xpfe/components/history/Makefile embedding/browser/webBrowser/Makefile embedding/browser/build/Makefile profile/pref-migrator/Makefile profile/Makefile xpfe/appshell/Makefile xpfe/components/xremote/public/Makefile xpfe/components/xremote/Makefile widget/public/Makefile widget/src/Makefile view/Makefile editor/composer/public/Makefile intl/lwbrk/Makefile content/xul/content/Makefile content/xul/templates/Makefile content/xul/document/Makefile embedding/components/ui/helperAppDlg/Makefile embedding/components/find/Makefile embedding/components/commandhandler/Makefile editor/txtsvc/Makefile editor/Makefile uriloader/prefetch/Makefile docshell/Makefile embedding/components/jsconsole/public/Makefile embedding/base/Makefile embedding/components/windowwatcher/src/Makefile embedding/components/appstartup/src/Makefile embedding/components/jsconsole/src/Makefile embedding/components/printingui/src/unixshared/Makefile embedding/components/build/Makefile intl/chardet/public/Makefile intl/chardet/src/Makefile intl/uconv/Makefile intl/locale/Makefile accessible/Makefile netwerk/protocol/viewsource/Makefile netwerk/protocol/gopher/Makefile netwerk/build2/Makefile sun-java/Makefile modules/libjar/Makefile js/src/liveconnect/Makefile modules/oji/Makefile other-licenses/libart_lgpl/Makefile layout/Makefile rdf/chrome/src/Makefile rdf/chrome/build/Makefile content/Makefile gfx/src/xprintutil/Makefile gfx/src/xlibrgb/Makefile gfx/Makefile jpeg/Makefile modules/libpr0n/Makefile netwerk/Makefile intl/strres/Makefile uriloader/exthandler/Makefile modules/plugin/Makefile caps/Makefile dom/Makefile xpfe/components/shistory/Makefile"
+ 
+-MAKEFILES_sidebar="xpfe/components/sidebar/public/Makefile"
+-
+ MAKEFILES_spellchecker="xpcom/Makefile xpcom/string/Makefile webshell/public/Makefile modules/libimg/png/Makefile js/src/fdlibm/Makefile js/src/Makefile js/src/xpconnect/Makefile ipc/ipcd/Makefile xpcom/obsolete/Makefile embedding/components/profilesharingsetup/Makefile modules/libpref/Makefile netwerk/cache/Makefile intl/uconv/native/Makefile widget/src/gtkxtbin/Makefile netwerk/mime/Makefile uriloader/base/Makefile embedding/components/windowwatcher/public/Makefile rdf/util/Makefile intl/unicharutil/Makefile parser/expat/Makefile modules/libutil/Makefile parser/htmlparser/Makefile rdf/Makefile profile/dirserviceprovider/Makefile xpfe/components/shistory/Makefile embedding/components/webbrowserpersist/Makefile db/mdb/public/Makefile db/mork/src/Makefile db/mork/build/Makefile xpfe/browser/public/Makefile xpfe/Makefile embedding/components/ui/progressDlg/Makefile xpfe/components/download-manager/Makefile directory/xpcom/base/Makefile editor/txmgr/Makefile xpfe/components/directory/Makefile xpfe/components/find/public/Makefile xpfe/components/find/src/Makefile xpfe/components/search/datasets/Makefile xpfe/components/search/public/Makefile xpfe/components/search/src/Makefile xpfe/components/related/public/Makefile xpfe/components/related/src/Makefile xpfe/components/intl/Makefile xpfe/components/windowds/Makefile xpfe/components/autocomplete/public/Makefile xpfe/components/autocomplete/src/Makefile xpfe/components/bookmarks/public/Makefile xpfe/components/bookmarks/src/Makefile xpfe/components/urlbarhistory/public/Makefile xpfe/components/urlbarhistory/src/Makefile xpfe/components/build/Makefile xpfe/components/history/public/Makefile xpfe/components/history/Makefile embedding/browser/webBrowser/Makefile embedding/browser/build/Makefile profile/pref-migrator/Makefile profile/Makefile xpfe/appshell/Makefile xpfe/components/xremote/public/Makefile xpfe/components/xremote/Makefile widget/public/Makefile widget/src/Makefile view/Makefile editor/composer/public/Makefile intl/lwbrk/Makefile content/xul/content/Makefile content/xul/templates/Makefile content/xul/document/Makefile embedding/components/ui/helperAppDlg/Makefile embedding/components/find/Makefile embedding/components/commandhandler/Makefile editor/txtsvc/Makefile editor/Makefile uriloader/prefetch/Makefile docshell/Makefile embedding/components/jsconsole/public/Makefile embedding/base/Makefile embedding/components/windowwatcher/src/Makefile embedding/components/appstartup/src/Makefile embedding/components/jsconsole/src/Makefile embedding/components/printingui/src/unixshared/Makefile embedding/components/build/Makefile intl/chardet/public/Makefile intl/chardet/src/Makefile intl/uconv/Makefile intl/locale/Makefile accessible/Makefile netwerk/protocol/viewsource/Makefile netwerk/protocol/gopher/Makefile netwerk/build2/Makefile sun-java/Makefile modules/libjar/Makefile js/src/liveconnect/Makefile modules/oji/Makefile other-licenses/libart_lgpl/Makefile layout/Makefile rdf/chrome/src/Makefile rdf/chrome/build/Makefile content/Makefile gfx/src/xprintutil/Makefile gfx/src/xlibrgb/Makefile gfx/Makefile jpeg/Makefile modules/libpr0n/Makefile netwerk/Makefile intl/strres/Makefile uriloader/exthandler/Makefile modules/plugin/Makefile caps/Makefile dom/Makefile extensions/spellcheck/Makefile"
+ 
+ MAKEFILES_storage="xpcom/Makefile xpcom/string/Makefile db/sqlite3/src/Makefile storage/public/Makefile storage/src/Makefile storage/build/Makefile"
+@@ -2166,7 +2162,6 @@
+         rdf) add_makefiles "$MAKEFILES_rdf" ;;
+         rdfutil) add_makefiles "$MAKEFILES_rdfutil" ;;
+         shistory) add_makefiles "$MAKEFILES_shistory" ;;
+-        sidebar) add_makefiles "$MAKEFILES_sidebar" ;;
+         spellchecker) add_makefiles "$MAKEFILES_spellchecker" ;;
+         storage) add_makefiles "$MAKEFILES_storage" ;;
+         string) add_makefiles "$MAKEFILES_string" ;;
+diff -urN mozilla.orig/dom/public/idl/Makefile.in mozilla/dom/public/idl/Makefile.in
+--- mozilla.orig/dom/public/idl/Makefile.in	2006-12-31 18:27:52.000000000 +0100
++++ mozilla/dom/public/idl/Makefile.in	2006-12-31 18:28:32.000000000 +0100
+@@ -51,6 +51,7 @@
+ 	stylesheets				\
+ 	views					\
+ 	css					\
++	sidebar                                 \
+ 	traversal				\
+ 	range					\
+ 	xbl					\
+diff -urN mozilla.orig/dom/public/idl/sidebar/Makefile.in mozilla/dom/public/idl/sidebar/Makefile.in
+--- mozilla.orig/dom/public/idl/sidebar/Makefile.in	1970-01-01 01:00:00.000000000 +0100
++++ mozilla/dom/public/idl/sidebar/Makefile.in	2006-12-31 18:28:32.000000000 +0100
 @@ -0,0 +1,53 @@
 +#
 +# ***** BEGIN LICENSE BLOCK *****
@@ -63,12 +102,9 @@ diff -N dom/public/idl/sidebar/Makefile.in
 +        $(NULL)
 +
 +include $(topsrcdir)/config/rules.mk
-Index: dom/public/idl/sidebar/nsISidebar.idl
-===================================================================
-RCS file: dom/public/idl/sidebar/nsISidebar.idl
-diff -N dom/public/idl/sidebar/nsISidebar.idl
---- /dev/null	1 Jan 1970 00:00:00 -0000
-+++ dom/public/idl/sidebar/nsISidebar.idl	10 Feb 2005 15:58:02 -0000
+diff -urN mozilla.orig/dom/public/idl/sidebar/nsISidebar.idl mozilla/dom/public/idl/sidebar/nsISidebar.idl
+--- mozilla.orig/dom/public/idl/sidebar/nsISidebar.idl	1970-01-01 01:00:00.000000000 +0100
++++ mozilla/dom/public/idl/sidebar/nsISidebar.idl	2006-12-31 18:28:32.000000000 +0100
 @@ -0,0 +1,70 @@
 +/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
 + *
@@ -140,23 +176,150 @@ diff -N dom/public/idl/sidebar/nsISidebar.idl
 + var csidebar = Components.classes['@mozilla.org/sidebar;1'];
 + var sidebar = csidebar.createInstance(isidebar);
 +*/
-Index: xpinstall/packager/packages-static-unix
-===================================================================
-RCS file: /home/rocallahan/mozilla-cvs-mirror/mozilla/xpinstall/packager/packages-static-unix,v
-retrieving revision 1.87
-diff -u -t -p -1 -2 -r1.87 packages-static-unix
---- xpinstall/packager/packages-static-unix	19 Aug 2005 23:09:31 -0000	1.87
-+++ xpinstall/packager/packages-static-unix	4 Nov 2005 02:39:13 -0000
-@@ -89,24 +89,25 @@ bin/components/caps.xpt
- bin/components/cookie.xpt
- bin/components/jsdservice.xpt
- bin/components/libjsd.so
- bin/components/dom.xpt
- bin/components/dom_base.xpt
- bin/components/dom_canvas.xpt
- bin/components/dom_core.xpt
- bin/components/dom_css.xpt
- bin/components/dom_events.xpt
+diff -urN mozilla.orig/xpfe/components/sidebar/Makefile.in mozilla/xpfe/components/sidebar/Makefile.in
+--- mozilla.orig/xpfe/components/sidebar/Makefile.in	2006-12-31 18:28:00.000000000 +0100
++++ mozilla/xpfe/components/sidebar/Makefile.in	2006-12-31 18:34:07.000000000 +0100
+@@ -42,7 +42,7 @@
+ 
+ include $(DEPTH)/config/autoconf.mk
+ 
+-DIRS		= public src
++DIRS		= src
+ 
+ include $(topsrcdir)/config/rules.mk
+ 
+diff -urN mozilla.orig/xpfe/components/sidebar/public/Makefile.in mozilla/xpfe/components/sidebar/public/Makefile.in
+--- mozilla.orig/xpfe/components/sidebar/public/Makefile.in	2006-12-31 18:28:00.000000000 +0100
++++ mozilla/xpfe/components/sidebar/public/Makefile.in	1970-01-01 01:00:00.000000000 +0100
+@@ -1,50 +0,0 @@
+-#
+-# ***** BEGIN LICENSE BLOCK *****
+-# Version: MPL 1.1/GPL 2.0/LGPL 2.1
+-#
+-# The contents of this file are subject to the Mozilla Public License Version
+-# 1.1 (the "License"); you may not use this file except in compliance with
+-# the License. You may obtain a copy of the License at
+-# http://www.mozilla.org/MPL/
+-#
+-# Software distributed under the License is distributed on an "AS IS" basis,
+-# WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+-# for the specific language governing rights and limitations under the
+-# License.
+-#
+-# The Original Code is mozilla.org Code.
+-#
+-# The Initial Developer of the Original Code is
+-# Netscape Communications Corporation.
+-# Portions created by the Initial Developer are Copyright (C) 1998
+-# the Initial Developer. All Rights Reserved.
+-#
+-# Contributor(s):
+-#
+-# Alternatively, the contents of this file may be used under the terms of
+-# either of the GNU General Public License Version 2 or later (the "GPL"),
+-# or the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
+-# in which case the provisions of the GPL or the LGPL are applicable instead
+-# of those above. If you wish to allow use of your version of this file only
+-# under the terms of either the GPL or the LGPL, and not to allow others to
+-# use your version of this file under the terms of the MPL, indicate your
+-# decision by deleting the provisions above and replace them with the notice
+-# and other provisions required by the GPL or the LGPL. If you do not delete
+-# the provisions above, a recipient may use your version of this file under
+-# the terms of any one of the MPL, the GPL or the LGPL.
+-#
+-# ***** END LICENSE BLOCK *****
+-
+-DEPTH		= ../../../..
+-topsrcdir	= @top_srcdir@
+-srcdir		= @srcdir@
+-VPATH		= @srcdir@
+-
+-include $(DEPTH)/config/autoconf.mk
+-
+-MODULE		= sidebar
+-
+-XPIDLSRCS	= nsISidebar.idl
+-
+-include $(topsrcdir)/config/rules.mk
+-
+diff -urN mozilla.orig/xpfe/components/sidebar/public/nsISidebar.idl mozilla/xpfe/components/sidebar/public/nsISidebar.idl
+--- mozilla.orig/xpfe/components/sidebar/public/nsISidebar.idl	2006-12-31 18:28:00.000000000 +0100
++++ mozilla/xpfe/components/sidebar/public/nsISidebar.idl	1970-01-01 01:00:00.000000000 +0100
+@@ -1,70 +0,0 @@
+-/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+- *
+- * ***** BEGIN LICENSE BLOCK *****
+- * Version: MPL 1.1/GPL 2.0/LGPL 2.1
+- *
+- * The contents of this file are subject to the Mozilla Public License Version
+- * 1.1 (the "License"); you may not use this file except in compliance with
+- * the License. You may obtain a copy of the License at
+- * http://www.mozilla.org/MPL/
+- *
+- * Software distributed under the License is distributed on an "AS IS" basis,
+- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+- * for the specific language governing rights and limitations under the
+- * License.
+- *
+- * The Original Code is mozilla.org Code.
+- *
+- * The Initial Developer of the Original Code is
+- * Netscape Communications Corporation.
+- * Portions created by the Initial Developer are Copyright (C) 1998
+- * the Initial Developer. All Rights Reserved.
+- *
+- * Contributor(s):
+- *
+- * Alternatively, the contents of this file may be used under the terms of
+- * either of the GNU General Public License Version 2 or later (the "GPL"),
+- * or the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
+- * in which case the provisions of the GPL or the LGPL are applicable instead
+- * of those above. If you wish to allow use of your version of this file only
+- * under the terms of either the GPL or the LGPL, and not to allow others to
+- * use your version of this file under the terms of the MPL, indicate your
+- * decision by deleting the provisions above and replace them with the notice
+- * and other provisions required by the GPL or the LGPL. If you do not delete
+- * the provisions above, a recipient may use your version of this file under
+- * the terms of any one of the MPL, the GPL or the LGPL.
+- *
+- * ***** END LICENSE BLOCK ***** */
+-
+-/*
+-
+-  The Sidebar API for 3rd parties
+-
+-*/
+-
+-#include "nsISupports.idl"
+-
+-[scriptable, uuid(577CB745-8CAF-11d3-AAEF-00805F8A4905)]
+-interface nsISidebar : nsISupports
+-{
+-    void addPanel(in wstring aTitle, in string aContentURL,
+-                  in string aCustomizeURL);
+-    void addPersistentPanel(in wstring aTitle, in string aContentURL,
+-                            in string aCustomizeURL);
+-    void addSearchEngine(in string engineURL, in string iconURL,
+-                         in wstring suggestedTitle, in wstring suggestedCategory);
+-};
+-
+-%{ C++
+-// {577CB744-8CAF-11d3-AAEF-00805F8A4905} 
+-#define NS_SIDEBAR_CID \
+-{ 0x577cb744, 0x8caf, 0x11d3, { 0xaa, 0xef, 0x0, 0x80, 0x5f, 0x8a, 0x49, 0x5 } }
+-
+-#define NS_SIDEBAR_CONTRACTID "@mozilla.org/sidebar;1"
+-%}
+-
+-/*
+- var isidebar = Components.interfaces.nsISidebar;
+- var csidebar = Components.classes['@mozilla.org/sidebar;1'];
+- var sidebar = csidebar.createInstance(isidebar);
+-*/
+diff -urN mozilla.orig/xpinstall/packager/packages-static-unix mozilla/xpinstall/packager/packages-static-unix
+--- mozilla.orig/xpinstall/packager/packages-static-unix	2006-12-31 18:27:50.000000000 +0100
++++ mozilla/xpinstall/packager/packages-static-unix	2006-12-31 18:28:32.000000000 +0100
+@@ -98,6 +98,7 @@
  bin/components/dom_loadsave.xpt
  bin/components/dom_html.xpt
  bin/components/dom_range.xpt
@@ -164,32 +327,10 @@ diff -u -t -p -1 -2 -r1.87 packages-static-unix
  bin/components/dom_stylesheets.xpt
  bin/components/dom_traversal.xpt
  bin/components/dom_views.xpt
- bin/components/dom_xbl.xpt
- bin/components/dom_xpath.xpt
- bin/components/dom_xul.xpt
- bin/components/editor.xpt
- bin/components/find.xpt
- bin/components/gfx.xpt
- bin/components/gfx2.xpt
- bin/components/gksvgrenderer.xpt
- bin/components/intl.xpt
-Index: xpinstall/packager/packages-unix
-===================================================================
-RCS file: /home/rocallahan/mozilla-cvs-mirror/mozilla/xpinstall/packager/packages-unix,v
-retrieving revision 1.314
-diff -u -t -p -1 -2 -r1.314 packages-unix
---- xpinstall/packager/packages-unix	31 Oct 2005 13:21:31 -0000	1.314
-+++ xpinstall/packager/packages-unix	4 Nov 2005 02:38:56 -0000
-@@ -106,24 +106,25 @@ bin/components/nsComposerCmdLineHandler.
- bin/components/cookie.xpt
- bin/components/libjsd.so
- bin/components/jsdservice.xpt
- bin/components/dom.xpt
- bin/components/dom_base.xpt
- bin/components/dom_canvas.xpt
- bin/components/dom_core.xpt
- bin/components/dom_css.xpt
- bin/components/dom_events.xpt
+diff -urN mozilla.orig/xpinstall/packager/packages-unix mozilla/xpinstall/packager/packages-unix
+--- mozilla.orig/xpinstall/packager/packages-unix	2006-12-31 18:27:50.000000000 +0100
++++ mozilla/xpinstall/packager/packages-unix	2006-12-31 18:28:32.000000000 +0100
+@@ -114,6 +114,7 @@
  bin/components/dom_html.xpt
  bin/components/dom_loadsave.xpt
  bin/components/dom_range.xpt
@@ -197,27 +338,3 @@ diff -u -t -p -1 -2 -r1.314 packages-unix
  bin/components/dom_stylesheets.xpt
  bin/components/dom_traversal.xpt
  bin/components/dom_views.xpt
- bin/components/dom_xbl.xpt
- bin/components/dom_xpath.xpt
- bin/components/dom_xul.xpt
- bin/components/editor.xpt
- bin/components/find.xpt
- bin/components/gfx.xpt
- bin/components/gksvgrenderer.xpt
- bin/components/intl.xpt
- bin/components/imglib2.xpt
-Index: dom/public/idl/Makefile.in
-===================================================================
-RCS file: /cvsroot/mozilla/dom/public/idl/Makefile.in,v
-retrieving revision 1.13
-diff -u -p -r1.13 Makefile.in
---- dom/public/idl/Makefile.in	18 Apr 2005 06:33:17 -0000	1.13
-+++ dom/public/idl/Makefile.in	7 Nov 2005 08:39:01 -0000
-@@ -51,6 +51,7 @@ DIRS =						\
- 	stylesheets				\
- 	views					\
- 	css					\
-+	sidebar                                 \
- 	traversal				\
- 	range					\
- 	xbl					\
