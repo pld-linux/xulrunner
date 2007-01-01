@@ -2,7 +2,7 @@ Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl):	XULRunner - ¶rodowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
 Version:	1.8.0.4
-Release:	0.3
+Release:	1
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
 Source0:	http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/%{version}/source/%{name}-%{version}-source.tar.bz2
