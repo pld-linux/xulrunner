@@ -1,8 +1,13 @@
+# Conditional build:
+%bcond_with	tests	# enable tests (whatever they check)
+%bcond_without	gnome	# disable all GNOME components (gnomevfs, gnome, gnomeui)
+%bcond_without	svg	# svg
+#
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl):	XULRunner - ¶rodowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
 Version:	1.8.0.4
-Release:	1
+Release:	2
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
 Source0:	http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/%{version}/source/%{name}-%{version}-source.tar.bz2
@@ -13,7 +18,6 @@ Patch2:		%{name}-nsIPermission.patch
 Patch3:		%{name}-nsISidebar.patch
 URL:		http://developer.mozilla.org/en/docs/XULRunner
 BuildRequires:	/bin/csh
-BuildRequires:	/bin/ex
 BuildRequires:	automake
 BuildRequires:	cairo-devel >= 1.0.0
 BuildRequires:	freetype-devel >= 1:2.1.8
@@ -22,21 +26,20 @@ BuildRequires:	libIDL-devel >= 0.8.0
 BuildRequires:	libjpeg-devel >= 6b
 BuildRequires:	libpng-devel >= 1.2.7
 BuildRequires:	libstdc++-devel
-BuildRequires:	nspr-devel >= 1:4.6.1
-BuildRequires:	nss-devel >= 3.10.2
+BuildRequires:	nspr-devel >= 1:4.6.3
+BuildRequires:	nss-devel >= 1:3.11.3-3
 BuildRequires:	pango-devel >= 1:1.6.0
 BuildRequires:	perl-modules >= 1:5.6.0
 BuildRequires:	pkgconfig
 BuildRequires:	sed >= 4.0
-BuildRequires:	tar >= 1:1.15.1
 BuildRequires:	xcursor-devel
 BuildRequires:	xft-devel >= 2.1-2
 BuildRequires:	zip >= 2.1
 BuildRequires:	zlib-devel >= 1.2.3
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 %{?with_svg:Requires:	cairo >= 1.0.0}
-Requires:	nspr >= 1:4.6.1
-Requires:	nss >= 3.10.2
+Requires:	nspr >= 1:4.6.3
+Requires:	nss >= 1:3.11.3
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		specflags	-fno-strict-aliasing
@@ -160,9 +163,7 @@ LD_LIBRARY_PATH="dist/bin" MOZILLA_FIVE_HOME="dist/bin" dist/bin/regxpcom
 ln -sf ../../share/%{name}/chrome $RPM_BUILD_ROOT%{_chromedir}
 ln -sf ../../share/%{name}/defaults $RPM_BUILD_ROOT%{_xulrunnerdir}/defaults
 ln -sf ../../share/%{name}/greprefs $RPM_BUILD_ROOT%{_xulrunnerdir}/greprefs
-#ln -sf ../../share/%{name}/icons $RPM_BUILD_ROOT%{_xulrunnerdir}/icons
 ln -sf ../../share/%{name}/res $RPM_BUILD_ROOT%{_xulrunnerdir}/res
-#ln -sf ../../share/%{name}/searchplugins $RPM_BUILD_ROOT%{_xulrunnerdir}/searchplugins
 ln -sf ../../../share/%{name}/myspell $RPM_BUILD_ROOT%{_xulrunnerdir}/components/myspell
 
 cp -frL dist/bin/chrome/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/chrome
@@ -204,11 +205,11 @@ cp $RPM_BUILD_ROOT%{_chromedir}/installed-chrome.txt \
 cat << 'EOF' > $RPM_BUILD_ROOT%{_bindir}/xulrunner
 #!/bin/sh
 
-LD_LIBRARY_PATH=/usr/lib/xulrunner${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
+LD_LIBRARY_PATH=%{_xulrunnerdir}${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
 export LD_LIBRARY_PATH
 
-MOZILLA_FIVE_HOME=/usr/lib/xulrunner
-/usr/lib/xulrunner/xulrunner-bin "$@"
+MOZILLA_FIVE_HOME=%{_xulrunnerdir} \
+%{_xulrunnerdir}/xulrunner-bin "$@"
 EOF
 
 cat << 'EOF' > $RPM_BUILD_ROOT%{_sbindir}/%{name}-chrome+xpcom-generate
@@ -229,8 +230,7 @@ EOF
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post
-%{_sbindir}/%{name}-chrome+xpcom-generate
+%post -p %{_sbindir}/%{name}-chrome+xpcom-generate
 
 %postun
 if [ "$1" = "1" ]; then
@@ -250,8 +250,6 @@ fi
 %dir %{_xulrunnerdir}/components
 %dir %{_xulrunnerdir}/defaults
 %dir %{_xulrunnerdir}/greprefs
-#%dir %{_xulrunnerdir}/icons
-#%dir %{_xulrunnerdir}/plugins
 %dir %{_xulrunnerdir}/res
 %dir %{_datadir}/%{name}
 
@@ -316,7 +314,7 @@ fi
 %{?with_svg:%{_xulrunnerdir}/components/gksvgrenderer.xpt}
 %{_xulrunnerdir}/components/history.xpt
 %{_xulrunnerdir}/components/htmlparser.xpt
-%{?with_gnomeui:%{_xulrunnerdir}/components/imgicon.xpt}
+%{?with_gnome:%{_xulrunnerdir}/components/imgicon.xpt}
 %{_xulrunnerdir}/components/imglib2.xpt
 %{_xulrunnerdir}/components/intl.xpt
 %{_xulrunnerdir}/components/jar.xpt
@@ -426,17 +424,13 @@ fi
 
 %files libs
 %defattr(644,root,root,755)
-# libxpcom.so used by mozillaplug-in
-# probably should add more if more packages require
-%attr(755,root,root) %{_xulrunnerdir}/libxpcom.so
-
-# add rest too
-%attr(755,root,root) %{_xulrunnerdir}/libxul.so
 %attr(755,root,root) %{_xulrunnerdir}/libgtkembedmoz.so
 %attr(755,root,root) %{_xulrunnerdir}/libldap50.so
+%attr(755,root,root) %{_xulrunnerdir}/libmozjs.so
 %attr(755,root,root) %{_xulrunnerdir}/libprldap50.so
 %attr(755,root,root) %{_xulrunnerdir}/libssldap50.so
-%attr(755,root,root) %{_xulrunnerdir}/libmozjs.so
+%attr(755,root,root) %{_xulrunnerdir}/libxpcom.so
+%attr(755,root,root) %{_xulrunnerdir}/libxul.so
 
 %files devel
 %defattr(644,root,root,755)
