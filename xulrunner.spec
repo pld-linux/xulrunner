@@ -241,7 +241,6 @@ fi
 %attr(755,root,root) %{_bindir}/xulrunner
 %attr(744,root,root) %{_sbindir}/%{name}-chrome+xpcom-generate
 
-%dir %{_libdir}/%{name}
 %dir %{_libdir}/%{name}/chrome
 %dir %{_libdir}/%{name}/components
 %dir %{_libdir}/%{name}/defaults
@@ -414,6 +413,7 @@ fi
 
 %files libs
 %defattr(644,root,root,755)
+%dir %{_libdir}/%{name}
 %attr(755,root,root) %{_libdir}/%{name}/libgtkembedmoz.so
 %attr(755,root,root) %{_libdir}/%{name}/libldap50.so
 %attr(755,root,root) %{_libdir}/%{name}/libmozjs.so
