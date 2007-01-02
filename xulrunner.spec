@@ -197,14 +197,13 @@ sed -i -e '/Cflags:/{/{includedir}\/dom/!s,$, -I${includedir}/dom,}' $RPM_BUILD_
 
 rm -f $RPM_BUILD_ROOT%{_pkgconfigdir}/xulrunner-nss.pc $RPM_BUILD_ROOT%{_pkgconfigdir}/xulrunner-nspr.pc
 
+# rename to without -bin extension for killall xulrunner to work
+mv $RPM_BUILD_ROOT%{_libdir}/%{name}/xulrunner{-bin,}
 cat << 'EOF' > $RPM_BUILD_ROOT%{_bindir}/xulrunner
 #!/bin/sh
+export LD_LIBRARY_PATH=%{_libdir}/%{name}${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
 
-LD_LIBRARY_PATH=%{_libdir}/%{name}${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
-export LD_LIBRARY_PATH
-
-MOZILLA_FIVE_HOME=%{_libdir}/%{name} \
-%{_libdir}/%{name}/xulrunner-bin "$@"
+exec %{_libdir}/%{name}/xulrunner "$@"
 EOF
 
 cat << 'EOF' > $RPM_BUILD_ROOT%{_sbindir}/%{name}-chrome+xpcom-generate
@@ -248,7 +247,7 @@ fi
 %dir %{_libdir}/%{name}/res
 %dir %{_datadir}/%{name}
 
-%attr(755,root,root) %{_libdir}/%{name}/xulrunner-bin
+%attr(755,root,root) %{_libdir}/%{name}/xulrunner
 %attr(755,root,root) %{_libdir}/%{name}/xpidl
 %attr(755,root,root) %{_libdir}/%{name}/reg*
 
