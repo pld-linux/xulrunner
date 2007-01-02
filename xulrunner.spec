@@ -81,7 +81,8 @@ Summary:	Headers for developing programs that will use XULRunner
 Summary(pl):	Pliki nag³ówkowe do tworzenia programów u¿ywaj±cych XULRunnera
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
-Requires:	nspr-devel >= 1:4.6.1
+Requires:	nspr-devel >= 1:4.6.3
+Requires:	nss-devel >= 1:3.11.3
 Obsoletes:	mozilla-devel
 Obsoletes:	mozilla-firefox-devel
 Obsoletes:	seamonkey-devel
