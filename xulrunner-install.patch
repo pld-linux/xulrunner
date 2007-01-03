@@ -27,11 +27,9 @@
  endif
  ifdef MOZ_PKG_REMOVALS
  	$(SYSINSTALL) $(MOZ_PKG_REMOVALS_GEN) $(DIST)/$(STAGEPATH)$(MOZ_PKG_APPNAME)$(_BINPATH)
---- mozilla/toolkit/mozapps/installer/packager.mk~	2007-01-02 17:49:00.404649420 +0200
-+++ mozilla/toolkit/mozapps/installer/packager.mk	2007-01-02 17:51:24.147883019 +0200
-@@ -313,5 +313,3 @@
- ifdef MOZ_PKG_REMOVALS
- 	$(SYSINSTALL) $(MOZ_PKG_REMOVALS_GEN) $(DIST)/$(STAGEPATH)$(MOZ_PKG_APPNAME)$(_BINPATH)
+@@ -355,5 +355,3 @@
  endif # MOZ_PKG_REMOVALS
+ 
+ make-package: stage-package
 -	@echo "Compressing..."
 -	cd $(DIST); $(MAKE_PACKAGE)
