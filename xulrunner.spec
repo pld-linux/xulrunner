@@ -130,7 +130,8 @@ export ac_cv_visibility_pragma=no
 	--enable-mathml \
 	--enable-optimize="%{rpmcflags}" \
 	--enable-postscript \
-	%{!?debug:--enable-strip} \
+	--disable-strip \
+	--disable-strip-libs \
 	--enable-xft \
 	--enable-xinerama \
 	--enable-xprint \
