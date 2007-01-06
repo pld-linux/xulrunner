@@ -1,5 +1,5 @@
---- mozilla/build/unix/Makefile~	2007-01-07 01:38:09.839104485 +0200
-+++ mozilla/build/unix/Makefile	2007-01-07 01:38:17.189270040 +0200
+--- mozilla/build/unix/Makefile.in~	2007-01-07 01:38:09.839104485 +0200
++++ mozilla/build/unix/Makefile.in	2007-01-07 01:38:17.189270040 +0200
 @@ -77,9 +77,9 @@
  	cat $< | sed \
  	-e "s|%prefix%|$(prefix)|" \
