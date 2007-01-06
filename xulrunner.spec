@@ -16,6 +16,7 @@ Source0:	%{name}-%{version}-%{_snap}-source.tar.bz2
 # Source0-md5:	92b4936a5b8bd24edac8feaa26d13567
 Patch0:		%{name}-ldap-with-nss.patch
 Patch1:		%{name}-install.patch
+Patch2:		%{name}-pc.patch
 URL:		http://developer.mozilla.org/en/docs/XULRunner
 BuildRequires:	/bin/csh
 %{?with_gnome:BuildRequires:	GConf2-devel >= 1.2.1}
@@ -102,6 +103,7 @@ cd mozilla
 
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build
 cd mozilla
@@ -182,18 +184,11 @@ mv $RPM_BUILD_ROOT%{_libdir}/%{name}/xpidl $RPM_BUILD_ROOT%{_bindir}/xpidl
 mv $RPM_BUILD_ROOT%{_libdir}/%{name}/xpt_dump $RPM_BUILD_ROOT%{_bindir}/xpt_dump
 mv $RPM_BUILD_ROOT%{_libdir}/%{name}/xpt_link $RPM_BUILD_ROOT%{_bindir}/xpt_link
 
-for f in build/unix/*.pc ; do
-	sed -e 's/xulrunner-%{version}/xulrunner/' $f \
-		> $RPM_BUILD_ROOT%{_pkgconfigdir}/$(basename $f)
-done
+%{__make} -C build/unix install \
+	DESTDIR=$RPM_BUILD_ROOT
 
-sed -e 's,%{_lib}/xulrunner-%{version},%{_lib},g;s/xulrunner-%{version}/xulrunner/g' build/unix/xulrunner-gtkmozembed.pc \
-		> $RPM_BUILD_ROOT%{_pkgconfigdir}/xulrunner-gtkmozembed.pc
-
-# add includir/dom to Cflags, for openvrml.spec, perhaps others
-sed -i -e '/Cflags:/{/{includedir}\/dom/!s,$, -I${includedir}/dom,}' $RPM_BUILD_ROOT%{_pkgconfigdir}/xulrunner-plugin.pc
-
-rm $RPM_BUILD_ROOT%{_pkgconfigdir}/xulrunner-nss.pc $RPM_BUILD_ROOT%{_pkgconfigdir}/xulrunner-nspr.pc
+# we use system pkgs
+rm $RPM_BUILD_ROOT%{_pkgconfigdir}/xulrunner-{nspr,nss}.pc
 
 # rename to without -bin extension for killall xulrunner to work
 mv $RPM_BUILD_ROOT%{_libdir}/%{name}/xulrunner{-bin,}
