@@ -3,7 +3,7 @@
 %bcond_without	gnome	# disable all GNOME components (gnomevfs, gnome, gnomeui)
 #
 %define		_snap	20070102
-%define		_rel	2.6
+%define		_rel	2.7
 #
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl):	XULRunner - ¶rodowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
@@ -237,6 +237,8 @@ mv $RPM_BUILD_ROOT%{_libdir}/%{name}/xpt_link $RPM_BUILD_ROOT%{_bindir}/xpt_link
 # we use system pkgs
 rm $RPM_BUILD_ROOT%{_pkgconfigdir}/xulrunner-{nspr,nss}.pc
 
+# rpath is used, can move to bindir
+rm -f $RPM_BUILD_ROOT%{_libdir}/%{name}/xulrunner
 mv $RPM_BUILD_ROOT{%{_libdir}/%{name}/xulrunner-bin,%{_bindir}/xulrunner}
 mv $RPM_BUILD_ROOT{%{_libdir}/%{name}/xpcshell,%{_bindir}}
 
@@ -282,8 +284,7 @@ fi
 %dir %{_libdir}/%{name}/res
 %dir %{_datadir}/%{name}
 
-%attr(755,root,root) %{_libdir}/%{name}/xulrunner
-%attr(755,root,root) %{_libdir}/%{name}/reg*
+%attr(755,root,root) %{_libdir}/%{name}/regxpcom
 
 %attr(755,root,root) %{_libdir}/%{name}/components/libauth*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libautoconfig.so
@@ -414,7 +415,7 @@ fi
 %{_libdir}/%{name}/components/nsXmlRpcClient.js
 %{_libdir}/%{name}/components/nsXULAppInstall.js
 
-# not *.dat, so check-files can catch any new files
+# do not use *.dat here, so check-files can catch any new files
 # (and they won't be just silently placed empty in rpm)
 %ghost %{_libdir}/%{name}/components/compreg.dat
 %ghost %{_libdir}/%{name}/components/xpti.dat
@@ -464,7 +465,7 @@ fi
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/reg*
+%attr(755,root,root) %{_bindir}/regxpcom
 %attr(755,root,root) %{_bindir}/xpcshell
 %attr(755,root,root) %{_bindir}/xpidl
 %attr(755,root,root) %{_bindir}/xpt_dump
