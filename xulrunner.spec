@@ -21,6 +21,7 @@ URL:		http://developer.mozilla.org/en/docs/XULRunner
 BuildRequires:	/bin/csh
 %{?with_gnome:BuildRequires:	GConf2-devel >= 1.2.1}
 BuildRequires:	automake
+BuildRequires:	bzip2-devel
 BuildRequires:	cairo-devel >= 1.0.0
 BuildRequires:	freetype-devel >= 1:2.1.8
 %{?with_gnome:BuildRequires:	gnome-vfs2-devel >= 2.0}
@@ -101,6 +102,8 @@ Pakiet programistyczny XULRunnera.
 %setup -qc
 cd mozilla
 
+rm -rf mozilla/modules/libbz2
+
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
@@ -137,6 +140,7 @@ export ac_cv_visibility_pragma=no
 	--enable-xprint \
 	--with-default-mozilla-five-home=%{_libdir}/%{name} \
 	--with-pthreads \
+	--with-system-bz2 \
 	--with-system-jpeg \
 	--with-system-nspr \
 	--with-system-nss \
