@@ -3,7 +3,7 @@
 %bcond_without	gnome	# disable all GNOME components (gnomevfs, gnome, gnomeui)
 #
 %define		_snap	20070102
-%define		_rel	2
+%define		_rel	2.6
 #
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl):	XULRunner - ¶rodowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
@@ -17,6 +17,7 @@ Source0:	%{name}-%{version}-%{_snap}-source.tar.bz2
 Patch0:		%{name}-ldap-with-nss.patch
 Patch1:		%{name}-install.patch
 Patch2:		%{name}-pc.patch
+Patch3:		%{name}-rpath.patch
 URL:		http://developer.mozilla.org/en/docs/XULRunner
 BuildRequires:	/bin/csh
 %{?with_gnome:BuildRequires:	GConf2-devel >= 1.2.1}
@@ -107,6 +108,7 @@ rm -rf mozilla/modules/libbz2
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 %build
 cd mozilla
@@ -114,8 +116,6 @@ cd mozilla
 cp -f %{_datadir}/automake/config.* build/autoconf
 cp -f %{_datadir}/automake/config.* nsprpub/build/autoconf
 cp -f %{_datadir}/automake/config.* directory/c-sdk/config/autoconf
-
-%{__autoconf}
 
 cat << 'EOF' > .mozconfig
 . $topsrcdir/xulrunner/config/mozconfig
@@ -237,21 +237,8 @@ mv $RPM_BUILD_ROOT%{_libdir}/%{name}/xpt_link $RPM_BUILD_ROOT%{_bindir}/xpt_link
 # we use system pkgs
 rm $RPM_BUILD_ROOT%{_pkgconfigdir}/xulrunner-{nspr,nss}.pc
 
-# rename to without -bin extension for killall xulrunner to work
-mv $RPM_BUILD_ROOT%{_libdir}/%{name}/xulrunner{-bin,}
-cat << 'EOF' > $RPM_BUILD_ROOT%{_bindir}/xulrunner
-#!/bin/sh
-export LD_LIBRARY_PATH=%{_libdir}/%{name}${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
-
-exec %{_libdir}/%{name}/xulrunner "$@"
-EOF
-
-cat << 'EOF' > $RPM_BUILD_ROOT%{_bindir}/xpcshell
-#!/bin/sh
-export LD_LIBRARY_PATH=%{_libdir}/%{name}${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
-
-exec %{_libdir}/%{name}/xpcshell "$@"
-EOF
+mv $RPM_BUILD_ROOT{%{_libdir}/%{name}/xulrunner-bin,%{_bindir}/xulrunner}
+mv $RPM_BUILD_ROOT{%{_libdir}/%{name}/xpcshell,%{_bindir}}
 
 cat << 'EOF' > $RPM_BUILD_ROOT%{_sbindir}/%{name}-chrome+xpcom-generate
 #!/bin/sh
@@ -296,8 +283,6 @@ fi
 %dir %{_datadir}/%{name}
 
 %attr(755,root,root) %{_libdir}/%{name}/xulrunner
-%attr(755,root,root) %{_libdir}/%{name}/xpcshell
-%attr(755,root,root) %{_libdir}/%{name}/xulrunner-stub
 %attr(755,root,root) %{_libdir}/%{name}/reg*
 
 %attr(755,root,root) %{_libdir}/%{name}/components/libauth*.so
@@ -457,7 +442,7 @@ fi
 %{_datadir}/%{name}/chrome/toolkit.manifest
 
 # not generated automatically ?
-%{_datadir}/%{name}/chrome/chromelist.txt
+#%{_datadir}/%{name}/chrome/chromelist.txt
 
 %ghost %{_datadir}/%{name}/chrome/installed-chrome.txt
 
@@ -484,5 +469,6 @@ fi
 %attr(755,root,root) %{_bindir}/xpidl
 %attr(755,root,root) %{_bindir}/xpt_dump
 %attr(755,root,root) %{_bindir}/xpt_link
+%attr(755,root,root) %{_libdir}/%{name}/xulrunner-stub
 %{_includedir}/%{name}
 %{_pkgconfigdir}/*
