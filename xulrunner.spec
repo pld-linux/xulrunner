@@ -3,7 +3,7 @@
 %bcond_without	gnome	# disable all GNOME components (gnomevfs, gnome, gnomeui)
 #
 %define		_snap	20070102
-%define		_rel	2
+%define		_rel	3.1
 #
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl):	XULRunner - ¶rodowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
@@ -16,10 +16,13 @@ Source0:	%{name}-%{version}-%{_snap}-source.tar.bz2
 # Source0-md5:	92b4936a5b8bd24edac8feaa26d13567
 Patch0:		%{name}-ldap-with-nss.patch
 Patch1:		%{name}-install.patch
+Patch2:		%{name}-pc.patch
+Patch3:		%{name}-rpath.patch
 URL:		http://developer.mozilla.org/en/docs/XULRunner
 BuildRequires:	/bin/csh
 %{?with_gnome:BuildRequires:	GConf2-devel >= 1.2.1}
 BuildRequires:	automake
+BuildRequires:	bzip2-devel
 BuildRequires:	cairo-devel >= 1.0.0
 BuildRequires:	freetype-devel >= 1:2.1.8
 %{?with_gnome:BuildRequires:	gnome-vfs2-devel >= 2.0}
@@ -86,7 +89,7 @@ Biblioteki wspó³dzielone XULRunnera.
 Summary:	Headers for developing programs that will use XULRunner
 Summary(pl):	Pliki nag³ówkowe do tworzenia programów u¿ywaj±cych XULRunnera
 Group:		X11/Development/Libraries
-Requires:	%{name} = %{epoch}:%{version}-%{release}
+Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 Requires:	nspr-devel >= 1:4.6.3
 Requires:	nss-devel >= 1:3.11.3
 Obsoletes:	mozilla-devel
@@ -103,8 +106,12 @@ Pakiet programistyczny XULRunnera.
 %setup -qc
 cd mozilla
 
+rm -rf mozilla/modules/libbz2
+
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
+%patch3 -p1
 
 %build
 cd mozilla
@@ -113,38 +120,76 @@ cp -f %{_datadir}/automake/config.* build/autoconf
 cp -f %{_datadir}/automake/config.* nsprpub/build/autoconf
 cp -f %{_datadir}/automake/config.* directory/c-sdk/config/autoconf
 
-export ac_cv_visibility_pragma=no
-%configure2_13 \
-	%{!?debug:--disable-debug} \
-	%{!?with_gnome:--disable-gnomeui} \
-	%{!?with_gnome:--disable-gnomevfs} \
-	--disable-javaxpcom \
-	--disable-mailnews \
-	--disable-pedantic \
-	--disable-tests \
-	--disable-xterm-updates \
-	--enable-application=xulrunner \
-	--enable-crypto \
-	--enable-default-toolkit=gtk2 \
-	--enable-extensions \
-	--enable-ldap \
-	--enable-mathml \
-	--enable-optimize="%{rpmcflags}" \
-	--enable-postscript \
-	%{!?debug:--enable-strip} \
-	--enable-xft \
-	--enable-xinerama \
-	--enable-xprint \
-	--with-default-mozilla-five-home=%{_libdir}/%{name} \
-	--with-pthreads \
-	--with-system-jpeg \
-	--with-system-nspr \
-	--with-system-nss \
-	--with-system-png \
-	--with-system-zlib \
-	--with-x
+cat << 'EOF' > .mozconfig
+. $topsrcdir/xulrunner/config/mozconfig
 
-%{__make}
+# Options for 'configure' (same as command-line options).
+ac_add_options --prefix=%{_prefix}
+ac_add_options --exec-prefix=%{_exec_prefix}
+ac_add_options --bindir=%{_bindir}
+ac_add_options --sbindir=%{_sbindir}
+ac_add_options --sysconfdir=%{_sysconfdir}
+ac_add_options --datadir=%{_datadir}
+ac_add_options --includedir=%{_includedir}
+ac_add_options --libdir=%{_libdir}
+ac_add_options --libexecdir=%{_libexecdir}
+ac_add_options --localstatedir=%{_localstatedir}
+ac_add_options --sharedstatedir=%{_sharedstatedir}
+ac_add_options --mandir=%{_mandir}
+ac_add_options --infodir=%{_infodir}
+%if %{?debug:1}0
+ac_add_options --disable-optimize
+ac_add_options --enable-debug
+ac_add_options --enable-debug-modules
+ac_add_options --enable-debugger-info-modules
+ac_add_options --enable-crash-on-assert
+%else
+ac_add_options --disable-debug
+ac_add_options --disable-logging
+ac_add_options --enable-optimize="%{rpmcflags}"
+%endif
+%if %{with tests}
+ac_add_options --enable-tests
+%else
+ac_add_options --disable-tests
+%endif
+%if %{with gnome}
+ac_add_options --enable-gnomevfs
+ac_add_options --enable-gnomeui
+%else
+ac_add_options --disable-gnomevfs
+ac_add_options --disable-gnomeui
+%endif
+ac_add_options --disable-freetype2
+ac_add_options --disable-installer
+ac_add_options --disable-javaxpcom
+ac_add_options --disable-updater
+ac_add_options --enable-xinerama
+ac_add_options --enable-default-toolkit=gtk2
+ac_add_options --enable-system-cairo
+ac_add_options --enable-xft
+ac_add_options --with-distribution-id=org.pld-linux
+ac_add_options --with-system-bz2
+ac_add_options --with-system-jpeg
+ac_add_options --with-system-nspr
+ac_add_options --with-system-nss
+ac_add_options --with-system-png
+ac_add_options --with-system-zlib
+ac_add_options --with-default-mozilla-five-home=%{_libdir}/%{name}
+
+ac_add_options --disable-pedantic
+ac_add_options --disable-xterm-updates
+ac_add_options --enable-extensions="default,cookie,permissions"
+ac_add_options --enable-ldap
+ac_add_options --enable-xprint
+ac_add_options --with-pthreads
+ac_add_options --with-x
+ac_cv_visibility_pragma=no
+EOF
+
+%{__make} -j1 -f client.mk build \
+	CC="%{__cc}" \
+	CXX="%{__cxx}"
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -163,12 +208,10 @@ install -d \
 # move arch independant ones to datadir
 mv $RPM_BUILD_ROOT%{_libdir}/%{name}/chrome $RPM_BUILD_ROOT%{_datadir}/%{name}/chrome
 mv $RPM_BUILD_ROOT%{_libdir}/%{name}/defaults $RPM_BUILD_ROOT%{_datadir}/%{name}/defaults
-mv $RPM_BUILD_ROOT%{_libdir}/%{name}/dictionaries $RPM_BUILD_ROOT%{_datadir}/%{name}/dictionaries
 mv $RPM_BUILD_ROOT%{_libdir}/%{name}/greprefs $RPM_BUILD_ROOT%{_datadir}/%{name}/greprefs
 mv $RPM_BUILD_ROOT%{_libdir}/%{name}/res $RPM_BUILD_ROOT%{_datadir}/%{name}/res
 ln -s ../../share/%{name}/chrome $RPM_BUILD_ROOT%{_libdir}/%{name}/chrome
 ln -s ../../share/%{name}/defaults $RPM_BUILD_ROOT%{_libdir}/%{name}/defaults
-ln -s ../../share/%{name}/dictionaries $RPM_BUILD_ROOT%{_libdir}/%{name}/dictionaries
 ln -s ../../share/%{name}/greprefs $RPM_BUILD_ROOT%{_libdir}/%{name}/greprefs
 ln -s ../../share/%{name}/res $RPM_BUILD_ROOT%{_libdir}/%{name}/res
 
@@ -185,34 +228,16 @@ mv $RPM_BUILD_ROOT%{_libdir}/%{name}/xpidl $RPM_BUILD_ROOT%{_bindir}/xpidl
 mv $RPM_BUILD_ROOT%{_libdir}/%{name}/xpt_dump $RPM_BUILD_ROOT%{_bindir}/xpt_dump
 mv $RPM_BUILD_ROOT%{_libdir}/%{name}/xpt_link $RPM_BUILD_ROOT%{_bindir}/xpt_link
 
-for f in build/unix/*.pc ; do
-	sed -e 's/xulrunner-%{version}/xulrunner/' $f \
-		> $RPM_BUILD_ROOT%{_pkgconfigdir}/$(basename $f)
-done
+%{__make} -C build/unix install \
+	DESTDIR=$RPM_BUILD_ROOT
 
-sed -e 's,%{_lib}/xulrunner-%{version},%{_lib},g;s/xulrunner-%{version}/xulrunner/g' build/unix/xulrunner-gtkmozembed.pc \
-		> $RPM_BUILD_ROOT%{_pkgconfigdir}/xulrunner-gtkmozembed.pc
+# we use system pkgs
+rm $RPM_BUILD_ROOT%{_pkgconfigdir}/xulrunner-{nspr,nss}.pc
 
-# add includir/dom to Cflags, for openvrml.spec, perhaps others
-sed -i -e '/Cflags:/{/{includedir}\/dom/!s,$, -I${includedir}/dom,}' $RPM_BUILD_ROOT%{_pkgconfigdir}/xulrunner-plugin.pc
-
-rm $RPM_BUILD_ROOT%{_pkgconfigdir}/xulrunner-nss.pc $RPM_BUILD_ROOT%{_pkgconfigdir}/xulrunner-nspr.pc
-
-# rename to without -bin extension for killall xulrunner to work
-mv $RPM_BUILD_ROOT%{_libdir}/%{name}/xulrunner{-bin,}
-cat << 'EOF' > $RPM_BUILD_ROOT%{_bindir}/xulrunner
-#!/bin/sh
-export LD_LIBRARY_PATH=%{_libdir}/%{name}${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
-
-exec %{_libdir}/%{name}/xulrunner "$@"
-EOF
-
-cat << 'EOF' > $RPM_BUILD_ROOT%{_bindir}/xpcshell
-#!/bin/sh
-export LD_LIBRARY_PATH=%{_libdir}/%{name}${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
-
-exec %{_libdir}/%{name}/xpcshell "$@"
-EOF
+# rpath is used, can move to bindir
+rm -f $RPM_BUILD_ROOT%{_libdir}/%{name}/xulrunner
+mv $RPM_BUILD_ROOT{%{_libdir}/%{name}/xulrunner-bin,%{_bindir}/xulrunner}
+mv $RPM_BUILD_ROOT{%{_libdir}/%{name}/xpcshell,%{_bindir}}
 
 cat << 'EOF' > $RPM_BUILD_ROOT%{_sbindir}/%{name}-chrome+xpcom-generate
 #!/bin/sh
@@ -251,45 +276,32 @@ fi
 %dir %{_libdir}/%{name}/chrome
 %dir %{_libdir}/%{name}/components
 %dir %{_libdir}/%{name}/defaults
-%dir %{_libdir}/%{name}/dictionaries
 %dir %{_libdir}/%{name}/greprefs
 %dir %{_libdir}/%{name}/res
 %dir %{_datadir}/%{name}
 
-%attr(755,root,root) %{_libdir}/%{name}/xulrunner
-%attr(755,root,root) %{_libdir}/%{name}/xpcshell
-%attr(755,root,root) %{_libdir}/%{name}/xulrunner-stub
-%attr(755,root,root) %{_libdir}/%{name}/reg*
+%attr(755,root,root) %{_libdir}/%{name}/regxpcom
 
-%attr(755,root,root) %{_libdir}/%{name}/components/libauth*.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libauth.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libautoconfig.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libcookie.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libfileview.so
 %{?with_gnome:%attr(755,root,root) %{_libdir}/%{name}/components/libimgicon.so}
 %{?with_gnome:%attr(755,root,root) %{_libdir}/%{name}/components/libnkgnomevfs.so}
-%attr(755,root,root) %{_libdir}/%{name}/components/libmoz*.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libmyspell.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libnkdatetime.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libnkfinger.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libp3p.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libmozgnome.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libmozldap.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libpermissions.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libpipboot.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libpipnss.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libpippki.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libschemavalidation.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libspellchecker.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libsql.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libsroaming.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libsystem-pref.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libtransformiix.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libtypeaheadfind.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libuniversalchardet.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libwallet.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libwalletviewers.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libwebsrvcs.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libx*.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libxmlextras.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libxulutil.so
 
-%{_libdir}/%{name}/components/access*.xpt
+%{_libdir}/%{name}/components/accessibility*.xpt
 %{_libdir}/%{name}/components/alerts.xpt
 %{_libdir}/%{name}/components/appshell.xpt
 %{_libdir}/%{name}/components/appstartup.xpt
@@ -301,20 +313,20 @@ fi
 %{_libdir}/%{name}/components/commandhandler.xpt
 %{_libdir}/%{name}/components/commandlines.xpt
 %{_libdir}/%{name}/components/composer.xpt
-%{_libdir}/%{name}/components/content*.xpt
+%{_libdir}/%{name}/components/content_*.xpt
 %{_libdir}/%{name}/components/cookie.xpt
 %{_libdir}/%{name}/components/directory.xpt
 %{_libdir}/%{name}/components/docshell.xpt
-%{_libdir}/%{name}/components/downloads.xpt
 %{_libdir}/%{name}/components/dom*.xpt
+%{_libdir}/%{name}/components/downloads.xpt
 %{_libdir}/%{name}/components/editor.xpt
 %{_libdir}/%{name}/components/embed_base.xpt
 %{_libdir}/%{name}/components/extensions.xpt
 %{_libdir}/%{name}/components/exthandler.xpt
 %{_libdir}/%{name}/components/fastfind.xpt
 %{_libdir}/%{name}/components/feeds.xpt
-%{_libdir}/%{name}/components/find.xpt
 %{_libdir}/%{name}/components/filepicker.xpt
+%{_libdir}/%{name}/components/find.xpt
 %{_libdir}/%{name}/components/gfx*.xpt
 %{_libdir}/%{name}/components/history.xpt
 %{_libdir}/%{name}/components/htmlparser.xpt
@@ -331,7 +343,6 @@ fi
 %{_libdir}/%{name}/components/moz*.xpt
 %{_libdir}/%{name}/components/necko*.xpt
 %{_libdir}/%{name}/components/oji.xpt
-%{_libdir}/%{name}/components/p3p.xpt
 %{_libdir}/%{name}/components/passwordmgr.xpt
 %{_libdir}/%{name}/components/pipboot.xpt
 %{_libdir}/%{name}/components/pipnss.xpt
@@ -345,23 +356,17 @@ fi
 %{_libdir}/%{name}/components/rdf.xpt
 %{_libdir}/%{name}/components/satchel.xpt
 %{_libdir}/%{name}/components/saxparser.xpt
-%{_libdir}/%{name}/components/schemavalidation.xpt
 %{_libdir}/%{name}/components/shistory.xpt
-%{_libdir}/%{name}/components/signonviewer.xpt
-%{_libdir}/%{name}/components/spellchecker.xpt
-%{_libdir}/%{name}/components/sql.xpt
 %{_libdir}/%{name}/components/storage.xpt
 %{_libdir}/%{name}/components/toolkitprofile.xpt
 %{_libdir}/%{name}/components/toolkitremote.xpt
 %{_libdir}/%{name}/components/txmgr.xpt
 %{_libdir}/%{name}/components/txtsvc.xpt
-%{_libdir}/%{name}/components/typeaheadfind.xpt
 %{_libdir}/%{name}/components/uconv.xpt
 %{_libdir}/%{name}/components/unicharutil.xpt
 %{_libdir}/%{name}/components/update.xpt
 %{_libdir}/%{name}/components/uriloader.xpt
 %{_libdir}/%{name}/components/urlformatter.xpt
-%{_libdir}/%{name}/components/wallet*.xpt
 %{_libdir}/%{name}/components/webBrowser_core.xpt
 %{_libdir}/%{name}/components/webbrowserpersist.xpt
 %{_libdir}/%{name}/components/webshell_idls.xpt
@@ -384,46 +389,32 @@ fi
 %{_libdir}/%{name}/components/nsProgressDialog.js
 %{_libdir}/%{name}/components/nsProxyAutoConfig.js
 %{_libdir}/%{name}/components/nsResetPref.js
-%{_libdir}/%{name}/components/nsSchemaValidatorRegexp.js
 %{_libdir}/%{name}/components/nsUpdateService.js
 %{_libdir}/%{name}/components/nsURLFormatter.js
 %{_libdir}/%{name}/components/nsXmlRpcClient.js
 %{_libdir}/%{name}/components/nsXULAppInstall.js
 
-# not *.dat, so check-files can catch any new files
+# do not use *.dat here, so check-files can catch any new files
 # (and they won't be just silently placed empty in rpm)
 %ghost %{_libdir}/%{name}/components/compreg.dat
 %ghost %{_libdir}/%{name}/components/xpti.dat
 
 %dir %{_datadir}/%{name}/chrome
-%{_datadir}/%{name}/chrome/US.jar
 %{_datadir}/%{name}/chrome/classic.jar
 %{_datadir}/%{name}/chrome/classic.manifest
 %{_datadir}/%{name}/chrome/comm.jar
 %{_datadir}/%{name}/chrome/comm.manifest
-%{_datadir}/%{name}/chrome/content-packs.jar
-%{_datadir}/%{name}/chrome/cview.jar
 %{_datadir}/%{name}/chrome/en-US.jar
 %{_datadir}/%{name}/chrome/en-US.manifest
-%{_datadir}/%{name}/chrome/help.jar
-%{_datadir}/%{name}/chrome/modern.jar
 %{_datadir}/%{name}/chrome/pippki.jar
 %{_datadir}/%{name}/chrome/pippki.manifest
-%{_datadir}/%{name}/chrome/reporter.jar
-%{_datadir}/%{name}/chrome/reporter.manifest
-%{_datadir}/%{name}/chrome/sql.jar
-%{_datadir}/%{name}/chrome/sroaming.jar
-%{_datadir}/%{name}/chrome/tasks.jar
 %{_datadir}/%{name}/chrome/toolkit.jar
 %{_datadir}/%{name}/chrome/toolkit.manifest
 
-# not generated automatically ?
 %{_datadir}/%{name}/chrome/chromelist.txt
-
-%ghost %{_datadir}/%{name}/chrome/installed-chrome.txt
+#%ghost %{_datadir}/%{name}/chrome/installed-chrome.txt
 
 %{_datadir}/%{name}/defaults
-%{_datadir}/%{name}/dictionaries
 %{_datadir}/%{name}/greprefs
 %{_datadir}/%{name}/res
 
@@ -440,10 +431,11 @@ fi
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/reg*
+%attr(755,root,root) %{_bindir}/regxpcom
 %attr(755,root,root) %{_bindir}/xpcshell
 %attr(755,root,root) %{_bindir}/xpidl
 %attr(755,root,root) %{_bindir}/xpt_dump
 %attr(755,root,root) %{_bindir}/xpt_link
+%attr(755,root,root) %{_libdir}/%{name}/xulrunner-stub
 %{_includedir}/%{name}
 %{_pkgconfigdir}/*
