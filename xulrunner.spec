@@ -115,40 +115,82 @@ cp -f %{_datadir}/automake/config.* build/autoconf
 cp -f %{_datadir}/automake/config.* nsprpub/build/autoconf
 cp -f %{_datadir}/automake/config.* directory/c-sdk/config/autoconf
 
-export ac_cv_visibility_pragma=no
-%configure2_13 \
-	%{!?debug:--disable-debug} \
-	%{!?with_gnome:--disable-gnomeui} \
-	%{!?with_gnome:--disable-gnomevfs} \
-	--disable-javaxpcom \
-	--disable-mailnews \
-	--disable-pedantic \
-	--disable-tests \
-	--disable-xterm-updates \
-	--enable-application=xulrunner \
-	--enable-crypto \
-	--enable-default-toolkit=gtk2 \
-	--enable-extensions \
-	--enable-ldap \
-	--enable-mathml \
-	--enable-optimize="%{rpmcflags}" \
-	--enable-postscript \
-	--disable-strip \
-	--disable-strip-libs \
-	--enable-xft \
-	--enable-xinerama \
-	--enable-xprint \
-	--with-default-mozilla-five-home=%{_libdir}/%{name} \
-	--with-pthreads \
-	--with-system-bz2 \
-	--with-system-jpeg \
-	--with-system-nspr \
-	--with-system-nss \
-	--with-system-png \
-	--with-system-zlib \
-	--with-x
+%{__autoconf}
 
-%{__make}
+cat << 'EOF' > .mozconfig
+. $topsrcdir/xulrunner/config/mozconfig
+
+# Options for 'configure' (same as command-line options).
+ac_add_options --prefix=%{_prefix}
+ac_add_options --exec-prefix=%{_exec_prefix}
+ac_add_options --bindir=%{_bindir}
+ac_add_options --sbindir=%{_sbindir}
+ac_add_options --sysconfdir=%{_sysconfdir}
+ac_add_options --datadir=%{_datadir}
+ac_add_options --includedir=%{_includedir}
+ac_add_options --libdir=%{_libdir}
+ac_add_options --libexecdir=%{_libexecdir}
+ac_add_options --localstatedir=%{_localstatedir}
+ac_add_options --sharedstatedir=%{_sharedstatedir}
+ac_add_options --mandir=%{_mandir}
+ac_add_options --infodir=%{_infodir}
+%if %{?debug:1}0
+ac_add_options --disable-optimize
+ac_add_options --enable-debug
+ac_add_options --enable-debug-modules
+ac_add_options --enable-debugger-info-modules
+ac_add_options --enable-crash-on-assert
+%else
+ac_add_options --disable-debug
+ac_add_options --disable-logging
+ac_add_options --enable-optimize="%{rpmcflags}"
+%endif
+%if %{with tests}
+ac_add_options --enable-tests
+%else
+ac_add_options --disable-tests
+%endif
+%if %{with gnome}
+ac_add_options --enable-gnomevfs
+ac_add_options --enable-gnomeui
+%else
+ac_add_options --disable-gnomevfs
+ac_add_options --disable-gnomeui
+%endif
+ac_add_options --disable-freetype2
+ac_add_options --disable-installer
+ac_add_options --disable-javaxpcom
+ac_add_options --disable-updater
+ac_add_options --enable-default-toolkit=gtk2
+ac_add_options --enable-system-cairo
+ac_add_options --enable-xft
+ac_add_options --with-distribution-id=org.pld-linux
+ac_add_options --with-system-bz2
+ac_add_options --with-system-jpeg
+ac_add_options --with-system-nspr
+ac_add_options --with-system-nss
+ac_add_options --with-system-png
+ac_add_options --with-system-zlib
+ac_add_options --with-default-mozilla-five-home=%{_libdir}/%{name}
+
+ac_add_options --disable-mailnews
+ac_add_options --disable-pedantic
+ac_add_options --disable-xterm-updates
+ac_add_options --enable-crypto
+ac_add_options --enable-extensions
+ac_add_options --enable-ldap
+ac_add_options --enable-mathml
+ac_add_options --enable-postscript
+ac_add_options --enable-xinerama
+ac_add_options --enable-xprint
+ac_add_options --with-pthreads
+ac_add_options --with-x
+ac_cv_visibility_pragma=no
+EOF
+
+%{__make} -j1 -f client.mk build \
+	CC="%{__cc}" \
+	CXX="%{__cxx}"
 
 %install
 rm -rf $RPM_BUILD_ROOT
