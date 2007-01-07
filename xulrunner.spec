@@ -3,7 +3,7 @@
 %bcond_without	gnome	# disable all GNOME components (gnomevfs, gnome, gnomeui)
 #
 %define		_snap	20070102
-%define		_rel	2.7
+%define		_rel	2.9
 #
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl):	XULRunner - ¶rodowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
@@ -161,6 +161,7 @@ ac_add_options --disable-freetype2
 ac_add_options --disable-installer
 ac_add_options --disable-javaxpcom
 ac_add_options --disable-updater
+ac_add_options --enable-xinerama
 ac_add_options --enable-default-toolkit=gtk2
 ac_add_options --enable-system-cairo
 ac_add_options --enable-xft
@@ -173,15 +174,10 @@ ac_add_options --with-system-png
 ac_add_options --with-system-zlib
 ac_add_options --with-default-mozilla-five-home=%{_libdir}/%{name}
 
-ac_add_options --disable-mailnews
 ac_add_options --disable-pedantic
 ac_add_options --disable-xterm-updates
-ac_add_options --enable-crypto
 ac_add_options --enable-extensions
 ac_add_options --enable-ldap
-ac_add_options --enable-mathml
-ac_add_options --enable-postscript
-ac_add_options --enable-xinerama
 ac_add_options --enable-xprint
 ac_add_options --with-pthreads
 ac_add_options --with-x
