@@ -3,7 +3,7 @@
 %bcond_without	gnome	# disable all GNOME components (gnomevfs, gnome, gnomeui)
 #
 %define		_snap	20070102
-%define		_rel	3
+%define		_rel	3.1
 #
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl):	XULRunner - ¶rodowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
@@ -86,7 +86,7 @@ Biblioteki wspó³dzielone XULRunnera.
 Summary:	Headers for developing programs that will use XULRunner
 Summary(pl):	Pliki nag³ówkowe do tworzenia programów u¿ywaj±cych XULRunnera
 Group:		X11/Development/Libraries
-Requires:	%{name} = %{epoch}:%{version}-%{release}
+Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 Requires:	nspr-devel >= 1:4.6.3
 Requires:	nss-devel >= 1:3.11.3
 Obsoletes:	mozilla-devel
@@ -176,7 +176,7 @@ ac_add_options --with-default-mozilla-five-home=%{_libdir}/%{name}
 
 ac_add_options --disable-pedantic
 ac_add_options --disable-xterm-updates
-ac_add_options --enable-extensions
+ac_add_options --enable-extensions="default,cookie,permissions"
 ac_add_options --enable-ldap
 ac_add_options --enable-xprint
 ac_add_options --with-pthreads
@@ -205,12 +205,10 @@ install -d \
 # move arch independant ones to datadir
 mv $RPM_BUILD_ROOT%{_libdir}/%{name}/chrome $RPM_BUILD_ROOT%{_datadir}/%{name}/chrome
 mv $RPM_BUILD_ROOT%{_libdir}/%{name}/defaults $RPM_BUILD_ROOT%{_datadir}/%{name}/defaults
-mv $RPM_BUILD_ROOT%{_libdir}/%{name}/dictionaries $RPM_BUILD_ROOT%{_datadir}/%{name}/dictionaries
 mv $RPM_BUILD_ROOT%{_libdir}/%{name}/greprefs $RPM_BUILD_ROOT%{_datadir}/%{name}/greprefs
 mv $RPM_BUILD_ROOT%{_libdir}/%{name}/res $RPM_BUILD_ROOT%{_datadir}/%{name}/res
 ln -s ../../share/%{name}/chrome $RPM_BUILD_ROOT%{_libdir}/%{name}/chrome
 ln -s ../../share/%{name}/defaults $RPM_BUILD_ROOT%{_libdir}/%{name}/defaults
-ln -s ../../share/%{name}/dictionaries $RPM_BUILD_ROOT%{_libdir}/%{name}/dictionaries
 ln -s ../../share/%{name}/greprefs $RPM_BUILD_ROOT%{_libdir}/%{name}/greprefs
 ln -s ../../share/%{name}/res $RPM_BUILD_ROOT%{_libdir}/%{name}/res
 
@@ -275,42 +273,32 @@ fi
 %dir %{_libdir}/%{name}/chrome
 %dir %{_libdir}/%{name}/components
 %dir %{_libdir}/%{name}/defaults
-%dir %{_libdir}/%{name}/dictionaries
 %dir %{_libdir}/%{name}/greprefs
 %dir %{_libdir}/%{name}/res
 %dir %{_datadir}/%{name}
 
 %attr(755,root,root) %{_libdir}/%{name}/regxpcom
 
-%attr(755,root,root) %{_libdir}/%{name}/components/libauth*.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libauth.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libautoconfig.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libcookie.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libfileview.so
 %{?with_gnome:%attr(755,root,root) %{_libdir}/%{name}/components/libimgicon.so}
 %{?with_gnome:%attr(755,root,root) %{_libdir}/%{name}/components/libnkgnomevfs.so}
-%attr(755,root,root) %{_libdir}/%{name}/components/libmoz*.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libmyspell.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libnkdatetime.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libnkfinger.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libp3p.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libmozgnome.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libmozldap.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libpermissions.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libpipboot.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libpipnss.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libpippki.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libschemavalidation.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libspellchecker.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libsql.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libsroaming.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libsystem-pref.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libtransformiix.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libtypeaheadfind.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libuniversalchardet.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libwallet.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libwalletviewers.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libwebsrvcs.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libx*.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libxmlextras.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libxulutil.so
 
-%{_libdir}/%{name}/components/access*.xpt
+%{_libdir}/%{name}/components/accessibility*.xpt
 %{_libdir}/%{name}/components/alerts.xpt
 %{_libdir}/%{name}/components/appshell.xpt
 %{_libdir}/%{name}/components/appstartup.xpt
@@ -322,20 +310,20 @@ fi
 %{_libdir}/%{name}/components/commandhandler.xpt
 %{_libdir}/%{name}/components/commandlines.xpt
 %{_libdir}/%{name}/components/composer.xpt
-%{_libdir}/%{name}/components/content*.xpt
+%{_libdir}/%{name}/components/content_*.xpt
 %{_libdir}/%{name}/components/cookie.xpt
 %{_libdir}/%{name}/components/directory.xpt
 %{_libdir}/%{name}/components/docshell.xpt
-%{_libdir}/%{name}/components/downloads.xpt
 %{_libdir}/%{name}/components/dom*.xpt
+%{_libdir}/%{name}/components/downloads.xpt
 %{_libdir}/%{name}/components/editor.xpt
 %{_libdir}/%{name}/components/embed_base.xpt
 %{_libdir}/%{name}/components/extensions.xpt
 %{_libdir}/%{name}/components/exthandler.xpt
 %{_libdir}/%{name}/components/fastfind.xpt
 %{_libdir}/%{name}/components/feeds.xpt
-%{_libdir}/%{name}/components/find.xpt
 %{_libdir}/%{name}/components/filepicker.xpt
+%{_libdir}/%{name}/components/find.xpt
 %{_libdir}/%{name}/components/gfx*.xpt
 %{_libdir}/%{name}/components/history.xpt
 %{_libdir}/%{name}/components/htmlparser.xpt
@@ -352,7 +340,6 @@ fi
 %{_libdir}/%{name}/components/moz*.xpt
 %{_libdir}/%{name}/components/necko*.xpt
 %{_libdir}/%{name}/components/oji.xpt
-%{_libdir}/%{name}/components/p3p.xpt
 %{_libdir}/%{name}/components/passwordmgr.xpt
 %{_libdir}/%{name}/components/pipboot.xpt
 %{_libdir}/%{name}/components/pipnss.xpt
@@ -366,23 +353,17 @@ fi
 %{_libdir}/%{name}/components/rdf.xpt
 %{_libdir}/%{name}/components/satchel.xpt
 %{_libdir}/%{name}/components/saxparser.xpt
-%{_libdir}/%{name}/components/schemavalidation.xpt
 %{_libdir}/%{name}/components/shistory.xpt
-%{_libdir}/%{name}/components/signonviewer.xpt
-%{_libdir}/%{name}/components/spellchecker.xpt
-%{_libdir}/%{name}/components/sql.xpt
 %{_libdir}/%{name}/components/storage.xpt
 %{_libdir}/%{name}/components/toolkitprofile.xpt
 %{_libdir}/%{name}/components/toolkitremote.xpt
 %{_libdir}/%{name}/components/txmgr.xpt
 %{_libdir}/%{name}/components/txtsvc.xpt
-%{_libdir}/%{name}/components/typeaheadfind.xpt
 %{_libdir}/%{name}/components/uconv.xpt
 %{_libdir}/%{name}/components/unicharutil.xpt
 %{_libdir}/%{name}/components/update.xpt
 %{_libdir}/%{name}/components/uriloader.xpt
 %{_libdir}/%{name}/components/urlformatter.xpt
-%{_libdir}/%{name}/components/wallet*.xpt
 %{_libdir}/%{name}/components/webBrowser_core.xpt
 %{_libdir}/%{name}/components/webbrowserpersist.xpt
 %{_libdir}/%{name}/components/webshell_idls.xpt
@@ -405,7 +386,6 @@ fi
 %{_libdir}/%{name}/components/nsProgressDialog.js
 %{_libdir}/%{name}/components/nsProxyAutoConfig.js
 %{_libdir}/%{name}/components/nsResetPref.js
-%{_libdir}/%{name}/components/nsSchemaValidatorRegexp.js
 %{_libdir}/%{name}/components/nsUpdateService.js
 %{_libdir}/%{name}/components/nsURLFormatter.js
 %{_libdir}/%{name}/components/nsXmlRpcClient.js
@@ -417,34 +397,21 @@ fi
 %ghost %{_libdir}/%{name}/components/xpti.dat
 
 %dir %{_datadir}/%{name}/chrome
-%{_datadir}/%{name}/chrome/US.jar
 %{_datadir}/%{name}/chrome/classic.jar
 %{_datadir}/%{name}/chrome/classic.manifest
 %{_datadir}/%{name}/chrome/comm.jar
 %{_datadir}/%{name}/chrome/comm.manifest
-%{_datadir}/%{name}/chrome/content-packs.jar
-%{_datadir}/%{name}/chrome/cview.jar
 %{_datadir}/%{name}/chrome/en-US.jar
 %{_datadir}/%{name}/chrome/en-US.manifest
-%{_datadir}/%{name}/chrome/help.jar
-%{_datadir}/%{name}/chrome/modern.jar
 %{_datadir}/%{name}/chrome/pippki.jar
 %{_datadir}/%{name}/chrome/pippki.manifest
-%{_datadir}/%{name}/chrome/reporter.jar
-%{_datadir}/%{name}/chrome/reporter.manifest
-%{_datadir}/%{name}/chrome/sql.jar
-%{_datadir}/%{name}/chrome/sroaming.jar
-%{_datadir}/%{name}/chrome/tasks.jar
 %{_datadir}/%{name}/chrome/toolkit.jar
 %{_datadir}/%{name}/chrome/toolkit.manifest
 
-# not generated automatically ?
-#%{_datadir}/%{name}/chrome/chromelist.txt
-
-%ghost %{_datadir}/%{name}/chrome/installed-chrome.txt
+%{_datadir}/%{name}/chrome/chromelist.txt
+#%ghost %{_datadir}/%{name}/chrome/installed-chrome.txt
 
 %{_datadir}/%{name}/defaults
-%{_datadir}/%{name}/dictionaries
 %{_datadir}/%{name}/greprefs
 %{_datadir}/%{name}/res
 
