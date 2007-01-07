@@ -3,7 +3,7 @@
 %bcond_without	gnome	# disable all GNOME components (gnomevfs, gnome, gnomeui)
 #
 %define		_snap	20070102
-%define		_rel	2
+%define		_rel	3
 #
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl):	XULRunner - ¶rodowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
@@ -16,10 +16,13 @@ Source0:	%{name}-%{version}-%{_snap}-source.tar.bz2
 # Source0-md5:	92b4936a5b8bd24edac8feaa26d13567
 Patch0:		%{name}-ldap-with-nss.patch
 Patch1:		%{name}-install.patch
+Patch2:		%{name}-pc.patch
+Patch3:		%{name}-rpath.patch
 URL:		http://developer.mozilla.org/en/docs/XULRunner
 BuildRequires:	/bin/csh
 %{?with_gnome:BuildRequires:	GConf2-devel >= 1.2.1}
 BuildRequires:	automake
+BuildRequires:	bzip2-devel
 BuildRequires:	cairo-devel >= 1.0.0
 BuildRequires:	freetype-devel >= 1:2.1.8
 %{?with_gnome:BuildRequires:	gnome-vfs2-devel >= 2.0}
@@ -37,11 +40,8 @@ BuildRequires:	pango-devel >= 1:1.6.0
 BuildRequires:	perl-modules >= 5.004
 BuildRequires:	pkgconfig
 BuildRequires:	sed >= 4.0
-BuildRequires:	xorg-lib-libXext-devel
-BuildRequires:	xorg-lib-libXft-devel >= 2.1
-BuildRequires:	xorg-lib-libXinerama-devel
-BuildRequires:	xorg-lib-libXp-devel
-BuildRequires:	xorg-lib-libXt-devel
+BuildRequires:	xcursor-devel
+BuildRequires:	xft-devel >= 2.1-2
 BuildRequires:	zip
 BuildRequires:	zlib-devel >= 1.2.3
 Requires(post):	mktemp >= 1.5-18
@@ -103,8 +103,12 @@ Pakiet programistyczny XULRunnera.
 %setup -qc
 cd mozilla
 
+rm -rf mozilla/modules/libbz2
+
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
+%patch3 -p1
 
 %build
 cd mozilla
@@ -113,38 +117,76 @@ cp -f %{_datadir}/automake/config.* build/autoconf
 cp -f %{_datadir}/automake/config.* nsprpub/build/autoconf
 cp -f %{_datadir}/automake/config.* directory/c-sdk/config/autoconf
 
-export ac_cv_visibility_pragma=no
-%configure2_13 \
-	%{!?debug:--disable-debug} \
-	%{!?with_gnome:--disable-gnomeui} \
-	%{!?with_gnome:--disable-gnomevfs} \
-	--disable-javaxpcom \
-	--disable-mailnews \
-	--disable-pedantic \
-	--disable-tests \
-	--disable-xterm-updates \
-	--enable-application=xulrunner \
-	--enable-crypto \
-	--enable-default-toolkit=gtk2 \
-	--enable-extensions \
-	--enable-ldap \
-	--enable-mathml \
-	--enable-optimize="%{rpmcflags}" \
-	--enable-postscript \
-	%{!?debug:--enable-strip} \
-	--enable-xft \
-	--enable-xinerama \
-	--enable-xprint \
-	--with-default-mozilla-five-home=%{_libdir}/%{name} \
-	--with-pthreads \
-	--with-system-jpeg \
-	--with-system-nspr \
-	--with-system-nss \
-	--with-system-png \
-	--with-system-zlib \
-	--with-x
+cat << 'EOF' > .mozconfig
+. $topsrcdir/xulrunner/config/mozconfig
 
-%{__make}
+# Options for 'configure' (same as command-line options).
+ac_add_options --prefix=%{_prefix}
+ac_add_options --exec-prefix=%{_exec_prefix}
+ac_add_options --bindir=%{_bindir}
+ac_add_options --sbindir=%{_sbindir}
+ac_add_options --sysconfdir=%{_sysconfdir}
+ac_add_options --datadir=%{_datadir}
+ac_add_options --includedir=%{_includedir}
+ac_add_options --libdir=%{_libdir}
+ac_add_options --libexecdir=%{_libexecdir}
+ac_add_options --localstatedir=%{_localstatedir}
+ac_add_options --sharedstatedir=%{_sharedstatedir}
+ac_add_options --mandir=%{_mandir}
+ac_add_options --infodir=%{_infodir}
+%if %{?debug:1}0
+ac_add_options --disable-optimize
+ac_add_options --enable-debug
+ac_add_options --enable-debug-modules
+ac_add_options --enable-debugger-info-modules
+ac_add_options --enable-crash-on-assert
+%else
+ac_add_options --disable-debug
+ac_add_options --disable-logging
+ac_add_options --enable-optimize="%{rpmcflags}"
+%endif
+%if %{with tests}
+ac_add_options --enable-tests
+%else
+ac_add_options --disable-tests
+%endif
+%if %{with gnome}
+ac_add_options --enable-gnomevfs
+ac_add_options --enable-gnomeui
+%else
+ac_add_options --disable-gnomevfs
+ac_add_options --disable-gnomeui
+%endif
+ac_add_options --disable-freetype2
+ac_add_options --disable-installer
+ac_add_options --disable-javaxpcom
+ac_add_options --disable-updater
+ac_add_options --enable-xinerama
+ac_add_options --enable-default-toolkit=gtk2
+ac_add_options --enable-system-cairo
+ac_add_options --enable-xft
+ac_add_options --with-distribution-id=org.pld-linux
+ac_add_options --with-system-bz2
+ac_add_options --with-system-jpeg
+ac_add_options --with-system-nspr
+ac_add_options --with-system-nss
+ac_add_options --with-system-png
+ac_add_options --with-system-zlib
+ac_add_options --with-default-mozilla-five-home=%{_libdir}/%{name}
+
+ac_add_options --disable-pedantic
+ac_add_options --disable-xterm-updates
+ac_add_options --enable-extensions
+ac_add_options --enable-ldap
+ac_add_options --enable-xprint
+ac_add_options --with-pthreads
+ac_add_options --with-x
+ac_cv_visibility_pragma=no
+EOF
+
+%{__make} -j1 -f client.mk build \
+	CC="%{__cc}" \
+	CXX="%{__cxx}"
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -185,34 +227,16 @@ mv $RPM_BUILD_ROOT%{_libdir}/%{name}/xpidl $RPM_BUILD_ROOT%{_bindir}/xpidl
 mv $RPM_BUILD_ROOT%{_libdir}/%{name}/xpt_dump $RPM_BUILD_ROOT%{_bindir}/xpt_dump
 mv $RPM_BUILD_ROOT%{_libdir}/%{name}/xpt_link $RPM_BUILD_ROOT%{_bindir}/xpt_link
 
-for f in build/unix/*.pc ; do
-	sed -e 's/xulrunner-%{version}/xulrunner/' $f \
-		> $RPM_BUILD_ROOT%{_pkgconfigdir}/$(basename $f)
-done
+%{__make} -C build/unix install \
+	DESTDIR=$RPM_BUILD_ROOT
 
-sed -e 's,%{_lib}/xulrunner-%{version},%{_lib},g;s/xulrunner-%{version}/xulrunner/g' build/unix/xulrunner-gtkmozembed.pc \
-		> $RPM_BUILD_ROOT%{_pkgconfigdir}/xulrunner-gtkmozembed.pc
+# we use system pkgs
+rm $RPM_BUILD_ROOT%{_pkgconfigdir}/xulrunner-{nspr,nss}.pc
 
-# add includir/dom to Cflags, for openvrml.spec, perhaps others
-sed -i -e '/Cflags:/{/{includedir}\/dom/!s,$, -I${includedir}/dom,}' $RPM_BUILD_ROOT%{_pkgconfigdir}/xulrunner-plugin.pc
-
-rm $RPM_BUILD_ROOT%{_pkgconfigdir}/xulrunner-nss.pc $RPM_BUILD_ROOT%{_pkgconfigdir}/xulrunner-nspr.pc
-
-# rename to without -bin extension for killall xulrunner to work
-mv $RPM_BUILD_ROOT%{_libdir}/%{name}/xulrunner{-bin,}
-cat << 'EOF' > $RPM_BUILD_ROOT%{_bindir}/xulrunner
-#!/bin/sh
-export LD_LIBRARY_PATH=%{_libdir}/%{name}${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
-
-exec %{_libdir}/%{name}/xulrunner "$@"
-EOF
-
-cat << 'EOF' > $RPM_BUILD_ROOT%{_bindir}/xpcshell
-#!/bin/sh
-export LD_LIBRARY_PATH=%{_libdir}/%{name}${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
-
-exec %{_libdir}/%{name}/xpcshell "$@"
-EOF
+# rpath is used, can move to bindir
+rm -f $RPM_BUILD_ROOT%{_libdir}/%{name}/xulrunner
+mv $RPM_BUILD_ROOT{%{_libdir}/%{name}/xulrunner-bin,%{_bindir}/xulrunner}
+mv $RPM_BUILD_ROOT{%{_libdir}/%{name}/xpcshell,%{_bindir}}
 
 cat << 'EOF' > $RPM_BUILD_ROOT%{_sbindir}/%{name}-chrome+xpcom-generate
 #!/bin/sh
@@ -256,10 +280,7 @@ fi
 %dir %{_libdir}/%{name}/res
 %dir %{_datadir}/%{name}
 
-%attr(755,root,root) %{_libdir}/%{name}/xulrunner
-%attr(755,root,root) %{_libdir}/%{name}/xpcshell
-%attr(755,root,root) %{_libdir}/%{name}/xulrunner-stub
-%attr(755,root,root) %{_libdir}/%{name}/reg*
+%attr(755,root,root) %{_libdir}/%{name}/regxpcom
 
 %attr(755,root,root) %{_libdir}/%{name}/components/libauth*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libautoconfig.so
@@ -390,7 +411,7 @@ fi
 %{_libdir}/%{name}/components/nsXmlRpcClient.js
 %{_libdir}/%{name}/components/nsXULAppInstall.js
 
-# not *.dat, so check-files can catch any new files
+# do not use *.dat here, so check-files can catch any new files
 # (and they won't be just silently placed empty in rpm)
 %ghost %{_libdir}/%{name}/components/compreg.dat
 %ghost %{_libdir}/%{name}/components/xpti.dat
@@ -418,7 +439,7 @@ fi
 %{_datadir}/%{name}/chrome/toolkit.manifest
 
 # not generated automatically ?
-%{_datadir}/%{name}/chrome/chromelist.txt
+#%{_datadir}/%{name}/chrome/chromelist.txt
 
 %ghost %{_datadir}/%{name}/chrome/installed-chrome.txt
 
@@ -440,10 +461,11 @@ fi
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/reg*
+%attr(755,root,root) %{_bindir}/regxpcom
 %attr(755,root,root) %{_bindir}/xpcshell
 %attr(755,root,root) %{_bindir}/xpidl
 %attr(755,root,root) %{_bindir}/xpt_dump
 %attr(755,root,root) %{_bindir}/xpt_link
+%attr(755,root,root) %{_libdir}/%{name}/xulrunner-stub
 %{_includedir}/%{name}
 %{_pkgconfigdir}/*
