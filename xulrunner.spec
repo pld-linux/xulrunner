@@ -6,7 +6,7 @@
 %define		_rel	3.1
 #
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
-Summary(pl):	XULRunner - ¶rodowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
+Summary(pl.UTF-8):   XULRunner - Å›rodowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
 Version:	1.8.1.1
 Release:	1.%{_snap}.%{_rel}
@@ -66,28 +66,28 @@ these applications. XULRunner will also provide libxul, a solution
 which allows the embedding of Mozilla technologies in other projects
 and products.
 
-%description -l pl
-XULRunner to pakiet uruchomieniowy Mozilli, którego mo¿na u¿yæ do
+%description -l pl.UTF-8
+XULRunner to pakiet uruchomieniowy Mozilli, ktÃ³rego moÅ¼na uÅ¼yÄ‡ do
 uruchamiania aplikacji XUL+XPCOM, nawet takich jak Firefox czy
-Thunderbird. Udostêpni mechanizmy do instalowania, uaktualniania i
-odinstalowywania tych aplikacji. XULRunner bêdzie tak¿e dostarcza³
-libxul - rozwi±zanie umo¿liwiaj±ce osadzanie technologii Mozilli w
+Thunderbird. UdostÄ™pni mechanizmy do instalowania, uaktualniania i
+odinstalowywania tych aplikacji. XULRunner bÄ™dzie takÅ¼e dostarczaÅ‚
+libxul - rozwiÄ…zanie umoÅ¼liwiajÄ…ce osadzanie technologii Mozilli w
 innych projektach i produktach.
 
 %package libs
 Summary:	XULRunner shared libraries
-Summary(pl):	Biblioteki wspó³dzielone XULRunnera
+Summary(pl.UTF-8):   Biblioteki wspÃ³Å‚dzielone XULRunnera
 Group:		X11/Libraries
 
 %description libs
 XULRunner shared libraries.
 
-%description libs -l pl
-Biblioteki wspó³dzielone XULRunnera.
+%description libs -l pl.UTF-8
+Biblioteki wspÃ³Å‚dzielone XULRunnera.
 
 %package devel
 Summary:	Headers for developing programs that will use XULRunner
-Summary(pl):	Pliki nag³ówkowe do tworzenia programów u¿ywaj±cych XULRunnera
+Summary(pl.UTF-8):   Pliki nagÅ‚Ã³wkowe do tworzenia programÃ³w uÅ¼ywajÄ…cych XULRunnera
 Group:		X11/Development/Libraries
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 Requires:	nspr-devel >= 1:4.6.3
@@ -99,7 +99,7 @@ Obsoletes:	seamonkey-devel
 %description devel
 XULRunner development package.
 
-%description devel -l pl
+%description devel -l pl.UTF-8
 Pakiet programistyczny XULRunnera.
 
 %prep
