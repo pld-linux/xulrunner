@@ -6,7 +6,7 @@
 %define		_rel	3.1
 #
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
-Summary(pl.UTF-8):   XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
+Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
 Version:	1.8.1.1
 Release:	1.%{_snap}.%{_rel}
@@ -76,7 +76,7 @@ innych projektach i produktach.
 
 %package libs
 Summary:	XULRunner shared libraries
-Summary(pl.UTF-8):   Biblioteki współdzielone XULRunnera
+Summary(pl.UTF-8):	Biblioteki współdzielone XULRunnera
 Group:		X11/Libraries
 
 %description libs
@@ -87,7 +87,7 @@ Biblioteki współdzielone XULRunnera.
 
 %package devel
 Summary:	Headers for developing programs that will use XULRunner
-Summary(pl.UTF-8):   Pliki nagłówkowe do tworzenia programów używających XULRunnera
+Summary(pl.UTF-8):	Pliki nagłówkowe do tworzenia programów używających XULRunnera
 Group:		X11/Development/Libraries
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 Requires:	nspr-devel >= 1:4.6.3
