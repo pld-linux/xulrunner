@@ -145,6 +145,8 @@ ac_add_options --disable-debug
 ac_add_options --disable-logging
 ac_add_options --enable-optimize="%{rpmcflags}"
 %endif
+ac_add_options --disable-strip
+ac_add_options --disable-strip-libs
 %if %{with tests}
 ac_add_options --enable-tests
 %else
