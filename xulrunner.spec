@@ -3,7 +3,7 @@
 %bcond_without	gnome	# disable all GNOME components (gnomevfs, gnome, gnomeui)
 #
 %define		_snap	20070224
-%define		_rel	0.1
+%define		_rel	0.2
 #
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
@@ -18,6 +18,10 @@ Patch0:		%{name}-ldap-with-nss.patch
 Patch1:		%{name}-install.patch
 Patch2:		%{name}-pc.patch
 Patch3:		%{name}-rpath.patch
+# drop as soon as bug is fixed since it's so ugly hack
+# fixing symptoms only
+# https://bugzilla.mozilla.org/show_bug.cgi?id=362462
+Patch4:		mozilla-hack-gcc_4_2.patch
 URL:		http://developer.mozilla.org/en/docs/XULRunner
 BuildRequires:	/bin/csh
 %{?with_gnome:BuildRequires:	GConf2-devel >= 1.2.1}
@@ -112,6 +116,7 @@ rm -rf mozilla/modules/libbz2
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p2
 
 %build
 cd mozilla
