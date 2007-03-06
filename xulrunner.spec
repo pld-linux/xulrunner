@@ -62,6 +62,11 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 # mozilla, seamonkey and firefox provide their own versions
 %define		_noautoreqdep	libgtkembedmoz.so libldap50.so libmozjs.so libprldap50.so libssldap50.so libxpcom.so
 
+# we don't want these to satisfy xulrunner-devel
+%define		_noautoprov			libmozjs.so libxpcom.so libxul.so
+# and as we don't provide them, don't require either (we have strict deps for these)
+%define		_noautoreq			libmozjs.so libxpcom.so libxul.so
+
 %description
 XULRunner is a Mozilla runtime package that can be used to bootstrap
 XUL+XPCOM applications that are as rich as Firefox and Thunderbird. It
