@@ -2,18 +2,18 @@
 %bcond_with	tests	# enable tests (whatever they check)
 %bcond_without	gnome	# disable all GNOME components (gnomevfs, gnome, gnomeui)
 #
-%define		_snap	20070224
-%define		_rel	0.2
+%define		_snap	20070321
+%define		_rel	1
 #
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
-Version:	1.8.1.2
+Version:	1.8.1.3
 Release:	1.%{_snap}.%{_rel}
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
 Source0:	%{name}-%{version}-%{_snap}-source.tar.bz2
-# Source0-md5:	b1b53aac0a9b01354cf21825dc695b56
+# Source0-md5:	a77ac176262f578c348a4e451c102066
 Patch0:		%{name}-ldap-with-nss.patch
 Patch1:		%{name}-install.patch
 Patch2:		%{name}-pc.patch
