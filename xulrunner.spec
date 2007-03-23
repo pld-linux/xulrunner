@@ -53,6 +53,7 @@ BuildRequires:	zip
 BuildRequires:	zlib-devel >= 1.2.3
 Requires(post):	mktemp >= 1.5-18
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
+Requires:	browser-plugins >= 2.0
 Requires:	nspr >= 1:4.6.3
 Requires:	nss >= 1:3.11.3
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -243,6 +244,8 @@ mv $RPM_BUILD_ROOT%{_libdir}/%{name}/xpt_link $RPM_BUILD_ROOT%{_bindir}/xpt_link
 %{__make} -C build/unix install \
 	DESTDIR=$RPM_BUILD_ROOT
 
+%browser_plugins_add_browser %{name} -p %{_libdir}/%{name}/plugins
+
 # we use system pkgs
 rm $RPM_BUILD_ROOT%{_pkgconfigdir}/xulrunner-{nspr,nss}.pc
 
@@ -270,11 +273,16 @@ EOF
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post -p %{_sbindir}/%{name}-chrome+xpcom-generate
+%post 
+%{_sbindir}/%{name}-chrome+xpcom-generate
+%update_browser_plugins
 
 %postun
 if [ "$1" = "1" ]; then
 	%{_sbindir}/%{name}-chrome+xpcom-generate
+fi
+if [ "$1" = 0 ]; then
+	%update_browser_plugins
 fi
 
 %post	libs -p /sbin/ldconfig
@@ -289,10 +297,14 @@ fi
 %dir %{_libdir}/%{name}/components
 %dir %{_libdir}/%{name}/defaults
 %dir %{_libdir}/%{name}/greprefs
+%dir %{_libdir}/%{name}/plugins
 %dir %{_libdir}/%{name}/res
 %dir %{_datadir}/%{name}
 
 %attr(755,root,root) %{_libdir}/%{name}/regxpcom
+
+%{_browserpluginsconfdir}/browsers.d/%{name}.*
+%config(noreplace) %verify(not md5 mtime size) %{_browserpluginsconfdir}/blacklist.d/%{name}.*.blacklist
 
 %attr(755,root,root) %{_libdir}/%{name}/components/libauth.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libautoconfig.so
