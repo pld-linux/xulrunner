@@ -38,7 +38,7 @@ BuildRequires:	libIDL-devel >= 0.8.0
 BuildRequires:	libjpeg-devel >= 6b
 BuildRequires:	libpng-devel >= 1.2.7
 BuildRequires:	libstdc++-devel
-BuildRequires:	nspr-devel >= 1:4.6.3
+BuildRequires:	nspr-devel >= 1:4.6.4
 BuildRequires:	nss-devel >= 1:3.11.3-3
 BuildRequires:	pango-devel >= 1:1.6.0
 BuildRequires:	perl-modules >= 5.004
@@ -54,7 +54,7 @@ BuildRequires:	zlib-devel >= 1.2.3
 Requires(post):	mktemp >= 1.5-18
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 Requires:	browser-plugins >= 2.0
-Requires:	nspr >= 1:4.6.3
+Requires:	nspr >= 1:4.6.4
 Requires:	nss >= 1:3.11.3
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -100,7 +100,7 @@ Summary:	Headers for developing programs that will use XULRunner
 Summary(pl.UTF-8):	Pliki nagłówkowe do tworzenia programów używających XULRunnera
 Group:		X11/Development/Libraries
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
-Requires:	nspr-devel >= 1:4.6.3
+Requires:	nspr-devel >= 1:4.6.4
 Requires:	nss-devel >= 1:3.11.3
 Obsoletes:	mozilla-devel
 Obsoletes:	mozilla-firefox-devel
