@@ -33,4 +33,4 @@
  Version: %MOZILLA_VERSION%
  Requires: %NSPR_NAME% >= %NSPR_VERSION%
 -Cflags: -I${includedir}/java -I${includedir}/plugin
-+Cflags: -I${includedir}/java -I${includedir}/plugin -I${includedir}/dom
++Cflags: -I${includedir}/java -I${includedir}/plugin -I${includedir}/xpcom -I${includedir}/dom
