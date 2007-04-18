@@ -66,7 +66,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 # we don't want these to satisfy xulrunner-devel
 %define		_noautoprov			libmozjs.so libxpcom.so
 # and as we don't provide them, don't require either (we have strict deps for these)
-%define		_noautoreq			libmozjs.so libxpcom.so
+%define		_noautoreq			libmozjs.so libxpcom.so libxul.so
 
 %description
 XULRunner is a Mozilla runtime package that can be used to bootstrap
