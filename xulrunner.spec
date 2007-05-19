@@ -313,7 +313,7 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/components/libfileview.so
 %{?with_gnome:%attr(755,root,root) %{_libdir}/%{name}/components/libimgicon.so}
 %{?with_gnome:%attr(755,root,root) %{_libdir}/%{name}/components/libnkgnomevfs.so}
-%attr(755,root,root) %{_libdir}/%{name}/components/libmozgnome.so
+%{?with_gnome:%attr(755,root,root) %{_libdir}/%{name}/components/libmozgnome.so}
 %attr(755,root,root) %{_libdir}/%{name}/components/libmozldap.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libpermissions.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libpipboot.so
