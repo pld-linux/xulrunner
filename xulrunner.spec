@@ -4,7 +4,7 @@
 %bcond_without	gnome	# disable all GNOME components (gnomevfs, gnome, gnomeui)
 #
 %define		_snap	20070731
-%define		_rel	1
+%define		_rel	2
 #
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
@@ -185,7 +185,7 @@ ac_add_options --with-default-mozilla-five-home=%{_libdir}/%{name}
 
 ac_add_options --disable-pedantic
 ac_add_options --disable-xterm-updates
-ac_add_options --enable-extensions="default,cookie,permissions"
+ac_add_options --enable-extensions="default,cookie,permissions,spellcheck"
 ac_add_options --enable-ldap
 ac_add_options --enable-xprint
 ac_add_options --with-pthreads
@@ -307,10 +307,12 @@ fi
 %{?with_gnome:%attr(755,root,root) %{_libdir}/%{name}/components/libnkgnomevfs.so}
 %{?with_gnome:%attr(755,root,root) %{_libdir}/%{name}/components/libmozgnome.so}
 %attr(755,root,root) %{_libdir}/%{name}/components/libmozldap.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libmyspell.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libpermissions.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libpipboot.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libpipnss.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libpippki.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libspellchecker.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libsystem-pref.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libtransformiix.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libuniversalchardet.so
@@ -374,6 +376,7 @@ fi
 %{_libdir}/%{name}/components/satchel.xpt
 %{_libdir}/%{name}/components/saxparser.xpt
 %{_libdir}/%{name}/components/shistory.xpt
+%{_libdir}/%{name}/components/spellchecker.xpt
 %{_libdir}/%{name}/components/storage.xpt
 %{_libdir}/%{name}/components/toolkitprofile.xpt
 %{_libdir}/%{name}/components/toolkitremote.xpt
