@@ -2,18 +2,18 @@
 %bcond_with	tests	# enable tests (whatever they check)
 %bcond_without	gnome	# disable all GNOME components (gnomevfs, gnome, gnomeui)
 #
-%define		_snap	20070102
-%define		_rel	3.1
+%define		_snap	20071020
+%define		_rel	1
 #
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
-Summary(pl.UTF-8):	XULRunner - Å›rodowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
+Summary(pl):	XULRunner - ¶rodowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
-Version:	1.8.1.1
+Version:	1.8.1.8
 Release:	1.%{_snap}.%{_rel}
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
 Source0:	%{name}-%{version}-%{_snap}-source.tar.bz2
-# Source0-md5:	92b4936a5b8bd24edac8feaa26d13567
+# Source0-md5:	626fd3b5a7c4520f41c7b6778c809590
 Patch0:		%{name}-ldap-with-nss.patch
 Patch1:		%{name}-install.patch
 Patch2:		%{name}-pc.patch
@@ -40,11 +40,8 @@ BuildRequires:	pango-devel >= 1:1.6.0
 BuildRequires:	perl-modules >= 5.004
 BuildRequires:	pkgconfig
 BuildRequires:	sed >= 4.0
-BuildRequires:	xorg-lib-libXext-devel
-BuildRequires:	xorg-lib-libXft-devel >= 2.1
-BuildRequires:	xorg-lib-libXinerama-devel
-BuildRequires:	xorg-lib-libXp-devel
-BuildRequires:	xorg-lib-libXt-devel
+BuildRequires:	xcursor-devel
+BuildRequires:	xft-devel >= 2.1-2
 BuildRequires:	zip
 BuildRequires:	zlib-devel >= 1.2.3
 Requires(post):	mktemp >= 1.5-18
@@ -66,28 +63,28 @@ these applications. XULRunner will also provide libxul, a solution
 which allows the embedding of Mozilla technologies in other projects
 and products.
 
-%description -l pl.UTF-8
-XULRunner to pakiet uruchomieniowy Mozilli, ktÃ³rego moÅ¼na uÅ¼yÄ‡ do
+%description -l pl
+XULRunner to pakiet uruchomieniowy Mozilli, którego mo¿na u¿yæ do
 uruchamiania aplikacji XUL+XPCOM, nawet takich jak Firefox czy
-Thunderbird. UdostÄ™pni mechanizmy do instalowania, uaktualniania i
-odinstalowywania tych aplikacji. XULRunner bÄ™dzie takÅ¼e dostarczaÅ‚
-libxul - rozwiÄ…zanie umoÅ¼liwiajÄ…ce osadzanie technologii Mozilli w
+Thunderbird. Udostêpni mechanizmy do instalowania, uaktualniania i
+odinstalowywania tych aplikacji. XULRunner bêdzie tak¿e dostarcza³
+libxul - rozwi±zanie umo¿liwiaj±ce osadzanie technologii Mozilli w
 innych projektach i produktach.
 
 %package libs
 Summary:	XULRunner shared libraries
-Summary(pl.UTF-8):	Biblioteki wspÃ³Å‚dzielone XULRunnera
+Summary(pl):	Biblioteki wspó³dzielone XULRunnera
 Group:		X11/Libraries
 
 %description libs
 XULRunner shared libraries.
 
-%description libs -l pl.UTF-8
-Biblioteki wspÃ³Å‚dzielone XULRunnera.
+%description libs -l pl
+Biblioteki wspó³dzielone XULRunnera.
 
 %package devel
 Summary:	Headers for developing programs that will use XULRunner
-Summary(pl.UTF-8):	Pliki nagÅ‚Ã³wkowe do tworzenia programÃ³w uÅ¼ywajÄ…cych XULRunnera
+Summary(pl):	Pliki nag³ówkowe do tworzenia programów u¿ywaj±cych XULRunnera
 Group:		X11/Development/Libraries
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 Requires:	nspr-devel >= 1:4.6.3
@@ -99,7 +96,7 @@ Obsoletes:	seamonkey-devel
 %description devel
 XULRunner development package.
 
-%description devel -l pl.UTF-8
+%description devel -l pl
 Pakiet programistyczny XULRunnera.
 
 %prep
@@ -148,6 +145,8 @@ ac_add_options --disable-debug
 ac_add_options --disable-logging
 ac_add_options --enable-optimize="%{rpmcflags}"
 %endif
+ac_add_options --disable-strip
+ac_add_options --disable-strip-libs
 %if %{with tests}
 ac_add_options --enable-tests
 %else
@@ -436,6 +435,7 @@ fi
 %attr(755,root,root) %{_bindir}/xpidl
 %attr(755,root,root) %{_bindir}/xpt_dump
 %attr(755,root,root) %{_bindir}/xpt_link
+%attr(755,root,root) %{_bindir}/xulrunner-config
 %attr(755,root,root) %{_libdir}/%{name}/xulrunner-stub
 %{_includedir}/%{name}
 %{_pkgconfigdir}/*
