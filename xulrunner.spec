@@ -1,19 +1,20 @@
+#
 # Conditional build:
 %bcond_with	tests	# enable tests (whatever they check)
 %bcond_without	gnome	# disable all GNOME components (gnomevfs, gnome, gnomeui)
 #
-%define		_snap	20070224
-%define		_rel	0.1
+%define		_snap	20071102
+%define		_rel	1
 #
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
-Version:	1.8.1.2
+Version:	1.8.1.9
 Release:	1.%{_snap}.%{_rel}
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
 Source0:	%{name}-%{version}-%{_snap}-source.tar.bz2
-# Source0-md5:	b1b53aac0a9b01354cf21825dc695b56
+# Source0-md5:	f9b2888ad1ad6f13b3ca494acf4f1380
 Patch0:		%{name}-ldap-with-nss.patch
 Patch1:		%{name}-install.patch
 Patch2:		%{name}-pc.patch
@@ -27,14 +28,14 @@ BuildRequires:	cairo-devel >= 1.0.0
 BuildRequires:	freetype-devel >= 1:2.1.8
 %{?with_gnome:BuildRequires:	gnome-vfs2-devel >= 2.0}
 BuildRequires:	gtk+2-devel >= 1:2.0.0
-BuildRequires:	heimdal-devel >= 0.7.1
+BuildRequires:	krb5-devel
 BuildRequires:	libIDL-devel >= 0.8.0
 %{?with_gnome:BuildRequires:	libgnome-devel >= 2.0}
 %{?with_gnome:BuildRequires:	libgnomeui-devel >= 2.2.0}
 BuildRequires:	libjpeg-devel >= 6b
 BuildRequires:	libpng-devel >= 1.2.7
 BuildRequires:	libstdc++-devel
-BuildRequires:	nspr-devel >= 1:4.6.3
+BuildRequires:	nspr-devel >= 1:4.6.4
 BuildRequires:	nss-devel >= 1:3.11.3-3
 BuildRequires:	pango-devel >= 1:1.6.0
 BuildRequires:	perl-modules >= 5.004
@@ -48,15 +49,18 @@ BuildRequires:	xorg-lib-libXt-devel
 BuildRequires:	zip
 BuildRequires:	zlib-devel >= 1.2.3
 Requires(post):	mktemp >= 1.5-18
-Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
-Requires:	nspr >= 1:4.6.3
+Requires:	%{name}-libs = %{version}-%{release}
+Requires:	browser-plugins >= 2.0
+Requires:	nspr >= 1:4.6.4
 Requires:	nss >= 1:3.11.3
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		specflags	-fno-strict-aliasing
 
-# mozilla, seamonkey and firefox provide their own versions
-%define		_noautoreqdep	libgtkembedmoz.so libldap50.so libmozjs.so libprldap50.so libssldap50.so libxpcom.so
+# we don't want these to satisfy xulrunner-devel [???]
+%define		_noautoprov	libmozjs.so libxpcom.so
+# no need to require them (we have strict deps for these)
+%define		_noautoreq	libgtkembedmoz.so libldap50.so libmozjs.so libprldap50.so libssldap50.so libxpcom.so libxul.so
 
 %description
 XULRunner is a Mozilla runtime package that can be used to bootstrap
@@ -89,8 +93,8 @@ Biblioteki współdzielone XULRunnera.
 Summary:	Headers for developing programs that will use XULRunner
 Summary(pl.UTF-8):	Pliki nagłówkowe do tworzenia programów używających XULRunnera
 Group:		X11/Development/Libraries
-Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
-Requires:	nspr-devel >= 1:4.6.3
+Requires:	%{name}-libs = %{version}-%{release}
+Requires:	nspr-devel >= 1:4.6.4
 Requires:	nss-devel >= 1:3.11.3
 Obsoletes:	mozilla-devel
 Obsoletes:	mozilla-firefox-devel
@@ -181,7 +185,7 @@ ac_add_options --with-default-mozilla-five-home=%{_libdir}/%{name}
 
 ac_add_options --disable-pedantic
 ac_add_options --disable-xterm-updates
-ac_add_options --enable-extensions="default,cookie,permissions"
+ac_add_options --enable-extensions="default,cookie,permissions,spellcheck"
 ac_add_options --enable-ldap
 ac_add_options --enable-xprint
 ac_add_options --with-pthreads
@@ -233,6 +237,8 @@ mv $RPM_BUILD_ROOT%{_libdir}/%{name}/xpt_link $RPM_BUILD_ROOT%{_bindir}/xpt_link
 %{__make} -C build/unix install \
 	DESTDIR=$RPM_BUILD_ROOT
 
+%browser_plugins_add_browser %{name} -p %{_libdir}/%{name}/plugins
+
 # we use system pkgs
 rm $RPM_BUILD_ROOT%{_pkgconfigdir}/xulrunner-{nspr,nss}.pc
 
@@ -260,11 +266,16 @@ EOF
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post -p %{_sbindir}/%{name}-chrome+xpcom-generate
+%post 
+%{_sbindir}/%{name}-chrome+xpcom-generate
+%update_browser_plugins
 
 %postun
 if [ "$1" = "1" ]; then
 	%{_sbindir}/%{name}-chrome+xpcom-generate
+fi
+if [ "$1" = 0 ]; then
+	%update_browser_plugins
 fi
 
 %post	libs -p /sbin/ldconfig
@@ -279,10 +290,14 @@ fi
 %dir %{_libdir}/%{name}/components
 %dir %{_libdir}/%{name}/defaults
 %dir %{_libdir}/%{name}/greprefs
+%dir %{_libdir}/%{name}/plugins
 %dir %{_libdir}/%{name}/res
 %dir %{_datadir}/%{name}
 
 %attr(755,root,root) %{_libdir}/%{name}/regxpcom
+
+%{_browserpluginsconfdir}/browsers.d/%{name}.*
+%config(noreplace) %verify(not md5 mtime size) %{_browserpluginsconfdir}/blacklist.d/%{name}.*.blacklist
 
 %attr(755,root,root) %{_libdir}/%{name}/components/libauth.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libautoconfig.so
@@ -290,12 +305,14 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/components/libfileview.so
 %{?with_gnome:%attr(755,root,root) %{_libdir}/%{name}/components/libimgicon.so}
 %{?with_gnome:%attr(755,root,root) %{_libdir}/%{name}/components/libnkgnomevfs.so}
-%attr(755,root,root) %{_libdir}/%{name}/components/libmozgnome.so
+%{?with_gnome:%attr(755,root,root) %{_libdir}/%{name}/components/libmozgnome.so}
 %attr(755,root,root) %{_libdir}/%{name}/components/libmozldap.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libmyspell.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libpermissions.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libpipboot.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libpipnss.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libpippki.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libspellchecker.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libsystem-pref.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libtransformiix.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libuniversalchardet.so
@@ -359,6 +376,7 @@ fi
 %{_libdir}/%{name}/components/satchel.xpt
 %{_libdir}/%{name}/components/saxparser.xpt
 %{_libdir}/%{name}/components/shistory.xpt
+%{_libdir}/%{name}/components/spellchecker.xpt
 %{_libdir}/%{name}/components/storage.xpt
 %{_libdir}/%{name}/components/toolkitprofile.xpt
 %{_libdir}/%{name}/components/toolkitremote.xpt
