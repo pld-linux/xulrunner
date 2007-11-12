@@ -4,7 +4,7 @@
 %bcond_without	gnome	# disable all GNOME components (gnomevfs, gnome, gnomeui)
 #
 %define		_snap	20071102
-%define		_rel	1
+%define		_rel	2
 #
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
@@ -54,10 +54,8 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		specflags	-fno-strict-aliasing
 
-# we don't want these to satisfy xulrunner-devel [???]
-%define		_noautoprov	libmozjs.so libxpcom.so
-# no need to require them (we have strict deps for these)
-%define		_noautoreq	libgtkembedmoz.so libldap50.so libmozjs.so libprldap50.so libssldap50.so libxpcom.so libxul.so
+# mozilla, seamonkey and firefox provide their own versions
+%define		_noautoreqdep	libgtkembedmoz.so libldap50.so libmozjs.so libprldap50.so libssldap50.so libxpcom.so
 
 %description
 XULRunner is a Mozilla runtime package that can be used to bootstrap
