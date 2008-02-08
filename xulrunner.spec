@@ -14,7 +14,7 @@ Release:	1.%{_snap}.%{_rel}
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
 Source0:	%{name}-%{version}-%{_snap}-source.tar.bz2
-# Source0-md5:	7e1701a44025977413e91d3ae9483f51
+# Source0-md5:	337045388251dedf19f55ba1d8b64c92
 Patch0:		%{name}-ldap-with-nss.patch
 Patch1:		%{name}-install.patch
 Patch2:		%{name}-pc.patch
