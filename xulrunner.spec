@@ -4,7 +4,7 @@
 %bcond_without	gnome	# disable all GNOME components (gnomevfs, gnome, gnomeui)
 #
 %define		_snap	20080208
-%define		_rel	2
+%define		_rel	3
 #
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
@@ -207,7 +207,7 @@ cd mozilla
 	PKG_SKIP_STRIP=1
 
 install -d \
-	$RPM_BUILD_ROOT%{_datadir}/%{name}/components \
+	$RPM_BUILD_ROOT%{_datadir}/{idl/xulrunner,%{name}/components} \
 	$RPM_BUILD_ROOT{%{_bindir},%{_sbindir}} \
 	$RPM_BUILD_ROOT{%{_pkgconfigdir},%{_includedir}}
 
@@ -227,7 +227,7 @@ touch $RPM_BUILD_ROOT%{_libdir}/%{name}/components/xpti.dat
 
 # header/development files
 cp -rfLp dist/include	$RPM_BUILD_ROOT%{_includedir}/%{name}
-cp -rfLp dist/idl	$RPM_BUILD_ROOT%{_includedir}/%{name}
+cp -rfLp dist/idl/*	$RPM_BUILD_ROOT%{_datadir}/idl/xulrunner
 cp -rfLp dist/public/ldap{,-private} $RPM_BUILD_ROOT%{_includedir}/%{name}
 install dist/bin/regxpcom $RPM_BUILD_ROOT%{_bindir}
 mv $RPM_BUILD_ROOT%{_libdir}/%{name}/xpidl $RPM_BUILD_ROOT%{_bindir}/xpidl
@@ -459,4 +459,5 @@ fi
 %attr(755,root,root) %{_bindir}/xulrunner-config
 %attr(755,root,root) %{_libdir}/%{name}/xulrunner-stub
 %{_includedir}/%{name}
+%{_datadir}/idl/%{name}
 %{_pkgconfigdir}/*
