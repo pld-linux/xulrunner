@@ -19,6 +19,7 @@ Patch0:		%{name}-ldap-with-nss.patch
 Patch1:		%{name}-install.patch
 Patch2:		%{name}-pc.patch
 Patch3:		%{name}-rpath.patch
+Patch4:		mozilla-firefox-ac.patch
 URL:		http://developer.mozilla.org/en/docs/XULRunner
 BuildRequires:	/bin/csh
 %{?with_gnome:BuildRequires:	GConf2-devel >= 1.2.1}
@@ -111,13 +112,18 @@ rm -rf mozilla/modules/libbz2
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
 
 %build
 cd mozilla
 
 cp -f %{_datadir}/automake/config.* build/autoconf
-cp -f %{_datadir}/automake/config.* nsprpub/build/autoconf
 cp -f %{_datadir}/automake/config.* directory/c-sdk/config/autoconf
+
+if [ ! -f configure -o configure.in -nt configure ]; then
+	%{__aclocal} -I build/autoconf
+	autoconf2_13
+fi
 
 cat << 'EOF' > .mozconfig
 . $topsrcdir/xulrunner/config/mozconfig
@@ -258,10 +264,26 @@ LD_LIBRARY_PATH=%{_libdir}/%{name}${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH} %{_libdi
 rm -rf $HOME
 EOF
 
+rm $RPM_BUILD_ROOT%{_libdir}/%{name}/LICENSE
+rm $RPM_BUILD_ROOT%{_libdir}/%{name}/README.txt
+rm $RPM_BUILD_ROOT%{_libdir}/%{name}/dependentlibs.list
+rm $RPM_BUILD_ROOT%{_libdir}/%{name}/dictionaries/en-US.aff
+rm $RPM_BUILD_ROOT%{_libdir}/%{name}/dictionaries/en-US.dic
+rm $RPM_BUILD_ROOT%{_libdir}/%{name}/dirver
+rm $RPM_BUILD_ROOT%{_libdir}/%{name}/icons/document.png
+rm $RPM_BUILD_ROOT%{_libdir}/%{name}/icons/mozicon16.xpm
+rm $RPM_BUILD_ROOT%{_libdir}/%{name}/icons/mozicon50.xpm
+rm $RPM_BUILD_ROOT%{_libdir}/%{name}/mozilla-xremote-client
+rm $RPM_BUILD_ROOT%{_libdir}/%{name}/plugins/libnullplugin.so
+rm $RPM_BUILD_ROOT%{_libdir}/%{name}/plugins/libunixprintplugin.so
+rm $RPM_BUILD_ROOT%{_libdir}/%{name}/run-mozilla.sh
+rm $RPM_BUILD_ROOT%{_libdir}/%{name}/xpicleanup
+rm $RPM_BUILD_ROOT%{_datadir}/%{name}/chrome/icons/default/default.xpm
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post 
+%post
 %{_sbindir}/%{name}-chrome+xpcom-generate
 %update_browser_plugins
 
