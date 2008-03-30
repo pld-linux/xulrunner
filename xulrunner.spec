@@ -3,18 +3,18 @@
 %bcond_with	tests	# enable tests (whatever they check)
 %bcond_without	gnome	# disable all GNOME components (gnomevfs, gnome, gnomeui)
 #
-%define		_snap	20080208
+%define		_snap	20080326
 %define		_rel	1
 #
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
-Version:	1.8.1.12
+Version:	1.8.1.13
 Release:	1.%{_snap}.%{_rel}
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
 Source0:	%{name}-%{version}-%{_snap}-source.tar.bz2
-# Source0-md5:	337045388251dedf19f55ba1d8b64c92
+# Source0-md5:	24ac70198d4267d1bf83dd022ff0c7e5
 Patch0:		%{name}-ldap-with-nss.patch
 Patch1:		%{name}-install.patch
 Patch2:		%{name}-pc.patch
@@ -36,7 +36,7 @@ BuildRequires:	libIDL-devel >= 0.8.0
 BuildRequires:	libjpeg-devel >= 6b
 BuildRequires:	libpng-devel >= 1.2.7
 BuildRequires:	libstdc++-devel
-BuildRequires:	nspr-devel >= 1:4.6.3
+BuildRequires:	nspr-devel >= 1:4.6.4
 BuildRequires:	nss-devel >= 1:3.11.3-3
 BuildRequires:	pango-devel >= 1:1.6.0
 BuildRequires:	perl-modules >= 5.004
@@ -55,8 +55,10 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		specflags	-fno-strict-aliasing
 
-# mozilla, seamonkey and firefox provide their own versions
-%define		_noautoreqdep	libgtkembedmoz.so libldap50.so libmozjs.so libprldap50.so libssldap50.so libxpcom.so
+# we don't want these to satisfy xulrunner-devel [???]
+%define		_noautoprov	libmozjs.so libxpcom.so
+# no need to require them (we have strict deps for these)
+%define		_noautoreq	libgtkembedmoz.so libldap50.so libmozjs.so libprldap50.so libssldap50.so libxpcom.so libxul.so
 
 %description
 XULRunner is a Mozilla runtime package that can be used to bootstrap
@@ -208,7 +210,7 @@ cd mozilla
 	PKG_SKIP_STRIP=1
 
 install -d \
-	$RPM_BUILD_ROOT%{_datadir}/%{name}/components \
+	$RPM_BUILD_ROOT%{_datadir}/{idl/xulrunner,%{name}/components} \
 	$RPM_BUILD_ROOT{%{_bindir},%{_sbindir}} \
 	$RPM_BUILD_ROOT{%{_pkgconfigdir},%{_includedir}}
 
@@ -228,7 +230,7 @@ touch $RPM_BUILD_ROOT%{_libdir}/%{name}/components/xpti.dat
 
 # header/development files
 cp -rfLp dist/include	$RPM_BUILD_ROOT%{_includedir}/%{name}
-cp -rfLp dist/idl	$RPM_BUILD_ROOT%{_includedir}/%{name}
+cp -rfLp dist/idl/*	$RPM_BUILD_ROOT%{_datadir}/idl/xulrunner
 cp -rfLp dist/public/ldap{,-private} $RPM_BUILD_ROOT%{_includedir}/%{name}
 install dist/bin/regxpcom $RPM_BUILD_ROOT%{_bindir}
 mv $RPM_BUILD_ROOT%{_libdir}/%{name}/xpidl $RPM_BUILD_ROOT%{_bindir}/xpidl
@@ -476,4 +478,5 @@ fi
 %attr(755,root,root) %{_bindir}/xulrunner-config
 %attr(755,root,root) %{_libdir}/%{name}/xulrunner-stub
 %{_includedir}/%{name}
+%{_datadir}/idl/%{name}
 %{_pkgconfigdir}/*
