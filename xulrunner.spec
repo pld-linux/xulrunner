@@ -1,10 +1,14 @@
 #
+# TODO:
+#  - updated mozilla-firefox-ac.patch (why it is enabled here and disabled in 
+#    mozilla-firefox.spec? basically its same source)
+#
 # Conditional build:
 %bcond_with	tests	# enable tests (whatever they check)
 %bcond_without	gnome	# disable all GNOME components (gnomevfs, gnome, gnomeui)
 #
 %define		_snap	20080417
-%define		_rel	0.1
+%define		_rel	1
 #
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
@@ -117,7 +121,7 @@ rm -rf mozilla/modules/libbz2
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
-%patch4 -p1
+#%patch4 -p1
 
 %build
 cd mozilla
