@@ -1,20 +1,24 @@
 #
+# TODO:
+#  - updated mozilla-firefox-ac.patch (why it is enabled here and disabled in 
+#    mozilla-firefox.spec? basically its same source)
+#
 # Conditional build:
 %bcond_with	tests	# enable tests (whatever they check)
 %bcond_without	gnome	# disable all GNOME components (gnomevfs, gnome, gnomeui)
 #
-%define		_snap	20080326
-%define		_rel	1
+%define		snap	20080417
+%define		rel		1
 #
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
-Version:	1.8.1.13
-Release:	1.%{_snap}.%{_rel}
+Version:	1.8.1.14
+Release:	1.%{snap}.%{rel}
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
-Source0:	%{name}-%{version}-%{_snap}-source.tar.bz2
-# Source0-md5:	24ac70198d4267d1bf83dd022ff0c7e5
+Source0:	%{name}-%{version}-%{snap}-source.tar.bz2
+# Source0-md5:	da464005676c6946360e99a3211609b1
 Patch0:		%{name}-ldap-with-nss.patch
 Patch1:		%{name}-install.patch
 Patch2:		%{name}-pc.patch
@@ -114,7 +118,7 @@ rm -rf mozilla/modules/libbz2
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
-%patch4 -p1
+#%patch4 -p1
 
 %build
 cd mozilla
@@ -124,7 +128,7 @@ cp -f %{_datadir}/automake/config.* directory/c-sdk/config/autoconf
 
 if [ ! -f configure -o configure.in -nt configure ]; then
 	%{__aclocal} -I build/autoconf
-	autoconf2_13
+	%{__autoconf}
 fi
 
 cat << 'EOF' > .mozconfig
