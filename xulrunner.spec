@@ -1,14 +1,10 @@
-# TODO
-# - build with mozldap, however it includes headers nowhere to be found
-#
 # Conditional build:
 %bcond_with	tests	# enable tests (whatever they check)
 %bcond_without	gnome	# disable all GNOME components (gnomevfs, gnome, gnomeui)
 %bcond_without	kerberos	# disable krb5 support
-#
-%define		subver	20080527
+
 %define		rel	0.1
-#
+%define		subver	20080527
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
@@ -24,6 +20,7 @@ Patch2:		%{name}-pc.patch
 Patch3:		%{name}-rpath.patch
 Patch4:		%{name}-mozldap.patch
 Patch5:		%{name}-configures.patch
+Patch6:		%{name}-gcc3.patch
 URL:		http://developer.mozilla.org/en/docs/XULRunner
 %{?with_gnome:BuildRequires:	GConf2-devel >= 1.2.1}
 BuildRequires:	automake
@@ -45,6 +42,7 @@ BuildRequires:	nss-devel >= 1:3.11.3-3
 BuildRequires:	pango-devel >= 1:1.6.0
 BuildRequires:	perl-modules >= 5.004
 BuildRequires:	pkgconfig
+BuildRequires:	rpmbuild(macros) >= 1.453
 BuildRequires:	sed >= 4.0
 BuildRequires:	xorg-lib-libXext-devel
 BuildRequires:	xorg-lib-libXft-devel >= 2.1
@@ -117,11 +115,14 @@ cd mozilla
 rm -r nsprpub
 
 #%patch0 -p1
-#%patch1 -p1
+%patch1 -p1
 #%patch2 -p1
 #%patch3 -p1
 %patch4 -p1
 %patch5 -p1
+%if "%{cc_version}" < "3.4"
+%patch6 -p2
+%endif
 
 %build
 cd mozilla
@@ -301,14 +302,18 @@ fi
 %{_libdir}/%{name}/modules
 %{_libdir}/%{name}/res
 
-#%attr(755,root,root) %{_libdir}/%{name}/regxpcom
-
 %{_browserpluginsconfdir}/browsers.d/%{name}.*
 %config(noreplace) %verify(not md5 mtime size) %{_browserpluginsconfdir}/blacklist.d/%{name}.*.blacklist
-%dir %{_libdir}/%{name}/plugins
-%attr(755,root,root) %{_libdir}/%{name}/plugins/*.so
 
+%dir %{_libdir}/%{name}/plugins
+%dir %{_libdir}/%{name}/components
+
+%{_libdir}/%{name}/LICENSE
+%{_libdir}/%{name}/README.txt
 %{_libdir}/%{name}/dependentlibs.list
+%{_libdir}/%{name}/platform.ini
+
+%attr(755,root,root) %{_libdir}/%{name}/plugins/*.so
 
 # TODO system nss!
 %{_libdir}/%{name}/libfreebl3.chk
@@ -323,32 +328,19 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/libsqlite3.so
 %attr(755,root,root) %{_libdir}/%{name}/libssl3.so
 
-%{_libdir}/%{name}/platform.ini
+%attr(755,root,root) %{_libdir}/%{name}/libjemalloc.so
+
 %attr(755,root,root) %{_libdir}/%{name}/*.sh
 %attr(755,root,root) %{_libdir}/%{name}/mozilla-xremote-client
 
+%if %{with gnome}
+%attr(755,root,root) %{_libdir}/%{name}/components/libimgicon.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libnkgnomevfs.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libmozgnome.so
+%{_libdir}/%{name}/components/imgicon.xpt
+%endif
 
-%dir %{_libdir}/%{name}/components
-#%attr(755,root,root) %{_libdir}/%{name}/components/libauth.so
-#%attr(755,root,root) %{_libdir}/%{name}/components/libautoconfig.so
-#%attr(755,root,root) %{_libdir}/%{name}/components/libcookie.so
-#%attr(755,root,root) %{_libdir}/%{name}/components/libfileview.so
-%{?with_gnome:%attr(755,root,root) %{_libdir}/%{name}/components/libimgicon.so}
-%{?with_gnome:%attr(755,root,root) %{_libdir}/%{name}/components/libnkgnomevfs.so}
-%{?with_gnome:%attr(755,root,root) %{_libdir}/%{name}/components/libmozgnome.so}
-#%attr(755,root,root) %{_libdir}/%{name}/components/libmozldap.so
-#%attr(755,root,root) %{_libdir}/%{name}/components/libmyspell.so
-#%attr(755,root,root) %{_libdir}/%{name}/components/libpermissions.so
-#%attr(755,root,root) %{_libdir}/%{name}/components/libpipboot.so
-#%attr(755,root,root) %{_libdir}/%{name}/components/libpipnss.so
-#%attr(755,root,root) %{_libdir}/%{name}/components/libpippki.so
-#%attr(755,root,root) %{_libdir}/%{name}/components/libspellchecker.so
-#%attr(755,root,root) %{_libdir}/%{name}/components/libsystem-pref.so
-#%attr(755,root,root) %{_libdir}/%{name}/components/libtransformiix.so
-#%attr(755,root,root) %{_libdir}/%{name}/components/libuniversalchardet.so
-#%attr(755,root,root) %{_libdir}/%{name}/components/libwebsrvcs.so
-#%attr(755,root,root) %{_libdir}/%{name}/components/libxmlextras.so
-#%attr(755,root,root) %{_libdir}/%{name}/components/libxulutil.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libdbusservice.so
 
 %{_libdir}/%{name}/components/accessibility*.xpt
 %{_libdir}/%{name}/components/alerts.xpt
@@ -363,6 +355,7 @@ fi
 %{_libdir}/%{name}/components/commandlines.xpt
 %{_libdir}/%{name}/components/composer.xpt
 %{_libdir}/%{name}/components/content_*.xpt
+%{_libdir}/%{name}/components/contentprefs.xpt
 %{_libdir}/%{name}/components/cookie.xpt
 %{_libdir}/%{name}/components/directory.xpt
 %{_libdir}/%{name}/components/docshell.xpt
@@ -372,14 +365,13 @@ fi
 %{_libdir}/%{name}/components/embed_base.xpt
 %{_libdir}/%{name}/components/extensions.xpt
 %{_libdir}/%{name}/components/exthandler.xpt
+%{_libdir}/%{name}/components/exthelper.xpt
 %{_libdir}/%{name}/components/fastfind.xpt
 %{_libdir}/%{name}/components/feeds.xpt
 %{_libdir}/%{name}/components/filepicker.xpt
 %{_libdir}/%{name}/components/find.xpt
 %{_libdir}/%{name}/components/gfx*.xpt
-#%{_libdir}/%{name}/components/history.xpt
 %{_libdir}/%{name}/components/htmlparser.xpt
-%{?with_gnome:%{_libdir}/%{name}/components/imgicon.xpt}
 %{_libdir}/%{name}/components/imglib2.xpt
 %{_libdir}/%{name}/components/inspector.xpt
 %{_libdir}/%{name}/components/intl.xpt
@@ -387,20 +379,21 @@ fi
 %{_libdir}/%{name}/components/js*.xpt
 %{_libdir}/%{name}/components/layout*.xpt
 %{_libdir}/%{name}/components/locale.xpt
+%{_libdir}/%{name}/components/loginmgr.xpt
 %{_libdir}/%{name}/components/lwbrk.xpt
 %{_libdir}/%{name}/components/mimetype.xpt
 %{_libdir}/%{name}/components/moz*.xpt
 %{_libdir}/%{name}/components/necko*.xpt
 %{_libdir}/%{name}/components/oji.xpt
-#%{_libdir}/%{name}/components/passwordmgr.xpt
+%{_libdir}/%{name}/components/parentalcontrols.xpt
 %{_libdir}/%{name}/components/pipboot.xpt
 %{_libdir}/%{name}/components/pipnss.xpt
 %{_libdir}/%{name}/components/pippki.xpt
+%{_libdir}/%{name}/components/places.xpt
 %{_libdir}/%{name}/components/plugin.xpt
 %{_libdir}/%{name}/components/pref.xpt
 %{_libdir}/%{name}/components/prefetch.xpt
 %{_libdir}/%{name}/components/profile.xpt
-#%{_libdir}/%{name}/components/progressDlg.xpt
 %{_libdir}/%{name}/components/proxyObjInst.xpt
 %{_libdir}/%{name}/components/rdf.xpt
 %{_libdir}/%{name}/components/satchel.xpt
@@ -420,59 +413,48 @@ fi
 %{_libdir}/%{name}/components/webBrowser_core.xpt
 %{_libdir}/%{name}/components/webbrowserpersist.xpt
 %{_libdir}/%{name}/components/webshell_idls.xpt
-#%{_libdir}/%{name}/components/websrvcs.xpt
 %{_libdir}/%{name}/components/widget.xpt
 %{_libdir}/%{name}/components/windowds.xpt
 %{_libdir}/%{name}/components/windowwatcher.xpt
 %{_libdir}/%{name}/components/x*.xpt
+%{_libdir}/%{name}/components/zipwriter.xpt
 
 %{_libdir}/%{name}/components/FeedProcessor.js
 %{_libdir}/%{name}/components/jsconsole-clhandler.js
-#%{_libdir}/%{name}/components/nsCloseAllWindows.js
-%{_libdir}/%{name}/components/nsDefaultCLH.js
-%{_libdir}/%{name}/components/nsDictionary.js
-%{_libdir}/%{name}/components/nsExtensionManager.js
-%{_libdir}/%{name}/components/nsFilePicker.js
-%{_libdir}/%{name}/components/nsHelperAppDlg.js
-#%{_libdir}/%{name}/components/nsInterfaceInfoToIDL.js
-#%{_libdir}/%{name}/components/nsKillAll.js
-%{_libdir}/%{name}/components/nsProgressDialog.js
-%{_libdir}/%{name}/components/nsProxyAutoConfig.js
-%{_libdir}/%{name}/components/nsResetPref.js
-%{_libdir}/%{name}/components/nsUpdateService.js
-%{_libdir}/%{name}/components/nsURLFormatter.js
-%{_libdir}/%{name}/components/nsXmlRpcClient.js
-%{_libdir}/%{name}/components/nsXULAppInstall.js
-
-%attr(755,root,root) %{_libdir}/%{name}/components/libdbusservice.so
-%{_libdir}/%{name}/components/contentprefs.xpt
-%{_libdir}/%{name}/components/loginmgr.xpt
 %{_libdir}/%{name}/components/nsAddonRepository.js
+%{_libdir}/%{name}/components/nsBadCertHandler.js
 %{_libdir}/%{name}/components/nsBlocklistService.js
 %{_libdir}/%{name}/components/nsContentDispatchChooser.js
 %{_libdir}/%{name}/components/nsContentPrefService.js
+%{_libdir}/%{name}/components/nsDefaultCLH.js
+%{_libdir}/%{name}/components/nsDictionary.js
 %{_libdir}/%{name}/components/nsDownloadManagerUI.js
+%{_libdir}/%{name}/components/nsExtensionManager.js
+%{_libdir}/%{name}/components/nsFilePicker.js
 %{_libdir}/%{name}/components/nsHandlerService.js
+%{_libdir}/%{name}/components/nsHelperAppDlg.js
 %{_libdir}/%{name}/components/nsLivemarkService.js
 %{_libdir}/%{name}/components/nsLoginInfo.js
 %{_libdir}/%{name}/components/nsLoginManager.js
 %{_libdir}/%{name}/components/nsLoginManagerPrompter.js
+%{_libdir}/%{name}/components/nsProgressDialog.js
+%{_libdir}/%{name}/components/nsProxyAutoConfig.js
+%{_libdir}/%{name}/components/nsResetPref.js
 %{_libdir}/%{name}/components/nsTaggingService.js
 %{_libdir}/%{name}/components/nsTryToClose.js
+%{_libdir}/%{name}/components/nsURLFormatter.js
+%{_libdir}/%{name}/components/nsUpdateService.js
 %{_libdir}/%{name}/components/nsWebHandlerApp.js
-%{_libdir}/%{name}/components/places.xpt
+%{_libdir}/%{name}/components/nsXULAppInstall.js
+%{_libdir}/%{name}/components/nsXmlRpcClient.js
 %{_libdir}/%{name}/components/pluginGlue.js
 %{_libdir}/%{name}/components/storage-Legacy.js
 %{_libdir}/%{name}/components/txEXSLTRegExFunctions.js
-%{_libdir}/%{name}/components/zipwriter.xpt
 
 # do not use *.dat here, so check-files can catch any new files
 # (and they won't be just silently placed empty in rpm)
 %ghost %{_libdir}/%{name}/components/compreg.dat
 %ghost %{_libdir}/%{name}/components/xpti.dat
-
-%{_libdir}/%{name}/LICENSE
-%{_libdir}/%{name}/README.txt
 
 %dir %{_datadir}/%{name}
 %{_datadir}/%{name}/chrome
@@ -485,11 +467,7 @@ fi
 %files libs
 %defattr(644,root,root,755)
 %dir %{_libdir}/%{name}
-#%attr(755,root,root) %{_libdir}/%{name}/libgtkembedmoz.so
-#%attr(755,root,root) %{_libdir}/%{name}/libldap50.so
 %attr(755,root,root) %{_libdir}/%{name}/libmozjs.so
-#%attr(755,root,root) %{_libdir}/%{name}/libprldap50.so
-#%attr(755,root,root) %{_libdir}/%{name}/libssldap50.so
 %attr(755,root,root) %{_libdir}/%{name}/libxpcom.so
 %attr(755,root,root) %{_libdir}/%{name}/libxul.so
 
@@ -500,8 +478,6 @@ fi
 %attr(755,root,root) %{_bindir}/xpidl
 %attr(755,root,root) %{_bindir}/xpt_dump
 %attr(755,root,root) %{_bindir}/xpt_link
-#%attr(755,root,root) %{_bindir}/xulrunner-config
 %attr(755,root,root) %{_libdir}/%{name}/xulrunner-stub
 %{_includedir}/%{name}
 %{_datadir}/idl/%{name}
-#%{_pkgconfigdir}/*
