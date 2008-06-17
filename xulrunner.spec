@@ -4,7 +4,7 @@
 %bcond_without	kerberos	# disable krb5 support
 
 %define		rel	0.1
-%define		subver	20080527
+%define		subver	20080617
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
@@ -13,7 +13,7 @@ Release:	%{subver}.%{rel}
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
 Source0:	%{name}-%{version}-%{subver}-source.tar.bz2
-# Source0-md5:	ef2ccdab16099ba9960697859cd98e98
+# Source0-md5:	0275bc482714456eef5b086dafbe07c1
 Patch0:		%{name}-ldap-with-nss.patch
 Patch1:		%{name}-install.patch
 Patch2:		%{name}-pc.patch
@@ -29,7 +29,12 @@ BuildRequires:	cairo-devel >= 1.0.0
 BuildRequires:	freetype-devel >= 1:2.1.8
 %{?with_gnome:BuildRequires:	gnome-vfs2-devel >= 2.0}
 BuildRequires:	gtk+2-devel >= 1:2.0.0
+BuildRequires:	rpm >= 4.4.9-56
+%if "%{pld_release}" == "ac"
+%{?with_kerberos:BuildRequires:	heimdal-devel >= 0.7.1}
+%else
 %{?with_kerberos:BuildRequires:	krb5-devel}
+%endif
 BuildRequires:	libIDL-devel >= 0.8.0
 %{?with_gnome:BuildRequires:	libgnome-devel >= 2.0}
 %{?with_gnome:BuildRequires:	libgnomeui-devel >= 2.2.0}
