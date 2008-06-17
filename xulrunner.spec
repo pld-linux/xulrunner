@@ -13,7 +13,7 @@ Release:	%{subver}.%{rel}
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
 Source0:	%{name}-%{version}-%{subver}-source.tar.bz2
-# Source0-md5:	0275bc482714456eef5b086dafbe07c1
+# Source0-md5:	258ff3894967bcc1abe368563ddf8ffa
 Patch0:		%{name}-ldap-with-nss.patch
 Patch1:		%{name}-install.patch
 Patch2:		%{name}-pc.patch
@@ -29,7 +29,6 @@ BuildRequires:	cairo-devel >= 1.0.0
 BuildRequires:	freetype-devel >= 1:2.1.8
 %{?with_gnome:BuildRequires:	gnome-vfs2-devel >= 2.0}
 BuildRequires:	gtk+2-devel >= 1:2.0.0
-BuildRequires:	rpm >= 4.4.9-56
 %if "%{pld_release}" == "ac"
 %{?with_kerberos:BuildRequires:	heimdal-devel >= 0.7.1}
 %else
@@ -47,6 +46,7 @@ BuildRequires:	nss-devel >= 1:3.11.3-3
 BuildRequires:	pango-devel >= 1:1.6.0
 BuildRequires:	perl-modules >= 5.004
 BuildRequires:	pkgconfig
+BuildRequires:	rpm >= 4.4.9-56
 BuildRequires:	rpmbuild(macros) >= 1.453
 BuildRequires:	sed >= 4.0
 BuildRequires:	xorg-lib-libXext-devel
