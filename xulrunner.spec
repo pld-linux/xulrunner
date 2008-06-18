@@ -6,15 +6,17 @@
 #   - even if platform.ini is found and parsed test application doesn't work
 #     eihter some files are missing or again xulrunner looks for theme in
 #     wrong paths, check & debug & fix it somehow
+#   - use system nss
 #
 # Conditional build:
 %bcond_with	tests		# enable tests (whatever they check)
 %bcond_without	gnome		# disable all GNOME components (gnomevfs, gnome, gnomeui)
 %bcond_without	kerberos	# disable krb5 support
 %bcond_with	mozldap		# build with system mozldap
+%bcond_with	system_nss		# use system nss
 #
 
-%define		rel    0.3
+%define		rel    0.4
 %define		subver    20080618
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
@@ -55,7 +57,7 @@ BuildRequires:	libpng-devel >= 1.2.7
 BuildRequires:	libstdc++-devel
 %{?with_mozldap:BuildRequires:	mozldap-devel >= 6.0}
 BuildRequires:	nspr-devel >= 1:4.6.4
-BuildRequires:	nss-devel >= 1:3.11.3-3
+%{?with_system_nss:BuildRequires:	nss-devel >= 1:3.11.3-3}
 BuildRequires:	pango-devel >= 1:1.6.0
 BuildRequires:	perl-modules >= 5.004
 BuildRequires:	pkgconfig
@@ -73,15 +75,21 @@ Requires(post):	mktemp >= 1.5-18
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	browser-plugins >= 2.0
 Requires:	nspr >= 1:4.6.4
-Requires:	nss >= 1:3.11.3
+%{?with_system_nss:Requires:	nss >= 1:3.11.3}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		specflags	-fno-strict-aliasing
 
-# we don't want these to satisfy xulrunner-devel [???]
-%define		_noautoprov	libmozjs.so libxpcom.so
+%if %{without system_nss}
+%define		nssdeps	libfreebl3.so libnss3.so libnssckbi.so libnssdbm3.so libnssutil3.so libsmime3.so libsoftokn3.so libsqlite3.so libssl3.so
+%else
+%define		nssdeps %{nil}
+%endif
+
+# we don't want these to satisfy other mozilla.org products -devel
+%define		_noautoprov	libmozjs.so libxpcom.so %{nssdeps}
 # no need to require them (we have strict deps for these)
-%define		_noautoreq	libgtkembedmoz.so libmozjs.so libxpcom.so libxul.so
+%define		_noautoreq	libgtkembedmoz.so libmozjs.so libxpcom.so libxul.so %{nssdeps}
 
 %description
 XULRunner is a Mozilla runtime package that can be used to bootstrap
@@ -116,7 +124,7 @@ Summary(pl.UTF-8):	Pliki nagłówkowe do tworzenia programów używających XULR
 Group:		X11/Development/Libraries
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	nspr-devel >= 1:4.6.4
-Requires:	nss-devel >= 1:3.11.3
+%{?with_system_nssl:Requires:	nss-devel >= 1:3.11.3}
 Obsoletes:	mozilla-devel
 Obsoletes:	mozilla-firefox-devel
 Obsoletes:	seamonkey-devel
@@ -333,7 +341,7 @@ fi
 
 %attr(755,root,root) %{_libdir}/%{name}/plugins/*.so
 
-# TODO system nss!
+%if %{without system_nss}
 %{_libdir}/%{name}/libfreebl3.chk
 %{_libdir}/%{name}/libsoftokn3.chk
 %attr(755,root,root) %{_libdir}/%{name}/libfreebl3.so
@@ -345,6 +353,7 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/libsoftokn3.so
 %attr(755,root,root) %{_libdir}/%{name}/libsqlite3.so
 %attr(755,root,root) %{_libdir}/%{name}/libssl3.so
+%endif
 
 %attr(755,root,root) %{_libdir}/%{name}/libjemalloc.so
 
