@@ -3,8 +3,9 @@
 %bcond_with	tests		# enable tests (whatever they check)
 %bcond_without	gnome		# disable all GNOME components (gnomevfs, gnome, gnomeui)
 %bcond_without	kerberos	# disable krb5 support
+%bcond_with	mozldap		# build with system mozldap
 
-%define		rel	0.1
+%define		rel	0.2
 %define		subver	20080618
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
@@ -41,7 +42,7 @@ BuildRequires:	libIDL-devel >= 0.8.0
 BuildRequires:	libjpeg-devel >= 6b
 BuildRequires:	libpng-devel >= 1.2.7
 BuildRequires:	libstdc++-devel
-BuildRequires:	mozldap-devel >= 6.0
+%{?with_gnomeBuildRequires:	mozldap-devel >= 6.0}
 BuildRequires:	nspr-devel >= 1:4.6.4
 BuildRequires:	nss-devel >= 1:3.11.3-3
 BuildRequires:	pango-devel >= 1:1.6.0
@@ -123,7 +124,7 @@ rm -r nsprpub
 #%patch0 -p1
 %patch1 -p1
 #%patch2 -p1
-#%patch3 -p1
+%patch3 -p1
 %patch4 -p1
 %patch5 -p1
 %if "%{cc_version}" < "3.4"
