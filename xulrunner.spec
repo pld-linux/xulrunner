@@ -12,7 +12,7 @@
 %bcond_without	gnome		# disable all GNOME components (gnomevfs, gnome, gnomeui)
 %bcond_without	kerberos	# disable krb5 support
 %bcond_with	mozldap		# build with system mozldap
-
+#
 %define		rel	0.2
 %define		subver	20080618
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
@@ -22,6 +22,7 @@ Version:	1.9
 Release:	%{subver}.%{rel}
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
+#Source0:	http://releases.mozilla.org/pub/mozilla.org/xulrunner/releases/1.9.0.0/source/%{name}-%{version}-source.tar.bz2
 Source0:	%{name}-%{version}-%{subver}-source.tar.bz2
 # Source0-md5:	01c53eb651f8d372c496dd67eb39957a
 Patch0:		%{name}-ldap-with-nss.patch
