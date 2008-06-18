@@ -50,7 +50,7 @@ BuildRequires:	libIDL-devel >= 0.8.0
 BuildRequires:	libjpeg-devel >= 6b
 BuildRequires:	libpng-devel >= 1.2.7
 BuildRequires:	libstdc++-devel
-%{?with_gnomeBuildRequires:	mozldap-devel >= 6.0}
+%{?with_mozldap:BuildRequires:	mozldap-devel >= 6.0}
 BuildRequires:	nspr-devel >= 1:4.6.4
 BuildRequires:	nss-devel >= 1:3.11.3-3
 BuildRequires:	pango-devel >= 1:1.6.0
