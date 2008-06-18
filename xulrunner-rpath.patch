@@ -1,33 +1,33 @@
---- mozilla/config/autoconf.mk.in.org	2007-01-07 04:00:25.140001000 +0200
-+++ mozilla/config/autoconf.mk.in	2007-01-07 04:00:40.140338541 +0200
-@@ -63,7 +63,7 @@
+--- mozilla/config/autoconf.mk.in.orig	2008-05-05 23:08:14.000000000 +0200
++++ mozilla/config/autoconf.mk.in	2008-06-18 15:42:21.000000000 +0200
+@@ -64,7 +64,7 @@
  mandir		= @mandir@
- idldir		= @datadir@/idl/$(MOZ_APP_NAME)-$(MOZ_APP_VERSION)
+ idldir		= $(datadir)/idl/$(MOZ_APP_NAME)-$(MOZ_APP_VERSION)
  
--mozappdir	= $(libdir)/$(MOZ_APP_NAME)-$(MOZ_APP_VERSION)
-+mozappdir	= $(libdir)/$(MOZ_APP_NAME)
- mredir		= $(libdir)/mre/mre-$(MOZ_APP_VERSION)
- mrelibdir	= $(mredir)/lib
+-installdir	= $(libdir)/$(MOZ_APP_NAME)-$(MOZ_APP_VERSION)
++installdir	= $(libdir)/$(MOZ_APP_NAME)
+ sdkdir		= $(libdir)/$(MOZ_APP_NAME)-devel-$(MOZ_APP_VERSION)
  
---- mozilla/configure.in~	2007-01-07 02:50:05.085718876 +0200
-+++ mozilla/configure.in	2007-01-07 04:03:09.003684862 +0200
-@@ -801,7 +801,7 @@
+ DIST		= $(DEPTH)/dist
+--- mozilla/configure.in.orig	2008-05-28 20:23:27.000000000 +0200
++++ mozilla/configure.in	2008-06-18 15:37:11.000000000 +0200
+@@ -945,7 +945,7 @@
  
- MOZ_JS_LIBS='-L$(DIST)/bin -lmozjs'
- DYNAMIC_XPCOM_LIBS='-L$(DIST)/bin -lxpcom -lxpcom_core'
--MOZ_FIX_LINK_PATHS='-Wl,-rpath-link,$(DIST)/bin'
-+MOZ_FIX_LINK_PATHS='-Wl,-rpath-link,$(DIST)/bin -Wl,-rpath,$(mozappdir)'
- XPCOM_FROZEN_LDOPTS='-L$(DIST)/bin $(MOZ_FIX_LINK_PATHS) -lxpcom'
+ MOZ_JS_LIBS='-L$(LIBXUL_DIST)/bin -lmozjs'
+ DYNAMIC_XPCOM_LIBS='-L$(LIBXUL_DIST)/bin -lxpcom -lxpcom_core'
+-MOZ_FIX_LINK_PATHS='-Wl,-rpath-link,$(LIBXUL_DIST)/bin'
++MOZ_FIX_LINK_PATHS='-Wl,-rpath-link,$(LIBXUL_DIST)/bin -Wl,-rpath,$(installdir)'
+ XPCOM_FROZEN_LDOPTS='-L$(LIBXUL_DIST)/bin -lxpcom'
  LIBXUL_LIBS='$(XPCOM_FROZEN_LDOPTS) -lxul'
- XPCOM_GLUE_LDOPTS='$(DIST)/lib/$(LIB_PREFIX)xpcomglue_s.$(LIB_SUFFIX) $(XPCOM_FROZEN_LDOPTS)'
---- mozilla/configure~	2007-01-07 04:22:18.799552498 +0200
-+++ mozilla/configure	2007-01-07 04:22:32.199854444 +0200
-@@ -5032,7 +5032,7 @@
+ XPCOM_GLUE_LDOPTS='$(LIBXUL_DIST)/lib/$(LIB_PREFIX)xpcomglue_s.$(LIB_SUFFIX) $(XPCOM_FROZEN_LDOPTS)'
+--- mozilla/configure.orig	2008-05-28 20:31:02.000000000 +0200
++++ mozilla/configure	2008-06-18 15:38:53.000000000 +0200
+@@ -5119,7 +5119,7 @@
  
- MOZ_JS_LIBS='-L$(DIST)/bin -lmozjs'
- DYNAMIC_XPCOM_LIBS='-L$(DIST)/bin -lxpcom -lxpcom_core'
--MOZ_FIX_LINK_PATHS='-Wl,-rpath-link,$(DIST)/bin'
-+MOZ_FIX_LINK_PATHS='-Wl,-rpath-link,$(DIST)/bin -Wl,-rpath,$(mozappdir)'
- XPCOM_FROZEN_LDOPTS='-L$(DIST)/bin $(MOZ_FIX_LINK_PATHS) -lxpcom'
+ MOZ_JS_LIBS='-L$(LIBXUL_DIST)/bin -lmozjs'
+ DYNAMIC_XPCOM_LIBS='-L$(LIBXUL_DIST)/bin -lxpcom -lxpcom_core'
+-MOZ_FIX_LINK_PATHS='-Wl,-rpath-link,$(LIBXUL_DIST)/bin'
++MOZ_FIX_LINK_PATHS='-Wl,-rpath-link,$(LIBXUL_DIST)/bin -Wl,-rpath,$(installdir)'
+ XPCOM_FROZEN_LDOPTS='-L$(LIBXUL_DIST)/bin -lxpcom'
  LIBXUL_LIBS='$(XPCOM_FROZEN_LDOPTS) -lxul'
- XPCOM_GLUE_LDOPTS='$(DIST)/lib/$(LIB_PREFIX)xpcomglue_s.$(LIB_SUFFIX) $(XPCOM_FROZEN_LDOPTS)'
+ XPCOM_GLUE_LDOPTS='$(LIBXUL_DIST)/lib/$(LIB_PREFIX)xpcomglue_s.$(LIB_SUFFIX) $(XPCOM_FROZEN_LDOPTS)'
