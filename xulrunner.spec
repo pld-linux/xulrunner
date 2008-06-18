@@ -13,18 +13,20 @@
 %bcond_without	kerberos	# disable krb5 support
 %bcond_with	mozldap		# build with system mozldap
 #
-%define		rel	0.2
-%define		subver	20080618
+
+%define		rel    0.3
+%define		subver    20080618
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
 Version:	1.9
+# let's not do epoch bump just because our release was so high, let's wait for 1.9.0.1 or sth
+# or just use version as 1.9.0.0 ?
 Release:	%{subver}.%{rel}
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
-#Source0:	http://releases.mozilla.org/pub/mozilla.org/xulrunner/releases/1.9.0.0/source/%{name}-%{version}-source.tar.bz2
-Source0:	%{name}-%{version}-%{subver}-source.tar.bz2
-# Source0-md5:	01c53eb651f8d372c496dd67eb39957a
+Source0:	http://releases.mozilla.org/pub/mozilla.org/xulrunner/releases/1.9.0.0/source/%{name}-%{version}-source.tar.bz2
+# Source0-md5:	a9f86e3b7f57d404739008cb6c2ca181
 Patch0:		%{name}-ldap-with-nss.patch
 Patch1:		%{name}-install.patch
 Patch2:		%{name}-pc.patch
@@ -79,7 +81,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 # we don't want these to satisfy xulrunner-devel [???]
 %define		_noautoprov	libmozjs.so libxpcom.so
 # no need to require them (we have strict deps for these)
-%define		_noautoreq	libgtkembedmoz.so libldap50.so libmozjs.so libprldap50.so libssldap50.so libxpcom.so libxul.so
+%define		_noautoreq	libgtkembedmoz.so libmozjs.so libxpcom.so libxul.so
 
 %description
 XULRunner is a Mozilla runtime package that can be used to bootstrap
