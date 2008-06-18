@@ -1,9 +1,9 @@
 #
 # TODO:
 #   - running 'xulrunner application.ini' fails, strace says:
-#     "/usr/bin/profile.ini: no such file or directory", make xulrunner
+#     "/usr/bin/platform.ini: no such file or directory", make xulrunner
 #     to look for that file in /usr/%{_lib}/xulrunner (it is available there)
-#   - even if profile.ini is found and parsed test application doesn't work
+#   - even if platform.ini is found and parsed test application doesn't work
 #     eihter some files are missing or again xulrunner looks for theme in
 #     wrong paths, check & debug & fix it somehow
 #
