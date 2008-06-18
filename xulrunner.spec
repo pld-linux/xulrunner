@@ -26,7 +26,7 @@ Release:	%{subver}.%{rel}
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
 Source0:	http://releases.mozilla.org/pub/mozilla.org/xulrunner/releases/1.9.0.0/source/%{name}-%{version}-source.tar.bz2
-# Source0-md5:	a9f86e3b7f57d404739008cb6c2ca181
+# Source0-md5:	4210ae0801df2eb498408533010d97c1
 Patch0:		%{name}-ldap-with-nss.patch
 Patch1:		%{name}-install.patch
 Patch2:		%{name}-pc.patch
