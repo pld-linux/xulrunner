@@ -57,7 +57,7 @@ BuildRequires:	libpng-devel >= 1.2.7
 BuildRequires:	libstdc++-devel
 %{?with_mozldap:BuildRequires:	mozldap-devel >= 6.0}
 BuildRequires:	nspr-devel >= 1:4.6.4
-%{?with_system_nss:BuildRequires:	nss-devel >= 1:3.11.3-3}
+%{?with_system_nss:BuildRequires:	nss-devel >= 1:3.12.0}
 BuildRequires:	pango-devel >= 1:1.6.0
 BuildRequires:	perl-modules >= 5.004
 BuildRequires:	pkgconfig
@@ -75,7 +75,7 @@ Requires(post):	mktemp >= 1.5-18
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	browser-plugins >= 2.0
 Requires:	nspr >= 1:4.6.4
-%{?with_system_nss:Requires:	nss >= 1:3.11.3}
+%{?with_system_nss:Requires:	nss >= 1:3.12.0}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		specflags	-fno-strict-aliasing
@@ -124,7 +124,7 @@ Summary(pl.UTF-8):	Pliki nagłówkowe do tworzenia programów używających XULR
 Group:		X11/Development/Libraries
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	nspr-devel >= 1:4.6.4
-%{?with_system_nssl:Requires:	nss-devel >= 1:3.11.3}
+%{?with_system_nss:Requires:	nss-devel >= 1:3.12.0}
 Obsoletes:	mozilla-devel
 Obsoletes:	mozilla-firefox-devel
 Obsoletes:	seamonkey-devel
