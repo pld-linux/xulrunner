@@ -1,22 +1,17 @@
 #
 # TODO:
-#   - running 'xulrunner application.ini' fails, strace says:
-#     "/usr/bin/platform.ini: no such file or directory", make xulrunner
-#     to look for that file in /usr/%{_lib}/xulrunner (it is available there)
-#   - even if platform.ini is found and parsed test application doesn't work
-#     eihter some files are missing or again xulrunner looks for theme in
-#     wrong paths, check & debug & fix it somehow
-#   - use system nss
+#   - fix "libsqlite3.so is needed by xulrunner-libs-1.9-20080618.0.5.i686"
+#   - fix "/usr/sbin/xulrunner-chrome+xpcom-generate[11]: /usr/lib/xulrunner/regxpcom: not found"
+#     during install
 #
 # Conditional build:
 %bcond_with	tests		# enable tests (whatever they check)
 %bcond_without	gnome		# disable all GNOME components (gnomevfs, gnome, gnomeui)
 %bcond_without	kerberos	# disable krb5 support
 %bcond_with	mozldap		# build with system mozldap
-%bcond_with	system_nss		# use system nss
 #
 
-%define		rel    0.4
+%define		rel    0.5
 %define		subver    20080618
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
@@ -29,13 +24,12 @@ License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
 Source0:	http://releases.mozilla.org/pub/mozilla.org/xulrunner/releases/1.9.0.0/source/%{name}-%{version}-source.tar.bz2
 # Source0-md5:	4210ae0801df2eb498408533010d97c1
-Patch0:		%{name}-ldap-with-nss.patch
-Patch1:		%{name}-install.patch
-Patch2:		%{name}-pc.patch
-Patch3:		%{name}-rpath.patch
-Patch4:		%{name}-mozldap.patch
-Patch5:		%{name}-configures.patch
-Patch6:		%{name}-gcc3.patch
+Patch0:		%{name}-install.patch
+Patch1:		%{name}-rpath.patch
+Patch2:		%{name}-mozldap.patch
+Patch3:		%{name}-configures.patch
+Patch4:		%{name}-gcc3.patch
+Patch5:		%{name}-nss_cflags.patch
 URL:		http://developer.mozilla.org/en/docs/XULRunner
 %{?with_gnome:BuildRequires:	GConf2-devel >= 1.2.1}
 BuildRequires:	automake
@@ -57,7 +51,7 @@ BuildRequires:	libpng-devel >= 1.2.7
 BuildRequires:	libstdc++-devel
 %{?with_mozldap:BuildRequires:	mozldap-devel >= 6.0}
 BuildRequires:	nspr-devel >= 1:4.6.4
-%{?with_system_nss:BuildRequires:	nss-devel >= 1:3.12.0}
+BuildRequires:	nss-devel >= 1:3.12-2
 BuildRequires:	pango-devel >= 1:1.6.0
 BuildRequires:	perl-modules >= 5.004
 BuildRequires:	pkgconfig
@@ -75,21 +69,15 @@ Requires(post):	mktemp >= 1.5-18
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	browser-plugins >= 2.0
 Requires:	nspr >= 1:4.6.4
-%{?with_system_nss:Requires:	nss >= 1:3.12.0}
+Requires:	nss >= 1:3.12-2
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		specflags	-fno-strict-aliasing
 
-%if %{without system_nss}
-%define		nssdeps	libfreebl3.so libnss3.so libnssckbi.so libnssdbm3.so libnssutil3.so libsmime3.so libsoftokn3.so libsqlite3.so libssl3.so
-%else
-%define		nssdeps %{nil}
-%endif
-
 # we don't want these to satisfy other mozilla.org products -devel
-%define		_noautoprov	libmozjs.so libxpcom.so %{nssdeps}
+%define		_noautoprov	libmozjs.so libxpcom.so
 # no need to require them (we have strict deps for these)
-%define		_noautoreq	libgtkembedmoz.so libmozjs.so libxpcom.so libxul.so %{nssdeps}
+%define		_noautoreq	libgtkembedmoz.so libmozjs.so libxpcom.so libxul.so
 
 %description
 XULRunner is a Mozilla runtime package that can be used to bootstrap
@@ -124,7 +112,7 @@ Summary(pl.UTF-8):	Pliki nagłówkowe do tworzenia programów używających XULR
 Group:		X11/Development/Libraries
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	nspr-devel >= 1:4.6.4
-%{?with_system_nss:Requires:	nss-devel >= 1:3.12.0}
+Requires:	nss-devel >= 1:3.12-2
 Obsoletes:	mozilla-devel
 Obsoletes:	mozilla-firefox-devel
 Obsoletes:	seamonkey-devel
@@ -140,15 +128,14 @@ Pakiet programistyczny XULRunnera.
 cd mozilla
 rm -r nsprpub
 
-#%patch0 -p1
+%patch0 -p1
 %patch1 -p1
-#%patch2 -p1
+%{?with_mozldap:%patch2 -p1}
 %patch3 -p1
-%patch4 -p1
-%patch5 -p1
 %if "%{cc_version}" < "3.4"
-%patch6 -p2
+%patch4 -p2
 %endif
+%patch5 -p1
 
 %build
 cd mozilla
@@ -265,20 +252,23 @@ touch $RPM_BUILD_ROOT%{_libdir}/%{name}/components/xpti.dat
 cp -rfLp dist/include	$RPM_BUILD_ROOT%{_includedir}/%{name}
 cp -rfLp dist/idl/*	$RPM_BUILD_ROOT%{_datadir}/idl/xulrunner
 #cp -rfLp dist/public/ldap{,-private} $RPM_BUILD_ROOT%{_includedir}/%{name}
-install dist/bin/regxpcom $RPM_BUILD_ROOT%{_bindir}
-mv $RPM_BUILD_ROOT%{_libdir}/%{name}/xpidl $RPM_BUILD_ROOT%{_bindir}/xpidl
-mv $RPM_BUILD_ROOT%{_libdir}/%{name}/xpt_dump $RPM_BUILD_ROOT%{_bindir}/xpt_dump
-mv $RPM_BUILD_ROOT%{_libdir}/%{name}/xpt_link $RPM_BUILD_ROOT%{_bindir}/xpt_link
+install dist/bin/regxpcom $RPM_BUILD_ROOT%{_libdir}/%{name}
 
 %{__make} -C build/unix install \
 	DESTDIR=$RPM_BUILD_ROOT
 
 %browser_plugins_add_browser %{name} -p %{_libdir}/%{name}/plugins
 
-# rpath is used, can move to bindir
-rm -f $RPM_BUILD_ROOT%{_libdir}/%{name}/xulrunner
-mv $RPM_BUILD_ROOT{%{_libdir}/%{name}/xulrunner-bin,%{_bindir}/xulrunner}
-mv $RPM_BUILD_ROOT{%{_libdir}/%{name}/xpcshell,%{_bindir}}
+# rpath is used but xulrunner looks for data files in location of xulrunner binary
+# so we must keep files in %{_libdir}/xulrunner and use symlinks in %{_bindir}
+# otherwise it won't work at all
+rm -f $RPM_BUILD_ROOT%{_bindir}/xulrunner
+ln -s %{_libdir}/%{name}/xulrunner-bin $RPM_BUILD_ROOT%{_bindir}/xulrunner
+ln -s %{_libdir}/%{name}/regxpcom $RPM_BUILD_ROOT%{_bindir}/regxpcom
+ln -s %{_libdir}/%{name}/xpcshell $RPM_BUILD_ROOT%{_bindir}/xpcshell
+ln -s %{_libdir}/%{name}/xpidl $RPM_BUILD_ROOT%{_bindir}/xpidl
+ln -s %{_libdir}/%{name}/xpt_dump $RPM_BUILD_ROOT%{_bindir}/xpt_dump
+ln -s %{_libdir}/%{name}/xpt_link $RPM_BUILD_ROOT%{_bindir}/xpt_link
 
 cat << 'EOF' > $RPM_BUILD_ROOT%{_sbindir}/%{name}-chrome+xpcom-generate
 #!/bin/sh
@@ -317,6 +307,7 @@ fi
 %files
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/xulrunner
+%attr(755,root,root) %{_libdir}/%{name}/xulrunner-bin
 %attr(744,root,root) %{_sbindir}/%{name}-chrome+xpcom-generate
 
 # symlinks
@@ -340,20 +331,6 @@ fi
 %{_libdir}/%{name}/platform.ini
 
 %attr(755,root,root) %{_libdir}/%{name}/plugins/*.so
-
-%if %{without system_nss}
-%{_libdir}/%{name}/libfreebl3.chk
-%{_libdir}/%{name}/libsoftokn3.chk
-%attr(755,root,root) %{_libdir}/%{name}/libfreebl3.so
-%attr(755,root,root) %{_libdir}/%{name}/libnss3.so
-%attr(755,root,root) %{_libdir}/%{name}/libnssckbi.so
-%attr(755,root,root) %{_libdir}/%{name}/libnssdbm3.so
-%attr(755,root,root) %{_libdir}/%{name}/libnssutil3.so
-%attr(755,root,root) %{_libdir}/%{name}/libsmime3.so
-%attr(755,root,root) %{_libdir}/%{name}/libsoftokn3.so
-%attr(755,root,root) %{_libdir}/%{name}/libsqlite3.so
-%attr(755,root,root) %{_libdir}/%{name}/libssl3.so
-%endif
 
 %attr(755,root,root) %{_libdir}/%{name}/libjemalloc.so
 
@@ -505,6 +482,11 @@ fi
 %attr(755,root,root) %{_bindir}/xpidl
 %attr(755,root,root) %{_bindir}/xpt_dump
 %attr(755,root,root) %{_bindir}/xpt_link
+%attr(755,root,root) %{_libdir}/%{name}/regxpcom
+%attr(755,root,root) %{_libdir}/%{name}/xpcshell
+%attr(755,root,root) %{_libdir}/%{name}/xpidl
+%attr(755,root,root) %{_libdir}/%{name}/xpt_dump
+%attr(755,root,root) %{_libdir}/%{name}/xpt_link
 %attr(755,root,root) %{_libdir}/%{name}/xulrunner-stub
 %{_includedir}/%{name}
 %{_datadir}/idl/%{name}
