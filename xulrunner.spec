@@ -1,6 +1,5 @@
 #
 # TODO:
-#   - fix "libsqlite3.so is needed by xulrunner-libs-1.9-20080618.0.5.i686"
 #   - fix "/usr/sbin/xulrunner-chrome+xpcom-generate[11]: /usr/lib/xulrunner/regxpcom: not found"
 #     during install
 #
@@ -11,7 +10,7 @@
 %bcond_with	mozldap		# build with system mozldap
 #
 
-%define		rel    0.5
+%define		rel    0.6
 %define		subver    20080618
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
@@ -58,6 +57,7 @@ BuildRequires:	pkgconfig
 BuildRequires:	rpm >= 4.4.9-56
 BuildRequires:	rpmbuild(macros) >= 1.453
 BuildRequires:	sed >= 4.0
+BuildRequires:	sqlite3-devel
 BuildRequires:	xorg-lib-libXext-devel
 BuildRequires:	xorg-lib-libXft-devel >= 2.1
 BuildRequires:	xorg-lib-libXinerama-devel
@@ -190,6 +190,7 @@ ac_add_options --disable-updater
 ac_add_options --enable-xinerama
 ac_add_options --enable-default-toolkit=cairo-gtk2
 ac_add_options --enable-system-cairo
+ac_add_options --enable-system-sqlite
 #ac_add_options --enable-system-lcms
 ac_add_options --enable-xft
 ac_add_options --with-distribution-id=org.pld-linux
@@ -262,7 +263,7 @@ install dist/bin/regxpcom $RPM_BUILD_ROOT%{_libdir}/%{name}
 # rpath is used but xulrunner looks for data files in location of xulrunner binary
 # so we must keep files in %{_libdir}/xulrunner and use symlinks in %{_bindir}
 # otherwise it won't work at all
-rm -f $RPM_BUILD_ROOT%{_bindir}/xulrunner
+rm -f $RPM_BUILD_ROOT%{_libdir}/%{name}/xulrunner
 ln -s %{_libdir}/%{name}/xulrunner-bin $RPM_BUILD_ROOT%{_bindir}/xulrunner
 ln -s %{_libdir}/%{name}/regxpcom $RPM_BUILD_ROOT%{_bindir}/regxpcom
 ln -s %{_libdir}/%{name}/xpcshell $RPM_BUILD_ROOT%{_bindir}/xpcshell
