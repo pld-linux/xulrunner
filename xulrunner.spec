@@ -1,8 +1,4 @@
 #
-# TODO:
-#   - fix "/usr/sbin/xulrunner-chrome+xpcom-generate[11]: /usr/lib/xulrunner/regxpcom: not found"
-#     during install
-#
 # Conditional build:
 %bcond_with	tests		# enable tests (whatever they check)
 %bcond_without	gnome		# disable all GNOME components (gnomevfs, gnome, gnomeui)
@@ -10,15 +6,14 @@
 %bcond_with	mozldap		# build with system mozldap
 #
 
-%define		rel    0.6
-%define		subver    20080618
+%define		rel    1
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
 Version:	1.9
 # let's not do epoch bump just because our release was so high, let's wait for 1.9.0.1 or sth
 # or just use version as 1.9.0.0 ?
-Release:	%{subver}.%{rel}
+Release:	%{rel}
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
 Source0:	http://releases.mozilla.org/pub/mozilla.org/xulrunner/releases/1.9.0.0/source/%{name}-%{version}-source.tar.bz2
@@ -271,33 +266,13 @@ ln -s %{_libdir}/%{name}/xpidl $RPM_BUILD_ROOT%{_bindir}/xpidl
 ln -s %{_libdir}/%{name}/xpt_dump $RPM_BUILD_ROOT%{_bindir}/xpt_dump
 ln -s %{_libdir}/%{name}/xpt_link $RPM_BUILD_ROOT%{_bindir}/xpt_link
 
-cat << 'EOF' > $RPM_BUILD_ROOT%{_sbindir}/%{name}-chrome+xpcom-generate
-#!/bin/sh
-umask 022
-rm -f %{_libdir}/%{name}/components/{compreg,xpti}.dat
-
-# it attempts to touch files in $HOME/.mozilla
-# beware if you run this with sudo!!!
-export HOME=$(mktemp -d)
-# also TMPDIR could be pointing to sudo user's homedir
-unset TMPDIR TMP || :
-
-LD_LIBRARY_PATH=%{_libdir}/%{name}${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH} %{_libdir}/%{name}/regxpcom
-
-rm -rf $HOME
-EOF
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %post
-%{_sbindir}/%{name}-chrome+xpcom-generate
 %update_browser_plugins
 
 %postun
-if [ "$1" = "1" ]; then
-	%{_sbindir}/%{name}-chrome+xpcom-generate
-fi
 if [ "$1" = 0 ]; then
 	%update_browser_plugins
 fi
@@ -309,7 +284,6 @@ fi
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/xulrunner
 %attr(755,root,root) %{_libdir}/%{name}/xulrunner-bin
-%attr(744,root,root) %{_sbindir}/%{name}-chrome+xpcom-generate
 
 # symlinks
 %{_libdir}/%{name}/chrome
