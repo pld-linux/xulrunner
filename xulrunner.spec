@@ -6,7 +6,7 @@
 %bcond_with	mozldap		# build with system mozldap
 #
 
-%define		rel    1.1
+%define		rel    1.2
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
@@ -24,6 +24,7 @@ Patch2:		%{name}-mozldap.patch
 Patch3:		%{name}-configures.patch
 Patch4:		%{name}-gcc3.patch
 Patch5:		%{name}-nss_cflags.patch
+Patch6:		%{name}-paths.patch
 URL:		http://developer.mozilla.org/en/docs/XULRunner
 %{?with_gnome:BuildRequires:	GConf2-devel >= 1.2.1}
 BuildRequires:	automake
@@ -131,6 +132,7 @@ rm -r nsprpub
 %patch4 -p2
 %endif
 %patch5 -p1
+%patch6 -p1
 
 %build
 cd mozilla
@@ -214,15 +216,16 @@ EOF
 rm -rf $RPM_BUILD_ROOT
 cd mozilla
 
-%{__make} -C xulrunner/installer stage-package \
+%{__make} -C xulrunner/installer install \
 	DESTDIR=$RPM_BUILD_ROOT \
 	MOZ_PKG_APPDIR=%{_libdir}/%{name} \
+	INSTALL_SDK=1 \
+	SKIP_GRE_REGISTRATION=1 \
 	PKG_SKIP_STRIP=1
 
 install -d \
-	$RPM_BUILD_ROOT%{_datadir}/{idl/xulrunner,%{name}/components} \
-	$RPM_BUILD_ROOT{%{_bindir},%{_sbindir}} \
-	$RPM_BUILD_ROOT{%{_pkgconfigdir},%{_includedir}}
+	$RPM_BUILD_ROOT%{_datadir}/%{name}/components \
+	$RPM_BUILD_ROOT%{_sbindir}
 
 # move arch independant ones to datadir
 mv $RPM_BUILD_ROOT%{_libdir}/%{name}/chrome $RPM_BUILD_ROOT%{_datadir}/%{name}/chrome
@@ -244,10 +247,6 @@ ln -s %{_datadir}/myspell $RPM_BUILD_ROOT%{_libdir}/%{name}/dictionaries
 touch $RPM_BUILD_ROOT%{_libdir}/%{name}/components/compreg.dat
 touch $RPM_BUILD_ROOT%{_libdir}/%{name}/components/xpti.dat
 
-# header/development files
-cp -rfLp dist/include	$RPM_BUILD_ROOT%{_includedir}/%{name}
-cp -rfLp dist/idl/*	$RPM_BUILD_ROOT%{_datadir}/idl/xulrunner
-#cp -rfLp dist/public/ldap{,-private} $RPM_BUILD_ROOT%{_includedir}/%{name}
 install dist/bin/regxpcom $RPM_BUILD_ROOT%{_libdir}/%{name}
 
 %{__make} -C build/unix install \
@@ -255,16 +254,7 @@ install dist/bin/regxpcom $RPM_BUILD_ROOT%{_libdir}/%{name}
 
 %browser_plugins_add_browser %{name} -p %{_libdir}/%{name}/plugins
 
-# rpath is used but xulrunner looks for data files in location of xulrunner binary
-# so we must keep files in %{_libdir}/xulrunner and use symlinks in %{_bindir}
-# otherwise it won't work at all
 rm -f $RPM_BUILD_ROOT%{_libdir}/%{name}/xulrunner
-ln -s %{_libdir}/%{name}/xulrunner-bin $RPM_BUILD_ROOT%{_bindir}/xulrunner
-ln -s %{_libdir}/%{name}/regxpcom $RPM_BUILD_ROOT%{_bindir}/regxpcom
-ln -s %{_libdir}/%{name}/xpcshell $RPM_BUILD_ROOT%{_bindir}/xpcshell
-ln -s %{_libdir}/%{name}/xpidl $RPM_BUILD_ROOT%{_bindir}/xpidl
-ln -s %{_libdir}/%{name}/xpt_dump $RPM_BUILD_ROOT%{_bindir}/xpt_dump
-ln -s %{_libdir}/%{name}/xpt_link $RPM_BUILD_ROOT%{_bindir}/xpt_link
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -465,3 +455,4 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/xulrunner-stub
 %{_includedir}/%{name}
 %{_datadir}/idl/%{name}
+%{_libdir}/%{name}-sdk
