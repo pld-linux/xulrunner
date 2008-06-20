@@ -1,0 +1,37 @@
+diff -ur mozilla.orig/xulrunner/installer/libxul-embedding-unstable.pc.in mozilla/xulrunner/installer/libxul-embedding-unstable.pc.in
+--- mozilla.orig/xulrunner/installer/libxul-embedding-unstable.pc.in	2008-01-05 07:50:34.000000000 +0100
++++ mozilla/xulrunner/installer/libxul-embedding-unstable.pc.in	2008-06-21 00:24:04.000000000 +0200
+@@ -8,4 +8,4 @@
+ Description: Static library for version-independent embedding of the Mozilla runtime (unstable API)
+ Version: %MOZILLA_VERSION%
+ Libs: -L${sdkdir}/lib -lxpcomglue
+-Cflags: -DXPCOM_GLUE -I${includedir}/${includetype} -fshort-wchar
++Cflags: -DXPCOM_GLUE -I${includedir} -fshort-wchar
+diff -ur mozilla.orig/xulrunner/installer/libxul.pc.in mozilla/xulrunner/installer/libxul.pc.in
+--- mozilla.orig/xulrunner/installer/libxul.pc.in	2007-08-03 16:46:28.000000000 +0200
++++ mozilla/xulrunner/installer/libxul.pc.in	2008-06-21 00:24:49.000000000 +0200
+@@ -13,4 +13,4 @@
+ Version: %MOZILLA_VERSION%
+ Requires: %NSPR_NAME% >= %NSPR_VERSION%
+ Libs: -L${sdkdir}/lib -lxpcomglue_s -lxul -lxpcom
+-Cflags: -I${includedir}/${includetype} -fshort-wchar
+\ No newline at end of file
++Cflags: -I${includedir}/${includetype} -fshort-wchar
+diff -ur mozilla.orig/xulrunner/installer/libxul-unstable.pc.in mozilla/xulrunner/installer/libxul-unstable.pc.in
+--- mozilla.orig/xulrunner/installer/libxul-unstable.pc.in	2008-01-05 07:50:34.000000000 +0100
++++ mozilla/xulrunner/installer/libxul-unstable.pc.in	2008-06-21 00:24:31.000000000 +0200
+@@ -9,4 +9,4 @@
+ Version: %MOZILLA_VERSION%
+ Requires: %NSPR_NAME% >= %NSPR_VERSION%
+ Libs: -L${sdkdir}/lib -lxpcomglue_s -lxul -lxpcom
+-Cflags: -I${includedir}/${includetype} -fshort-wchar
++Cflags: -I${includedir} -fshort-wchar
+diff -ur mozilla.orig/xulrunner/installer/mozilla-nspr.pc.in mozilla/xulrunner/installer/mozilla-nspr.pc.in
+--- mozilla.orig/xulrunner/installer/mozilla-nspr.pc.in	2007-08-03 16:46:28.000000000 +0200
++++ mozilla/xulrunner/installer/mozilla-nspr.pc.in	2008-06-21 00:25:44.000000000 +0200
+@@ -7,5 +7,3 @@
+ Version: %NSPR_VERSION%
+ Libs: %FULL_NSPR_LIBS%
+ Cflags: %FULL_NSPR_CFLAGS%
+-
+-
