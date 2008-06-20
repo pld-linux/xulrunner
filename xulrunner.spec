@@ -1,12 +1,14 @@
 #
+# TODO:
+#   - check & review pkgconfig files provided by xulrunner
+#
 # Conditional build:
 %bcond_with	tests		# enable tests (whatever they check)
 %bcond_without	gnome		# disable all GNOME components (gnomevfs, gnome, gnomeui)
 %bcond_without	kerberos	# disable krb5 support
 %bcond_with	mozldap		# build with system mozldap
 #
-
-%define		rel    1.2
+%define		rel    2
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
@@ -25,6 +27,7 @@ Patch3:		%{name}-configures.patch
 Patch4:		%{name}-gcc3.patch
 Patch5:		%{name}-nss_cflags.patch
 Patch6:		%{name}-paths.patch
+Patch7:		%{name}-pc.patch
 URL:		http://developer.mozilla.org/en/docs/XULRunner
 %{?with_gnome:BuildRequires:	GConf2-devel >= 1.2.1}
 BuildRequires:	automake
@@ -133,6 +136,7 @@ rm -r nsprpub
 %endif
 %patch5 -p1
 %patch6 -p1
+%patch7 -p1
 
 %build
 cd mozilla
@@ -254,6 +258,7 @@ install dist/bin/regxpcom $RPM_BUILD_ROOT%{_libdir}/%{name}
 
 %browser_plugins_add_browser %{name} -p %{_libdir}/%{name}/plugins
 
+# remove unecessary stuff
 rm -f $RPM_BUILD_ROOT%{_libdir}/%{name}/xulrunner
 
 %clean
@@ -456,3 +461,4 @@ fi
 %{_includedir}/%{name}
 %{_datadir}/idl/%{name}
 %{_libdir}/%{name}-sdk
+%{_pkgconfigdir}/*.pc
