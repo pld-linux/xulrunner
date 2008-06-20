@@ -6,7 +6,7 @@
 %bcond_with	mozldap		# build with system mozldap
 #
 
-%define		rel    1
+%define		rel    1.1
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
