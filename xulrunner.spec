@@ -224,7 +224,6 @@ cd mozilla
 	DESTDIR=$RPM_BUILD_ROOT \
 	MOZ_PKG_APPDIR=%{_libdir}/%{name} \
 	INSTALL_SDK=1 \
-	SKIP_GRE_REGISTRATION=1 \
 	PKG_SKIP_STRIP=1
 
 install -d \
@@ -279,6 +278,8 @@ fi
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/xulrunner
 %attr(755,root,root) %{_libdir}/%{name}/xulrunner-bin
+
+%{_sysconfdir}/gre.d
 
 # symlinks
 %{_libdir}/%{name}/chrome
