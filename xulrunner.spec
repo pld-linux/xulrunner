@@ -28,6 +28,7 @@ Patch4:		%{name}-gcc3.patch
 Patch5:		%{name}-nss_cflags.patch
 Patch6:		%{name}-paths.patch
 Patch7:		%{name}-pc.patch
+Patch8:		%{name}-prefs.patch
 URL:		http://developer.mozilla.org/en/docs/XULRunner
 %{?with_gnome:BuildRequires:	GConf2-devel >= 1.2.1}
 BuildRequires:	automake
@@ -137,6 +138,7 @@ rm -r nsprpub
 %patch5 -p1
 %patch6 -p1
 %patch7 -p1
+%patch8 -p1
 
 %build
 cd mozilla
