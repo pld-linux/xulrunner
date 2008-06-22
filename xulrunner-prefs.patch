@@ -23,3 +23,15 @@ diff -ur mozilla.orig/browser/locales/en-US/chrome/overrides/netError.dtd mozill
  <xul:button xmlns:xul='http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul' id='exceptionDialogButton' label='&securityOverride.exceptionButtonLabel;'/>
 +<xul:button xmlns:xul='http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul' id='getMeOutOfHereButton' label='&securityOverride.getMeOutOfHereButton;'/>
  ">
+diff -ur mozilla.orig/toolkit/content/about.xhtml mozilla/toolkit/content/about.xhtml
+--- mozilla.orig/toolkit/content/about.xhtml	2008-03-31 22:13:37.000000000 +0200
++++ mozilla/toolkit/content/about.xhtml	2008-06-22 15:44:55.000000000 +0200
+@@ -62,7 +62,7 @@
+   <div id="aboutLogoContainer">
+     <a id="vendorURL" href="http://www.mozilla.org/">
+       <img src="about:logo" alt="&brandShortName;"/>
+-#expand <p id="version">&about.version; __MOZ_APP_VERSION__</p>
++#expand <p id="version">__MOZ_APP_DISPLAYNAME__ __MOZ_APP_VERSION__</p>
+     </a>
+   </div>
+ 
