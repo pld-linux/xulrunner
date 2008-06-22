@@ -31,7 +31,7 @@ diff -ur mozilla.orig/toolkit/content/about.xhtml mozilla/toolkit/content/about.
      <a id="vendorURL" href="http://www.mozilla.org/">
        <img src="about:logo" alt="&brandShortName;"/>
 -#expand <p id="version">&about.version; __MOZ_APP_VERSION__</p>
-+#expand <p id="version">__MOZ_APP_DISPLAYNAME__ __MOZ_APP_VERSION__</p>
++#expand <p id="version">XULRunner __MOZ_APP_VERSION__</p>
      </a>
    </div>
  
