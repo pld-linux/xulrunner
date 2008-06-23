@@ -1,17 +1,3 @@
-diff -ur mozilla.orig/docshell/resources/content/netError.xhtml mozilla/docshell/resources/content/netError.xhtml
---- mozilla.orig/docshell/resources/content/netError.xhtml	2008-06-21 12:55:24.000000000 +0200
-+++ mozilla/docshell/resources/content/netError.xhtml	2008-06-22 13:08:20.000000000 +0200
-@@ -334,8 +334,8 @@
-         <!-- Override section - For ssl errors only.  Removed on init for other
-              error types.  -->
-         <div id="securityOverrideDiv">
--          <a id="securityOverrideLink" href="javascript:showSecuritySection();" >&securityOverride.linkText;</a>
--          <div id="securityOverrideContent" style="display: none;">&securityOverride.warningText;</div>
-+          <a id="securityOverrideLink" href="javascript:showSecuritySection();" style="display: none;">&securityOverride.linkText;</a>
-+          <div id="securityOverrideContent">&securityOverride.warningText;</div>
-         </div>
-       </div>
- 
 diff -ur mozilla.orig/browser/locales/en-US/chrome/overrides/netError.dtd mozilla/browser/locales/en-US/chrome/overrides/netError.dtd
 --- mozilla.orig/browser/locales/en-US/chrome/overrides/netError.dtd	2008-06-21 12:55:30.000000000 +0200
 +++ mozilla/browser/locales/en-US/chrome/overrides/netError.dtd	2008-06-22 13:52:26.000000000 +0200
