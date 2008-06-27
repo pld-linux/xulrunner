@@ -35,3 +35,12 @@ diff -ur mozilla.orig/xulrunner/installer/mozilla-nspr.pc.in mozilla/xulrunner/i
  Cflags: %FULL_NSPR_CFLAGS%
 -
 -
+diff -ur mozilla.orig/xulrunner/installer/mozilla-plugin.pc.in mozilla/xulrunner/installer/mozilla-plugin.pc.in
+--- mozilla.orig/xulrunner/installer/mozilla-plugin.pc.in	2007-08-03 16:46:28.000000000 +0200
++++ mozilla/xulrunner/installer/mozilla-plugin.pc.in	2008-06-27 14:41:13.000000000 +0200
+@@ -6,4 +6,4 @@
+ Description: Mozilla Plug-In API
+ Version: %MOZILLA_VERSION%
+ Requires: %NSPR_NAME% >= %NSPR_VERSION%
+-Cflags: -I${includedir}/stable
++Cflags: -I${includedir}/stable -I${includedir}/plugin
