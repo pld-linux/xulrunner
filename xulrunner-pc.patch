@@ -1,43 +1,92 @@
-diff -ur mozilla.orig/xulrunner/installer/libxul-embedding-unstable.pc.in mozilla/xulrunner/installer/libxul-embedding-unstable.pc.in
---- mozilla.orig/xulrunner/installer/libxul-embedding-unstable.pc.in	2008-01-05 07:50:34.000000000 +0100
-+++ mozilla/xulrunner/installer/libxul-embedding-unstable.pc.in	2008-06-21 00:24:04.000000000 +0200
-@@ -8,4 +8,4 @@
+diff -urN mozilla/xulrunner/installer/Makefile.in mozilla.new/xulrunner/installer/Makefile.in
+--- mozilla/xulrunner/installer/Makefile.in	2008-04-10 16:50:48.000000000 +0200
++++ mozilla.new/xulrunner/installer/Makefile.in	2008-07-07 20:01:44.000000000 +0200
+@@ -116,6 +116,7 @@
+ 	-e "s|%includedir%|$(includedir)|" \
+ 	-e "s|%idldir%|$(idldir)|" \
+ 	-e "s|%sdkdir%|$(sdkdir)|" \
++	-e "s|%libdir%|$(installdir)|" \
+ 	-e "s|%MOZ_APP_NAME%|$(MOZ_APP_NAME)|" \
+ 	-e "s|%MOZILLA_VERSION%|$(MOZ_APP_VERSION)|" \
+ 	-e "s|%FULL_NSPR_LIBS%|$(FULL_NSPR_LIBS)|" \
+diff -urN mozilla/xulrunner/installer/libxul-embedding-unstable.pc.in mozilla.new/xulrunner/installer/libxul-embedding-unstable.pc.in
+--- mozilla/xulrunner/installer/libxul-embedding-unstable.pc.in	2008-01-05 07:50:34.000000000 +0100
++++ mozilla.new/xulrunner/installer/libxul-embedding-unstable.pc.in	2008-07-07 19:59:29.000000000 +0200
+@@ -7,5 +7,6 @@
+ Name: libxul-embedding-unstable
  Description: Static library for version-independent embedding of the Mozilla runtime (unstable API)
  Version: %MOZILLA_VERSION%
++Requires: %NSPR_NAME% >= %NSPR_VERSION%
  Libs: -L${sdkdir}/lib -lxpcomglue
 -Cflags: -DXPCOM_GLUE -I${includedir}/${includetype} -fshort-wchar
 +Cflags: -DXPCOM_GLUE -I${includedir} -fshort-wchar
-diff -ur mozilla.orig/xulrunner/installer/libxul.pc.in mozilla/xulrunner/installer/libxul.pc.in
---- mozilla.orig/xulrunner/installer/libxul.pc.in	2007-08-03 16:46:28.000000000 +0200
-+++ mozilla/xulrunner/installer/libxul.pc.in	2008-06-21 00:24:49.000000000 +0200
-@@ -13,4 +13,4 @@
+diff -urN mozilla/xulrunner/installer/libxul-embedding.pc.in mozilla.new/xulrunner/installer/libxul-embedding.pc.in
+--- mozilla/xulrunner/installer/libxul-embedding.pc.in	2007-08-03 16:46:28.000000000 +0200
++++ mozilla.new/xulrunner/installer/libxul-embedding.pc.in	2008-07-07 19:59:11.000000000 +0200
+@@ -1,7 +1,7 @@
+ prefix=%prefix%
+ sdkdir=%sdkdir%
+ includedir=%includedir%
+-idldir=%idldir%
++idldir=%idldir%/stable
+ includetype=stable
+ 
+ # Note: the default pkg-config cflags will only list include directories
+@@ -11,5 +11,6 @@
+ Name: libxul-embedding
+ Description: Static library for version-independent embedding of the Mozilla runtime
+ Version: %MOZILLA_VERSION%
++Requires: %NSPR_NAME% >= %NSPR_VERSION%
+ Libs: -L${sdkdir}/lib -lxpcomglue
+ Cflags: -DXPCOM_GLUE -I${includedir}/${includetype} -fshort-wchar
+diff -urN mozilla/xulrunner/installer/libxul-unstable.pc.in mozilla.new/xulrunner/installer/libxul-unstable.pc.in
+--- mozilla/xulrunner/installer/libxul-unstable.pc.in	2008-01-05 07:50:34.000000000 +0100
++++ mozilla.new/xulrunner/installer/libxul-unstable.pc.in	2008-07-07 20:00:35.000000000 +0200
+@@ -1,5 +1,6 @@
+ prefix=%prefix%
+ sdkdir=%sdkdir%
++libdir=%libdir%
+ includedir=%includedir%
+ idldir=%idldir%
+ includetype=unstable
+@@ -9,4 +10,4 @@
+ Version: %MOZILLA_VERSION%
+ Requires: %NSPR_NAME% >= %NSPR_VERSION%
+ Libs: -L${sdkdir}/lib -lxpcomglue_s -lxul -lxpcom
+-Cflags: -I${includedir}/${includetype} -fshort-wchar
++Cflags: -I${includedir} -fshort-wchar
+diff -urN mozilla/xulrunner/installer/libxul.pc.in mozilla.new/xulrunner/installer/libxul.pc.in
+--- mozilla/xulrunner/installer/libxul.pc.in	2007-08-03 16:46:28.000000000 +0200
++++ mozilla.new/xulrunner/installer/libxul.pc.in	2008-07-07 20:00:09.000000000 +0200
+@@ -1,7 +1,8 @@
+ prefix=%prefix%
+ sdkdir=%sdkdir%
++libdir=%libdir%
+ includedir=%includedir%
+-idldir=%idldir%
++idldir=%idldir%/stable
+ includetype=stable
+ 
+ # Note: the default pkg-config includes will only list include directories
+@@ -13,4 +14,4 @@
  Version: %MOZILLA_VERSION%
  Requires: %NSPR_NAME% >= %NSPR_VERSION%
  Libs: -L${sdkdir}/lib -lxpcomglue_s -lxul -lxpcom
 -Cflags: -I${includedir}/${includetype} -fshort-wchar
 \ No newline at end of file
 +Cflags: -I${includedir}/${includetype} -fshort-wchar
-diff -ur mozilla.orig/xulrunner/installer/libxul-unstable.pc.in mozilla/xulrunner/installer/libxul-unstable.pc.in
---- mozilla.orig/xulrunner/installer/libxul-unstable.pc.in	2008-01-05 07:50:34.000000000 +0100
-+++ mozilla/xulrunner/installer/libxul-unstable.pc.in	2008-06-21 00:24:31.000000000 +0200
-@@ -9,4 +9,4 @@
- Version: %MOZILLA_VERSION%
- Requires: %NSPR_NAME% >= %NSPR_VERSION%
- Libs: -L${sdkdir}/lib -lxpcomglue_s -lxul -lxpcom
--Cflags: -I${includedir}/${includetype} -fshort-wchar
-+Cflags: -I${includedir} -fshort-wchar
-diff -ur mozilla.orig/xulrunner/installer/mozilla-nspr.pc.in mozilla/xulrunner/installer/mozilla-nspr.pc.in
---- mozilla.orig/xulrunner/installer/mozilla-nspr.pc.in	2007-08-03 16:46:28.000000000 +0200
-+++ mozilla/xulrunner/installer/mozilla-nspr.pc.in	2008-06-21 00:25:44.000000000 +0200
+diff -urN mozilla/xulrunner/installer/mozilla-nspr.pc.in mozilla.new/xulrunner/installer/mozilla-nspr.pc.in
+--- mozilla/xulrunner/installer/mozilla-nspr.pc.in	2007-08-03 16:46:28.000000000 +0200
++++ mozilla.new/xulrunner/installer/mozilla-nspr.pc.in	2008-07-07 19:56:15.000000000 +0200
 @@ -7,5 +7,3 @@
  Version: %NSPR_VERSION%
  Libs: %FULL_NSPR_LIBS%
  Cflags: %FULL_NSPR_CFLAGS%
 -
 -
-diff -ur mozilla.orig/xulrunner/installer/mozilla-plugin.pc.in mozilla/xulrunner/installer/mozilla-plugin.pc.in
---- mozilla.orig/xulrunner/installer/mozilla-plugin.pc.in	2007-08-03 16:46:28.000000000 +0200
-+++ mozilla/xulrunner/installer/mozilla-plugin.pc.in	2008-06-27 14:41:13.000000000 +0200
+diff -urN mozilla/xulrunner/installer/mozilla-plugin.pc.in mozilla.new/xulrunner/installer/mozilla-plugin.pc.in
+--- mozilla/xulrunner/installer/mozilla-plugin.pc.in	2007-08-03 16:46:28.000000000 +0200
++++ mozilla.new/xulrunner/installer/mozilla-plugin.pc.in	2008-07-07 19:56:15.000000000 +0200
 @@ -6,4 +6,4 @@
  Description: Mozilla Plug-In API
  Version: %MOZILLA_VERSION%
