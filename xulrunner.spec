@@ -1,7 +1,4 @@
 #
-# TODO:
-#   - check & review pkgconfig files provided by xulrunner
-#
 # Conditional build:
 %bcond_with	tests		# enable tests (whatever they check)
 %bcond_without	gnome		# disable all GNOME components (gnomevfs, gnome, gnomeui)
@@ -50,7 +47,7 @@ BuildRequires:	libjpeg-devel >= 6b
 BuildRequires:	libpng-devel >= 1.2.7
 BuildRequires:	libstdc++-devel
 %{?with_mozldap:BuildRequires:	mozldap-devel >= 6.0}
-BuildRequires:	nspr-devel >= 1:4.6.4
+BuildRequires:	nspr-devel >= 1:4.7
 BuildRequires:	nss-devel >= 1:3.12-2
 BuildRequires:	pango-devel >= 1:1.6.0
 BuildRequires:	perl-modules >= 5.004
@@ -69,7 +66,7 @@ BuildRequires:	zlib-devel >= 1.2.3
 Requires(post):	mktemp >= 1.5-18
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	browser-plugins >= 2.0
-Requires:	nspr >= 1:4.6.4
+Requires:	nspr >= 1:4.7
 Requires:	nss >= 1:3.12-2
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -112,7 +109,7 @@ Summary:	Headers for developing programs that will use XULRunner
 Summary(pl.UTF-8):	Pliki nagłówkowe do tworzenia programów używających XULRunnera
 Group:		X11/Development/Libraries
 Requires:	%{name}-libs = %{version}-%{release}
-Requires:	nspr-devel >= 1:4.6.4
+Requires:	nspr-devel >= 1:4.7
 Requires:	nss-devel >= 1:3.12-2
 Obsoletes:	mozilla-devel
 Obsoletes:	mozilla-firefox-devel
@@ -123,6 +120,18 @@ XULRunner development package.
 
 %description devel -l pl.UTF-8
 Pakiet programistyczny XULRunnera.
+
+%package gnome
+Summary:	GNOME support package for XULRunner
+Summary(pl.UTF-8):	Pakiet wspierający integrację XULRunnera z GNOME
+Group:		X11/Libraries
+Requires:	%{name} = %{version}-%{release}
+
+%description gnome
+GNOME support package for XULRunner.
+
+%description gnome -l pl.UTF-8
+Pakiet wspierający integrację XULRunnera z GNOME.
 
 %prep
 %setup -qc
@@ -311,14 +320,8 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/*.sh
 %attr(755,root,root) %{_libdir}/%{name}/mozilla-xremote-client
 
-%if %{with gnome}
-%attr(755,root,root) %{_libdir}/%{name}/components/libimgicon.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libnkgnomevfs.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libmozgnome.so
-%{_libdir}/%{name}/components/imgicon.xpt
-%endif
-
 %attr(755,root,root) %{_libdir}/%{name}/components/libdbusservice.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libimgicon.so
 
 %{_libdir}/%{name}/components/accessibility*.xpt
 %{_libdir}/%{name}/components/alerts.xpt
@@ -350,6 +353,7 @@ fi
 %{_libdir}/%{name}/components/find.xpt
 %{_libdir}/%{name}/components/gfx*.xpt
 %{_libdir}/%{name}/components/htmlparser.xpt
+%{_libdir}/%{name}/components/imgicon.xpt
 %{_libdir}/%{name}/components/imglib2.xpt
 %{_libdir}/%{name}/components/inspector.xpt
 %{_libdir}/%{name}/components/intl.xpt
@@ -465,4 +469,18 @@ fi
 %{_includedir}/%{name}
 %{_datadir}/idl/%{name}
 %{_libdir}/%{name}-sdk
-%{_pkgconfigdir}/*.pc
+%{_pkgconfigdir}/libxul.pc
+%{_pkgconfigdir}/libxul-embedding.pc
+%{_pkgconfigdir}/libxul-embedding-unstable.pc
+%{_pkgconfigdir}/libxul-unstable.pc
+%{_pkgconfigdir}/mozilla-js.pc
+%{_pkgconfigdir}/mozilla-plugin.pc
+%{_pkgconfigdir}/mozilla-gtkmozembed.pc
+%{_pkgconfigdir}/mozilla-gtkmozembed-embedding.pc
+
+%if %{with gnome}
+%files gnome
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/%{name}/components/libmozgnome.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libnkgnomevfs.so
+%endif
