@@ -36,11 +36,13 @@ BuildRequires:	dbus-glib-devel >= 0.60
 BuildRequires:	freetype-devel >= 1:2.1.8
 %{?with_gnome:BuildRequires:	gnome-vfs2-devel >= 2.0}
 BuildRequires:	gtk+2-devel >= 2:2.10.0
+BuildRequires:	hunspell-devel >= 1.2.3
 %if "%{pld_release}" == "ac"
 %{?with_kerberos:BuildRequires:	heimdal-devel >= 0.7.1}
 %else
 %{?with_kerberos:BuildRequires:	krb5-devel}
 %endif
+BuildRequires:	lcms-devel >= 1.17
 BuildRequires:	libIDL-devel >= 0.8.0
 %{?with_gnome:BuildRequires:	libgnome-devel >= 2.0}
 %{?with_gnome:BuildRequires:	libgnomeui-devel >= 2.2.0}
@@ -73,8 +75,10 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		specflags	-fno-strict-aliasing
 
+# no Provides from private modules
+%define		_noautoprovfiles	%{_libdir}/%{name}/components %{_libdir}/%{name}/plugins
 # no need to require them (we have strict deps for these)
-%define		_noautoreq	libmozjs.so libxpcom.so libxul.so
+%define		_noautoreq		libmozjs.so libxpcom.so libxul.so
 
 %description
 XULRunner is a Mozilla runtime package that can be used to bootstrap
@@ -140,6 +144,10 @@ Pakiet wspierający integrację XULRunnera z GNOME.
 %setup -qc
 cd mozilla
 rm -r nsprpub
+# avoid using included headers (-I. is before HUNSPELL_CFLAGS)
+rm extensions/spellcheck/hunspell/src/{*.hxx,hunspell.h}
+# hunspell needed for factory including mozHunspell.h
+echo 'LOCAL_INCLUDES += $(MOZ_HUNSPELL_CFLAGS)' >> extensions/spellcheck/src/Makefile.in
 
 %patch0 -p1
 %patch1 -p1
@@ -206,10 +214,12 @@ ac_add_options --disable-updater
 ac_add_options --enable-xinerama
 ac_add_options --enable-default-toolkit=cairo-gtk2
 ac_add_options --enable-system-cairo
+ac_add_options --enable-system-hunspell
+ac_add_options --enable-system-lcms
 ac_add_options --enable-system-sqlite
-#ac_add_options --enable-system-lcms
 ac_add_options --enable-xft
 ac_add_options --with-distribution-id=org.pld-linux
+ac_add_options --with-system-bz2
 ac_add_options --with-system-jpeg
 ac_add_options --with-system-nspr
 ac_add_options --with-system-nss
