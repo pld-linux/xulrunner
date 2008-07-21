@@ -73,10 +73,8 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		specflags	-fno-strict-aliasing
 
-# we don't want these to satisfy other mozilla.org products -devel
-%define		_noautoprov	libmozjs.so libxpcom.so
 # no need to require them (we have strict deps for these)
-%define		_noautoreq	libgtkembedmoz.so libmozjs.so libxpcom.so libxul.so
+%define		_noautoreq	libmozjs.so libxpcom.so libxul.so
 
 %description
 XULRunner is a Mozilla runtime package that can be used to bootstrap
@@ -222,7 +220,6 @@ ac_add_options --with-default-mozilla-five-home=%{_libdir}/%{name}
 ac_add_options --disable-pedantic
 ac_add_options --disable-xterm-updates
 ac_add_options --enable-extensions="default,cookie,permissions,spellcheck"
-#ac_add_options --enable-ldap
 ac_add_options --enable-xprint
 ac_add_options --with-pthreads
 ac_add_options --with-x
