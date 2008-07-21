@@ -75,8 +75,8 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		specflags	-fno-strict-aliasing
 
-# no Provides from private modules
-%define		_noautoprovfiles	%{_libdir}/%{name}/components %{_libdir}/%{name}/plugins
+# no Provides from private modules (don't use %{name} here, it expands to each subpackage name...)
+%define		_noautoprovfiles	%{_libdir}/xulrunner/components %{_libdir}/xulrunner/plugins
 # no need to require them (we have strict deps for these)
 %define		_noautoreq		libmozjs.so libxpcom.so libxul.so
 
