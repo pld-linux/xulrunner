@@ -30,11 +30,12 @@ URL:		http://developer.mozilla.org/en/docs/XULRunner
 %{?with_gnome:BuildRequires:	GConf2-devel >= 1.2.1}
 BuildRequires:	automake
 BuildRequires:	bzip2-devel
-BuildRequires:	cairo-devel >= 1.0.0
+BuildRequires:	cairo-devel >= 1.6.0
 BuildRequires:	curl-devel
+BuildRequires:	dbus-glib-devel >= 0.60
 BuildRequires:	freetype-devel >= 1:2.1.8
 %{?with_gnome:BuildRequires:	gnome-vfs2-devel >= 2.0}
-BuildRequires:	gtk+2-devel >= 1:2.0.0
+BuildRequires:	gtk+2-devel >= 2:2.10.0
 %if "%{pld_release}" == "ac"
 %{?with_kerberos:BuildRequires:	heimdal-devel >= 0.7.1}
 %else
@@ -47,15 +48,15 @@ BuildRequires:	libjpeg-devel >= 6b
 BuildRequires:	libpng-devel >= 1.2.7
 BuildRequires:	libstdc++-devel
 %{?with_mozldap:BuildRequires:	mozldap-devel >= 6.0}
-BuildRequires:	nspr-devel >= 1:4.7
+BuildRequires:	nspr-devel >= 1:4.7.1
 BuildRequires:	nss-devel >= 1:3.12-2
-BuildRequires:	pango-devel >= 1:1.6.0
-BuildRequires:	perl-modules >= 5.004
+BuildRequires:	pango-devel >= 1:1.10.0
+BuildRequires:	perl-modules >= 1:5.6
 BuildRequires:	pkgconfig
 BuildRequires:	rpm >= 4.4.9-56
 BuildRequires:	rpmbuild(macros) >= 1.453
 BuildRequires:	sed >= 4.0
-BuildRequires:	sqlite3-devel
+BuildRequires:	sqlite3-devel >= 3.5.4
 BuildRequires:	xorg-lib-libXext-devel
 BuildRequires:	xorg-lib-libXft-devel >= 2.1
 BuildRequires:	xorg-lib-libXinerama-devel
@@ -66,7 +67,7 @@ BuildRequires:	zlib-devel >= 1.2.3
 Requires(post):	mktemp >= 1.5-18
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	browser-plugins >= 2.0
-Requires:	nspr >= 1:4.7
+Requires:	nspr >= 1:4.7.1
 Requires:	nss >= 1:3.12-2
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -97,6 +98,10 @@ innych projektach i produktach.
 Summary:	XULRunner shared libraries
 Summary(pl.UTF-8):	Biblioteki współdzielone XULRunnera
 Group:		X11/Libraries
+Requires:	cairo >= 1.6.0
+Requires:	gtk+2 >= 2:2.10.0
+Requires:	pango >= 1:1.10.0
+Requires:	sqlite3 >= 3.5.4
 
 %description libs
 XULRunner shared libraries.
@@ -109,7 +114,7 @@ Summary:	Headers for developing programs that will use XULRunner
 Summary(pl.UTF-8):	Pliki nagłówkowe do tworzenia programów używających XULRunnera
 Group:		X11/Development/Libraries
 Requires:	%{name}-libs = %{version}-%{release}
-Requires:	nspr-devel >= 1:4.7
+Requires:	nspr-devel >= 1:4.7.1
 Requires:	nss-devel >= 1:3.12-2
 Obsoletes:	mozilla-devel
 Obsoletes:	mozilla-firefox-devel
