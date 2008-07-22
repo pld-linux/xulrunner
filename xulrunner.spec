@@ -47,6 +47,7 @@ BuildRequires:	libIDL-devel >= 0.8.0
 %{?with_gnome:BuildRequires:	libgnome-devel >= 2.0}
 %{?with_gnome:BuildRequires:	libgnomeui-devel >= 2.2.0}
 BuildRequires:	libjpeg-devel >= 6b
+BuildRequires:	libpng(APNG)-devel >= 0.10
 BuildRequires:	libpng-devel >= 1.2.7
 BuildRequires:	libstdc++-devel
 %{?with_mozldap:BuildRequires:	mozldap-devel >= 6.0}
@@ -102,6 +103,8 @@ Summary(pl.UTF-8):	Biblioteki współdzielone XULRunnera
 Group:		X11/Libraries
 Requires:	cairo >= 1.6.0
 Requires:	gtk+2 >= 2:2.10.0
+Requires:	libpng(APNG) >= 0.10
+Requires:	libpng >= 1.2.7
 Requires:	pango >= 1:1.10.0
 Requires:	sqlite3 >= 3.5.4
 
