@@ -29,6 +29,7 @@ Patch5:		%{name}-nss_cflags.patch
 Patch6:		%{name}-paths.patch
 Patch7:		%{name}-pc.patch
 Patch8:		%{name}-prefs.patch
+Patch9:		%{name}-ssl_oldapi.patch
 URL:		http://developer.mozilla.org/en/docs/XULRunner
 %{?with_gnome:BuildRequires:	GConf2-devel >= 1.2.1}
 BuildRequires:	automake
@@ -166,6 +167,7 @@ echo 'LOCAL_INCLUDES += $(MOZ_HUNSPELL_CFLAGS)' >> extensions/spellcheck/src/Mak
 %patch6 -p1
 %patch7 -p1
 %patch8 -p1
+%patch9 -p1
 
 %build
 cd mozilla
