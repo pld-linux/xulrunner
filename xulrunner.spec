@@ -78,6 +78,8 @@ Requires:	nspr >= 1:4.7.1
 Requires:	nss >= 1:3.12-2
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
+%define		filterout_cpp	-D_FORTIFY_SOURCE=[0-9]+
+
 %define		specflags	-fno-strict-aliasing
 
 # no Provides from private modules (don't use %{name} here, it expands to each subpackage name...)
