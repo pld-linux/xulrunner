@@ -1,15 +1,16 @@
 --- mozilla/client.mk~	2008-02-05 02:34:22.000000000 +0000
 +++ mozilla/client.mk	2008-03-06 21:24:57.050429330 +0000
-@@ -680,8 +680,6 @@
+@@ -680,9 +680,6 @@
  CONFIGURES := $(TOPSRCDIR)/configure
  ifeq (,$(filter mozilla/xpcom,$(MOZ_MODULE_LIST)))
    CVSCO_NSPR :=
 -else
--  CONFIGURES += $(TOPSRCDIR)/nsprpub/configure
+-  CONFIGURES += $(if $(wildcard $(TOPSRCDIR)/nsprpub/configure.in), \
+-	$(TOPSRCDIR)/nsprpub/configure, )
  endif
  
  ifeq (,$(filter mozilla/security/manager,$(MOZ_MODULE_LIST)))
-@@ -689,8 +687,6 @@
+@@ -690,8 +687,6 @@
  endif
  ifeq (,$(filter mozilla/directory/xpcom,$(MOZ_MODULE_LIST)))
    CVSCO_LDAPCSDK :=
