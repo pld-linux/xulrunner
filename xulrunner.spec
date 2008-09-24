@@ -5,21 +5,19 @@
 %bcond_without	kerberos	# disable krb5 support
 %bcond_with	mozldap		# build with system mozldap
 #
-%define		rel	2
-%define		firefox_ver	3.0.1
+%define		rel	1
+%define		firefox_ver	3.0.2
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
-Version:	1.9.0.1
-# let's not do epoch bump just because our release was so high, let's wait for 1.9.0.1 or sth
-# or just use version as 1.9.0.0 ?
+Version:	1.9.0.2
 Release:	%{rel}
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
 # Source tarball for xulrunner is in fact firefox tarball (checked on 1.9), so lets use it
 # instead of waiting for mozilla to copy file on ftp.
 Source0:	http://releases.mozilla.org/pub/mozilla.org/firefox/releases/%{firefox_ver}/source/firefox-%{firefox_ver}-source.tar.bz2
-# Source0-md5:	406d67174f8f74ab154a1b17d0881b27
+# Source0-md5:	cad90c7d49fa725d42e5beaa2b8ed8e6
 Patch0:		%{name}-install.patch
 Patch1:		%{name}-rpath.patch
 Patch2:		%{name}-mozldap.patch
