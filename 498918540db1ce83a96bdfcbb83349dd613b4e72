@@ -1,0 +1,2 @@
+- R: myspell-common (symlink %{_libdir}/name/dictionaries -> %{_datadir}/myspell)
+- rel. 2
