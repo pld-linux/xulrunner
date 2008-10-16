@@ -5,7 +5,7 @@
 %bcond_without	kerberos	# disable krb5 support
 %bcond_with	mozldap		# build with system mozldap
 #
-%define		rel	1
+%define		rel	2
 %define		firefox_ver	3.0.3
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
@@ -70,6 +70,7 @@ BuildRequires:	xorg-lib-libXt-devel
 BuildRequires:	zip
 BuildRequires:	zlib-devel >= 1.2.3
 Requires(post):	mktemp >= 1.5-18
+Requires:	myspell-common
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	browser-plugins >= 2.0
 Requires:	nspr >= 1:4.7.1
