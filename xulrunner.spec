@@ -63,17 +63,22 @@ BuildRequires:	rpm >= 4.4.9-56
 BuildRequires:	rpmbuild(macros) >= 1.453
 BuildRequires:	sed >= 4.0
 BuildRequires:	sqlite3-devel >= 3.5.4
+%if "%{pld_release}" == "ac"
+BuildRequires:	xcursor-devel
+BuildRequires:	xft-devel >= 2.1-2
+%else
 BuildRequires:	xorg-lib-libXext-devel
 BuildRequires:	xorg-lib-libXft-devel >= 2.1
 BuildRequires:	xorg-lib-libXinerama-devel
 BuildRequires:	xorg-lib-libXp-devel
 BuildRequires:	xorg-lib-libXt-devel
+%endif
 BuildRequires:	zip
 BuildRequires:	zlib-devel >= 1.2.3
 Requires(post):	mktemp >= 1.5-18
-Requires:	myspell-common
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	browser-plugins >= 2.0
+Requires:	myspell-common
 Requires:	nspr >= 1:4.7.1
 Requires:	nss >= 1:3.12-2
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -109,8 +114,8 @@ Summary(pl.UTF-8):	Biblioteki współdzielone XULRunnera
 Group:		X11/Libraries
 Requires:	cairo >= 1.6.0
 Requires:	gtk+2 >= 2:2.10.0
-Requires:	libpng(APNG) >= 0.10
 Requires:	libpng >= 1.2.7
+Requires:	libpng(APNG) >= 0.10
 Requires:	pango >= 1:1.10.0
 Requires:	sqlite3 >= 3.5.4
 
