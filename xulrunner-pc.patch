@@ -93,3 +93,12 @@ diff -urN mozilla/xulrunner/installer/mozilla-plugin.pc.in mozilla.new/xulrunner
  Requires: %NSPR_NAME% >= %NSPR_VERSION%
 -Cflags: -I${includedir}/stable
 +Cflags: -I${includedir}/stable -I${includedir}/plugin
+diff -urN mozilla/xulrunner/installer/mozilla-js.pc.in mozilla.new/xulrunner/installer/mozilla-js.pc.in
+--- mozilla/xulrunner/installer/mozilla-js.pc.in	2007-08-03 16:46:28.000000000 +0200
++++ mozilla.new/xulrunner/installer/mozilla-js.pc.in	2009-02-18 23:15:40.681314523 +0100
+@@ -7,4 +7,4 @@
+ Version: %MOZILLA_VERSION%
+ Requires: %NSPR_NAME% >= %NSPR_VERSION%
+ Libs: -L${sdkdir}/lib -lmozjs
+-Cflags: -I${includedir}/stable -DXP_UNIX -DJS_THREADSAFE
++Cflags: -I${includedir}/stable -I${includedir}/js -DXP_UNIX -DJS_THREADSAFE
