@@ -28,6 +28,7 @@ Patch6:		%{name}-paths.patch
 Patch7:		%{name}-pc.patch
 Patch8:		%{name}-prefs.patch
 Patch9:		%{name}-ssl_oldapi.patch
+Patch10:	%{name}-gcc44.patch
 URL:		http://developer.mozilla.org/en/docs/XULRunner
 %{?with_gnome:BuildRequires:	GConf2-devel >= 1.2.1}
 BuildRequires:	automake
@@ -174,6 +175,7 @@ echo 'LOCAL_INCLUDES += $(MOZ_HUNSPELL_CFLAGS)' >> extensions/spellcheck/src/Mak
 %patch7 -p1
 %patch8 -p1
 %patch9 -p1
+%patch10 -p1
 
 %build
 cd mozilla
@@ -337,12 +339,14 @@ fi
 %{_libdir}/%{name}/LICENSE
 %{_libdir}/%{name}/README.txt
 %{_libdir}/%{name}/dependentlibs.list
+%{_libdir}/%{name}/crashreporter.ini
 %{_libdir}/%{name}/platform.ini
 
 %attr(755,root,root) %{_libdir}/%{name}/plugins/*.so
 
 %attr(755,root,root) %{_libdir}/%{name}/libjemalloc.so
 
+%attr(755,root,root) %{_libdir}/%{name}/crashreporter
 %attr(755,root,root) %{_libdir}/%{name}/*.sh
 %attr(755,root,root) %{_libdir}/%{name}/mozilla-xremote-client
 
