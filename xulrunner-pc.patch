@@ -18,8 +18,8 @@ diff -urN mozilla/xulrunner/installer/libxul-embedding-unstable.pc.in mozilla.ne
  Version: %MOZILLA_VERSION%
 +Requires: %NSPR_NAME% >= %NSPR_VERSION%
  Libs: -L${sdkdir}/lib -lxpcomglue
--Cflags: -DXPCOM_GLUE -I${includedir}/${includetype} -fshort-wchar
-+Cflags: -DXPCOM_GLUE -I${includedir} -fshort-wchar
+-Cflags: -DXPCOM_GLUE -I${includedir}/${includetype} %WCHAR_CFLAGS%
++Cflags: -DXPCOM_GLUE -I${includedir} %WCHAR_CFLAGS%
 diff -urN mozilla/xulrunner/installer/libxul-embedding.pc.in mozilla.new/xulrunner/installer/libxul-embedding.pc.in
 --- mozilla/xulrunner/installer/libxul-embedding.pc.in	2007-08-03 16:46:28.000000000 +0200
 +++ mozilla.new/xulrunner/installer/libxul-embedding.pc.in	2008-07-07 19:59:11.000000000 +0200
@@ -53,8 +53,8 @@ diff -urN mozilla/xulrunner/installer/libxul-unstable.pc.in mozilla.new/xulrunne
  Version: %MOZILLA_VERSION%
  Requires: %NSPR_NAME% >= %NSPR_VERSION%
  Libs: -L${sdkdir}/lib -lxpcomglue_s -lxul -lxpcom
--Cflags: -I${includedir}/${includetype} -fshort-wchar
-+Cflags: -I${includedir} -fshort-wchar
+-Cflags: -I${includedir}/${includetype} %WCHAR_CFLAGS%
++Cflags: -I${includedir} %WCHAR_CFLAGS%
 diff -urN mozilla/xulrunner/installer/libxul.pc.in mozilla.new/xulrunner/installer/libxul.pc.in
 --- mozilla/xulrunner/installer/libxul.pc.in	2007-08-03 16:46:28.000000000 +0200
 +++ mozilla.new/xulrunner/installer/libxul.pc.in	2008-07-07 20:00:09.000000000 +0200
@@ -72,9 +72,8 @@ diff -urN mozilla/xulrunner/installer/libxul.pc.in mozilla.new/xulrunner/install
  Version: %MOZILLA_VERSION%
  Requires: %NSPR_NAME% >= %NSPR_VERSION%
  Libs: -L${sdkdir}/lib -lxpcomglue_s -lxul -lxpcom
--Cflags: -I${includedir}/${includetype} -fshort-wchar
-\ No newline at end of file
-+Cflags: -I${includedir}/${includetype} -fshort-wchar
+-Cflags: -I${includedir}/${includetype} %WCHAR_CFLAGS%
++Cflags: -I${includedir} %WCHAR_CFLAGS%
 diff -urN mozilla/xulrunner/installer/mozilla-nspr.pc.in mozilla.new/xulrunner/installer/mozilla-nspr.pc.in
 --- mozilla/xulrunner/installer/mozilla-nspr.pc.in	2007-08-03 16:46:28.000000000 +0200
 +++ mozilla.new/xulrunner/installer/mozilla-nspr.pc.in	2008-07-07 19:56:15.000000000 +0200
@@ -91,8 +90,8 @@ diff -urN mozilla/xulrunner/installer/mozilla-plugin.pc.in mozilla.new/xulrunner
  Description: Mozilla Plug-In API
  Version: %MOZILLA_VERSION%
  Requires: %NSPR_NAME% >= %NSPR_VERSION%
--Cflags: -I${includedir}/stable
-+Cflags: -I${includedir}/stable -I${includedir}/plugin
+-Cflags: -I${includedir}/stable -DXP_UNIX %ojidef%
++Cflags: -I${includedir}/stable -I${includedir}/plugin -DXP_UNIX %ojidef%
 diff -urN mozilla/xulrunner/installer/mozilla-js.pc.in mozilla.new/xulrunner/installer/mozilla-js.pc.in
 --- mozilla/xulrunner/installer/mozilla-js.pc.in	2007-08-03 16:46:28.000000000 +0200
 +++ mozilla.new/xulrunner/installer/mozilla-js.pc.in	2009-02-18 23:15:40.681314523 +0100
