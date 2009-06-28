@@ -14,10 +14,10 @@
    nsresult GetExternalErrorReporting(PRBool* state);
    nsresult SetExternalErrorReporting(PRBool aState);
  
-@@ -220,6 +227,7 @@
-   PRPackedBool mHasCleartextPhase;
+@@ -225,6 +232,7 @@
    PRPackedBool mHandshakeInProgress;
    PRPackedBool mAllowTLSIntoleranceTimeout;
+   PRPackedBool mRememberClientAuthCertificate;
 +  BadCertUIStatusType mBadCertUIStatus;
    PRIntervalTime mHandshakeStartTime;
    PRInt32 mPort;
