@@ -6,18 +6,18 @@
 %bcond_with	mozldap		# build with system mozldap
 #
 %define		rel	1
-%define		firefox_ver	3.0.11
+%define		firefox_ver	3.5rc3
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
-Version:	1.9.0.11
+Version:	1.9.1
 Release:	%{rel}
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
 # Source tarball for xulrunner is in fact firefox tarball (checked on 1.9), so lets use it
 # instead of waiting for mozilla to copy file on ftp.
 Source0:	http://releases.mozilla.org/pub/mozilla.org/firefox/releases/%{firefox_ver}/source/firefox-%{firefox_ver}-source.tar.bz2
-# Source0-md5:	b509f7c05e9566ed290e2c098316c7c3
+# Source0-md5:	f8a9146a0a3dcc18fb22b72f4e8a9e94
 Patch0:		%{name}-install.patch
 Patch1:		%{name}-rpath.patch
 Patch2:		%{name}-mozldap.patch
@@ -54,8 +54,8 @@ BuildRequires:	libpng(APNG)-devel >= 0.10
 BuildRequires:	libpng-devel >= 1.2.7
 BuildRequires:	libstdc++-devel
 %{?with_mozldap:BuildRequires:	mozldap-devel >= 6.0}
-BuildRequires:	nspr-devel >= 1:4.7.1
-BuildRequires:	nss-devel >= 1:3.12-2
+BuildRequires:	nspr-devel >= 1:4.8
+BuildRequires:	nss-devel >= 1:3.12.3
 BuildRequires:	pango-devel >= 1:1.10.0
 BuildRequires:	perl-modules >= 1:5.6
 BuildRequires:	pkgconfig
@@ -79,8 +79,8 @@ Requires(post):	mktemp >= 1.5-18
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	browser-plugins >= 2.0
 Requires:	myspell-common
-Requires:	nspr >= 1:4.7.1
-Requires:	nss >= 1:3.12-2
+Requires:	nspr >= 1:4.8
+Requires:	nss >= 1:3.12.3
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		filterout_cpp	-D_FORTIFY_SOURCE=[0-9]+
@@ -130,8 +130,8 @@ Summary:	Headers for developing programs that will use XULRunner
 Summary(pl.UTF-8):	Pliki nagłówkowe do tworzenia programów używających XULRunnera
 Group:		X11/Development/Libraries
 Requires:	%{name}-libs = %{version}-%{release}
-Requires:	nspr-devel >= 1:4.7.1
-Requires:	nss-devel >= 1:3.12-2
+Requires:	nspr-devel >= 1:4.8
+Requires:	nss-devel >= 1:3.12.3
 Obsoletes:	mozilla-devel
 Obsoletes:	mozilla-firefox-devel
 Obsoletes:	seamonkey-devel
@@ -156,6 +156,7 @@ Pakiet wspierający integrację XULRunnera z GNOME.
 
 %prep
 %setup -qc
+mv -f mozilla-1.9.1 mozilla
 cd mozilla
 rm -r nsprpub
 # avoid using included headers (-I. is before HUNSPELL_CFLAGS)
@@ -166,7 +167,7 @@ echo 'LOCAL_INCLUDES += $(MOZ_HUNSPELL_CFLAGS)' >> extensions/spellcheck/src/Mak
 %patch0 -p1
 %patch1 -p1
 %{?with_mozldap:%patch2 -p1}
-%patch3 -p1
+#%patch3 -p1
 %if "%{cc_version}" < "3.4"
 %patch4 -p2
 %endif
