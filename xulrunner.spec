@@ -5,7 +5,7 @@
 %bcond_without	kerberos	# disable krb5 support
 %bcond_with	mozldap		# build with system mozldap
 #
-%define		rel	1
+%define		rel	0.1
 %define		firefox_ver	3.5rc3
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
@@ -344,8 +344,6 @@ fi
 
 %attr(755,root,root) %{_libdir}/%{name}/plugins/*.so
 
-%attr(755,root,root) %{_libdir}/%{name}/libjemalloc.so
-
 %attr(755,root,root) %{_libdir}/%{name}/*.sh
 %attr(755,root,root) %{_libdir}/%{name}/mozilla-xremote-client
 
@@ -414,6 +412,7 @@ fi
 %{_libdir}/%{name}/components/storage.xpt
 %{_libdir}/%{name}/components/toolkitprofile.xpt
 %{_libdir}/%{name}/components/toolkitremote.xpt
+%{_libdir}/%{name}/components/toolkitsearch.xpt
 %{_libdir}/%{name}/components/txmgr.xpt
 %{_libdir}/%{name}/components/txtsvc.xpt
 %{_libdir}/%{name}/components/uconv.xpt
@@ -432,13 +431,13 @@ fi
 
 %{_libdir}/%{name}/components/FeedProcessor.js
 %{_libdir}/%{name}/components/jsconsole-clhandler.js
+%{_libdir}/%{name}/components/NetworkGeolocationProvider.js
 %{_libdir}/%{name}/components/nsAddonRepository.js
 %{_libdir}/%{name}/components/nsBadCertHandler.js
 %{_libdir}/%{name}/components/nsBlocklistService.js
 %{_libdir}/%{name}/components/nsContentDispatchChooser.js
 %{_libdir}/%{name}/components/nsContentPrefService.js
 %{_libdir}/%{name}/components/nsDefaultCLH.js
-%{_libdir}/%{name}/components/nsDictionary.js
 %{_libdir}/%{name}/components/nsDownloadManagerUI.js
 %{_libdir}/%{name}/components/nsExtensionManager.js
 %{_libdir}/%{name}/components/nsFilePicker.js
@@ -448,18 +447,20 @@ fi
 %{_libdir}/%{name}/components/nsLoginInfo.js
 %{_libdir}/%{name}/components/nsLoginManager.js
 %{_libdir}/%{name}/components/nsLoginManagerPrompter.js
+%{_libdir}/%{name}/components/nsPlacesDBFlush.js
 %{_libdir}/%{name}/components/nsProgressDialog.js
 %{_libdir}/%{name}/components/nsProxyAutoConfig.js
-%{_libdir}/%{name}/components/nsResetPref.js
+%{_libdir}/%{name}/components/nsSearchService.js
+%{_libdir}/%{name}/components/nsSearchSuggestions.js
 %{_libdir}/%{name}/components/nsTaggingService.js
 %{_libdir}/%{name}/components/nsTryToClose.js
 %{_libdir}/%{name}/components/nsURLFormatter.js
 %{_libdir}/%{name}/components/nsUpdateService.js
 %{_libdir}/%{name}/components/nsWebHandlerApp.js
 %{_libdir}/%{name}/components/nsXULAppInstall.js
-%{_libdir}/%{name}/components/nsXmlRpcClient.js
 %{_libdir}/%{name}/components/pluginGlue.js
 %{_libdir}/%{name}/components/storage-Legacy.js
+%{_libdir}/%{name}/components/storage-mozStorage.js
 %{_libdir}/%{name}/components/txEXSLTRegExFunctions.js
 
 # do not use *.dat here, so check-files can catch any new files
