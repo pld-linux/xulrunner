@@ -1,45 +1,50 @@
---- mozilla/toolkit/mozapps/installer/packager.mk.orig	2008-04-28 21:14:12.000000000 +0200
-+++ mozilla/toolkit/mozapps/installer/packager.mk	2008-06-20 23:51:52.000000000 +0200
-@@ -339,13 +339,13 @@
+--- mozilla/toolkit/mozapps/installer/packager.mk.orig	2009-06-24 10:22:23.000000000 +0200
++++ mozilla/toolkit/mozapps/installer/packager.mk	2009-06-28 18:59:02.000000000 +0200
+@@ -370,13 +370,13 @@
  # NOTE: this must be a tar now that dist links into the tree so that we
  # do not strip the binaries actually in the tree.
  	@echo "Creating package directory..."
--	@mkdir $(DIST)/$(MOZ_PKG_APPNAME)
+-	@mkdir $(DIST)/$(MOZ_PKG_DIR)
 +	@mkdir -p $(DESTDIR)$(MOZ_PKG_APPDIR)
  ifdef MOZ_PKG_MANIFEST
  	$(RM) -rf $(DIST)/xpt
  	$(call PACKAGER_COPY, "$(DIST)",\
--		 "$(DIST)/$(MOZ_PKG_APPNAME)", \
+-		 "$(DIST)/$(MOZ_PKG_DIR)", \
 +		 "$(DESTDIR)/$(MOZ_PKG_APPDIR)", \
  		"$(MOZ_PKG_MANIFEST)", "$(PKGCP_OS)", 1, 0, 1)
--	$(PERL) $(topsrcdir)/xpinstall/packager/xptlink.pl -s $(DIST) -d $(DIST)/xpt -f $(DIST)/$(MOZ_PKG_APPNAME)/components -v -x "$(XPIDL_LINK)"
-+	$(PERL) $(topsrcdir)/xpinstall/packager/xptlink.pl -s $(DIST) -d $(DIST)/xpt -f $(DESTDIR)/$(MOZ_PKG_APPDIR)/components -v -x "$(XPIDL_LINK)"
+-	$(PERL) $(MOZILLA_DIR)/xpinstall/packager/xptlink.pl -s $(DIST) -d $(DIST)/xpt -f $(DIST)/$(MOZ_PKG_DIR)/components -v -x "$(XPIDL_LINK)"
++	$(PERL) $(MOZILLA_DIR)/xpinstall/packager/xptlink.pl -s $(DIST) -d $(DIST)/xpt -f $(DESTDIR)/$(MOZ_PKG_APPDIR)/components -v -x "$(XPIDL_LINK)"
  else # !MOZ_PKG_MANIFEST
  ifeq ($(MOZ_PKG_FORMAT),DMG)
  # If UNIVERSAL_BINARY, the package will be made from an already-prepared
-@@ -358,7 +358,7 @@
+@@ -385,11 +385,11 @@
+ ifndef STAGE_SDK
+ 	@cd $(DIST) && rsync -auv --copy-unsafe-links $(_APPNAME) $(MOZ_PKG_DIR)
+ else
+-	@cd $(DIST)/bin && tar $(TAR_CREATE_FLAGS) - * | (cd ../$(MOZ_PKG_DIR); tar -xf -)
++	cp -rfLp $(DIST)/bin/* $(DESTDIR)$(MOZ_PKG_APPDIR)
  endif
  endif
  else
--	@cd $(DIST)/bin && tar $(TAR_CREATE_FLAGS) - * | (cd ../$(MOZ_PKG_APPNAME); tar -xf -)
+-	@cd $(DIST)/bin && tar $(TAR_CREATE_FLAGS) - * | (cd ../$(MOZ_PKG_DIR); tar -xf -)
 +	cp -rfLp $(DIST)/bin/* $(DESTDIR)$(MOZ_PKG_APPDIR)
  endif # DMG
  endif # MOZ_PKG_MANIFEST
  ifndef PKG_SKIP_STRIP
-@@ -390,7 +390,7 @@
+@@ -421,7 +421,7 @@
  endif
  	@echo "Removing unpackaged files..."
  ifdef NO_PKG_FILES
--	cd $(DIST)/$(STAGEPATH)$(MOZ_PKG_APPNAME)$(_BINPATH); rm -rf $(NO_PKG_FILES)
+-	cd $(DIST)/$(STAGEPATH)$(MOZ_PKG_DIR)$(_BINPATH); rm -rf $(NO_PKG_FILES)
 +	cd $(DESTDIR)$(MOZ_PKG_APPDIR)$(_BINPATH); rm -rf $(NO_PKG_FILES)
  endif
  ifdef MOZ_PKG_REMOVALS
- 	$(SYSINSTALL) $(MOZ_PKG_REMOVALS_GEN) $(DIST)/$(STAGEPATH)$(MOZ_PKG_APPNAME)$(_BINPATH)
-@@ -414,39 +414,47 @@
+ 	$(SYSINSTALL) $(IFLAGS1) $(MOZ_PKG_REMOVALS_GEN) $(DIST)/$(STAGEPATH)$(MOZ_PKG_DIR)$(_BINPATH)
+@@ -446,39 +446,47 @@
  	$(error "make install" is not supported on this platform. Use "make package" instead.)
  endif
  	$(NSINSTALL) -D $(DESTDIR)$(installdir)
--	(cd $(DIST)/$(MOZ_PKG_APPNAME) && tar $(TAR_CREATE_FLAGS) - .) | \
+-	(cd $(DIST)/$(MOZ_PKG_DIR) && tar $(TAR_CREATE_FLAGS) - .) | \
 -	  (cd $(DESTDIR)$(installdir) && tar -xf -)
  	$(NSINSTALL) -D $(DESTDIR)$(bindir)
  	$(RM) -f $(DESTDIR)$(bindir)/$(MOZ_APP_NAME)
@@ -64,15 +69,16 @@
 +	cp -rfLp $(DIST)/sdk/include/* $(DESTDIR)$(includedir)/stable
  # The dist/include has module subdirectories that we need to flatten
 -	find $(DIST)/include -xtype f -exec $(SYSINSTALL) $(IFLAGS1) {} $(DESTDIR)$(includedir)/unstable \;
-+#	find $(DIST)/include -xtype f -exec $(SYSINSTALL) $(IFLAGS1) {} $(DESTDIR)$(includedir) \;
++#	find $(DIST)/include -xtype f -exec $(SYSINSTALL) $(IFLAGS1) {} $(DESTDIR)$(includedir)/unstable \;
 +	cp -rfLp $(DIST)/include/* $(DESTDIR)$(includedir)
  # IDL directory is stable (dist/sdk/idl) and unstable (dist/idl)
- 	$(NSINSTALL) -D $(DESTDIR)$(idldir)/stable 
+-	$(NSINSTALL) -D $(DESTDIR)$(idldir)/stable 
 -	$(NSINSTALL) -D $(DESTDIR)$(idldir)/unstable
 -	(cd $(DIST)/sdk/idl && tar $(TAR_CREATE_FLAGS) - .) | \
 -	  (cd $(DESTDIR)$(idldir)/stable && tar -xf -)
 -	(cd $(DIST)/idl && tar $(TAR_CREATE_FLAGS) - .) | \
 -	  (cd $(DESTDIR)$(idldir)/unstable && tar -xf -)
++	$(NSINSTALL) -D $(DESTDIR)$(idldir)/stable
 +	$(NSINSTALL) -D $(DESTDIR)$(idldir)
 +	cp -rfLp $(DIST)/sdk/idl/* $(DESTDIR)$(idldir)/stable
 +	cp -rfLp $(DIST)/idl/* $(DESTDIR)$(idldir)
