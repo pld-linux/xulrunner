@@ -5,30 +5,29 @@
 %bcond_without	kerberos	# disable krb5 support
 %bcond_with	mozldap		# build with system mozldap
 #
-%define		rel	1
-%define		firefox_ver	3.0.11
+%define		rel	0.1
+%define		firefox_ver	3.5
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
-Version:	1.9.0.11
+Version:	1.9.1
 Release:	%{rel}
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
 # Source tarball for xulrunner is in fact firefox tarball (checked on 1.9), so lets use it
 # instead of waiting for mozilla to copy file on ftp.
 Source0:	http://releases.mozilla.org/pub/mozilla.org/firefox/releases/%{firefox_ver}/source/firefox-%{firefox_ver}-source.tar.bz2
-# Source0-md5:	b509f7c05e9566ed290e2c098316c7c3
+# Source0-md5:	6dd59399db08963ef022a1d0e5010053
 Patch0:		%{name}-install.patch
 Patch1:		%{name}-rpath.patch
 Patch2:		%{name}-mozldap.patch
-Patch3:		%{name}-configures.patch
-Patch4:		%{name}-gcc3.patch
-Patch5:		%{name}-nss_cflags.patch
-Patch6:		%{name}-paths.patch
-Patch7:		%{name}-pc.patch
-Patch8:		%{name}-prefs.patch
-Patch9:		%{name}-ssl_oldapi.patch
-Patch10:	%{name}-gcc44.patch
+Patch3:		%{name}-gcc3.patch
+Patch4:		%{name}-nss_cflags.patch
+Patch5:		%{name}-paths.patch
+Patch6:		%{name}-pc.patch
+Patch7:		%{name}-prefs.patch
+Patch8:		%{name}-ssl_oldapi.patch
+Patch9:		%{name}-gcc44.patch
 URL:		http://developer.mozilla.org/en/docs/XULRunner
 %{?with_gnome:BuildRequires:	GConf2-devel >= 1.2.1}
 BuildRequires:	automake
@@ -54,8 +53,8 @@ BuildRequires:	libpng(APNG)-devel >= 0.10
 BuildRequires:	libpng-devel >= 1.2.7
 BuildRequires:	libstdc++-devel
 %{?with_mozldap:BuildRequires:	mozldap-devel >= 6.0}
-BuildRequires:	nspr-devel >= 1:4.7.1
-BuildRequires:	nss-devel >= 1:3.12-2
+BuildRequires:	nspr-devel >= 1:4.8
+BuildRequires:	nss-devel >= 1:3.12.3
 BuildRequires:	pango-devel >= 1:1.10.0
 BuildRequires:	perl-modules >= 1:5.6
 BuildRequires:	pkgconfig
@@ -79,8 +78,8 @@ Requires(post):	mktemp >= 1.5-18
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	browser-plugins >= 2.0
 Requires:	myspell-common
-Requires:	nspr >= 1:4.7.1
-Requires:	nss >= 1:3.12-2
+Requires:	nspr >= 1:4.8
+Requires:	nss >= 1:3.12.3
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		filterout_cpp	-D_FORTIFY_SOURCE=[0-9]+
@@ -130,8 +129,8 @@ Summary:	Headers for developing programs that will use XULRunner
 Summary(pl.UTF-8):	Pliki nagłówkowe do tworzenia programów używających XULRunnera
 Group:		X11/Development/Libraries
 Requires:	%{name}-libs = %{version}-%{release}
-Requires:	nspr-devel >= 1:4.7.1
-Requires:	nss-devel >= 1:3.12-2
+Requires:	nspr-devel >= 1:4.8
+Requires:	nss-devel >= 1:3.12.3
 Obsoletes:	mozilla-devel
 Obsoletes:	mozilla-firefox-devel
 Obsoletes:	seamonkey-devel
@@ -156,6 +155,7 @@ Pakiet wspierający integrację XULRunnera z GNOME.
 
 %prep
 %setup -qc
+mv -f mozilla-1.9.1 mozilla
 cd mozilla
 rm -r nsprpub
 # avoid using included headers (-I. is before HUNSPELL_CFLAGS)
@@ -166,16 +166,15 @@ echo 'LOCAL_INCLUDES += $(MOZ_HUNSPELL_CFLAGS)' >> extensions/spellcheck/src/Mak
 %patch0 -p1
 %patch1 -p1
 %{?with_mozldap:%patch2 -p1}
-%patch3 -p1
 %if "%{cc_version}" < "3.4"
-%patch4 -p2
+%patch3 -p2
 %endif
+%patch4 -p1
 %patch5 -p1
 %patch6 -p1
 %patch7 -p1
 %patch8 -p1
 %patch9 -p1
-%patch10 -p1
 
 %build
 cd mozilla
@@ -343,8 +342,6 @@ fi
 
 %attr(755,root,root) %{_libdir}/%{name}/plugins/*.so
 
-%attr(755,root,root) %{_libdir}/%{name}/libjemalloc.so
-
 %attr(755,root,root) %{_libdir}/%{name}/*.sh
 %attr(755,root,root) %{_libdir}/%{name}/mozilla-xremote-client
 
@@ -413,6 +410,7 @@ fi
 %{_libdir}/%{name}/components/storage.xpt
 %{_libdir}/%{name}/components/toolkitprofile.xpt
 %{_libdir}/%{name}/components/toolkitremote.xpt
+%{_libdir}/%{name}/components/toolkitsearch.xpt
 %{_libdir}/%{name}/components/txmgr.xpt
 %{_libdir}/%{name}/components/txtsvc.xpt
 %{_libdir}/%{name}/components/uconv.xpt
@@ -431,13 +429,13 @@ fi
 
 %{_libdir}/%{name}/components/FeedProcessor.js
 %{_libdir}/%{name}/components/jsconsole-clhandler.js
+%{_libdir}/%{name}/components/NetworkGeolocationProvider.js
 %{_libdir}/%{name}/components/nsAddonRepository.js
 %{_libdir}/%{name}/components/nsBadCertHandler.js
 %{_libdir}/%{name}/components/nsBlocklistService.js
 %{_libdir}/%{name}/components/nsContentDispatchChooser.js
 %{_libdir}/%{name}/components/nsContentPrefService.js
 %{_libdir}/%{name}/components/nsDefaultCLH.js
-%{_libdir}/%{name}/components/nsDictionary.js
 %{_libdir}/%{name}/components/nsDownloadManagerUI.js
 %{_libdir}/%{name}/components/nsExtensionManager.js
 %{_libdir}/%{name}/components/nsFilePicker.js
@@ -447,18 +445,20 @@ fi
 %{_libdir}/%{name}/components/nsLoginInfo.js
 %{_libdir}/%{name}/components/nsLoginManager.js
 %{_libdir}/%{name}/components/nsLoginManagerPrompter.js
+%{_libdir}/%{name}/components/nsPlacesDBFlush.js
 %{_libdir}/%{name}/components/nsProgressDialog.js
 %{_libdir}/%{name}/components/nsProxyAutoConfig.js
-%{_libdir}/%{name}/components/nsResetPref.js
+%{_libdir}/%{name}/components/nsSearchService.js
+%{_libdir}/%{name}/components/nsSearchSuggestions.js
 %{_libdir}/%{name}/components/nsTaggingService.js
 %{_libdir}/%{name}/components/nsTryToClose.js
 %{_libdir}/%{name}/components/nsURLFormatter.js
 %{_libdir}/%{name}/components/nsUpdateService.js
 %{_libdir}/%{name}/components/nsWebHandlerApp.js
 %{_libdir}/%{name}/components/nsXULAppInstall.js
-%{_libdir}/%{name}/components/nsXmlRpcClient.js
 %{_libdir}/%{name}/components/pluginGlue.js
 %{_libdir}/%{name}/components/storage-Legacy.js
+%{_libdir}/%{name}/components/storage-mozStorage.js
 %{_libdir}/%{name}/components/txEXSLTRegExFunctions.js
 
 # do not use *.dat here, so check-files can catch any new files
