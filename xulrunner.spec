@@ -5,7 +5,7 @@
 %bcond_without	kerberos	# disable krb5 support
 %bcond_with	mozldap		# build with system mozldap
 #
-%define		rel	1
+%define		rel	2
 %define		firefox_ver	3.5
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
@@ -39,11 +39,7 @@ BuildRequires:	freetype-devel >= 1:2.1.8
 %{?with_gnome:BuildRequires:	gnome-vfs2-devel >= 2.0}
 BuildRequires:	gtk+2-devel >= 2:2.10.0
 BuildRequires:	hunspell-devel >= 1.2.3
-%if "%{pld_release}" == "ac"
 %{?with_kerberos:BuildRequires:	heimdal-devel >= 0.7.1}
-%else
-%{?with_kerberos:BuildRequires:	krb5-devel}
-%endif
 BuildRequires:	lcms-devel >= 1.17
 BuildRequires:	libIDL-devel >= 0.8.0
 %{?with_gnome:BuildRequires:	libgnome-devel >= 2.0}
