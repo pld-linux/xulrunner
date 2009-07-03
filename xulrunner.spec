@@ -5,7 +5,7 @@
 %bcond_without	kerberos	# disable krb5 support
 %bcond_with	mozldap		# build with system mozldap
 #
-%define		rel	2
+%define		rel	3
 %define		firefox_ver	3.5
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
@@ -28,6 +28,7 @@ Patch6:		%{name}-pc.patch
 Patch7:		%{name}-prefs.patch
 Patch8:		%{name}-ssl_oldapi.patch
 Patch9:		%{name}-gcc44.patch
+Patch10:	%{name}-ppc.patch
 URL:		http://developer.mozilla.org/en/docs/XULRunner
 %{?with_gnome:BuildRequires:	GConf2-devel >= 1.2.1}
 BuildRequires:	automake
@@ -171,6 +172,7 @@ echo 'LOCAL_INCLUDES += $(MOZ_HUNSPELL_CFLAGS)' >> extensions/spellcheck/src/Mak
 %patch7 -p1
 %patch8 -p1
 %patch9 -p1
+%patch10 -p1
 
 %build
 cd mozilla
