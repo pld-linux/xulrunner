@@ -10,8 +10,9 @@
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
-Version:	1.9.2
+Version:	1.9.1.1
 Release:	%{rel}
+Epoch:		1
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
 # Source tarball for xulrunner is in fact firefox tarball (checked on 1.9), so lets use it
@@ -72,7 +73,7 @@ BuildRequires:	xorg-lib-libXt-devel
 BuildRequires:	zip
 BuildRequires:	zlib-devel >= 1.2.3
 Requires(post):	mktemp >= 1.5-18
-Requires:	%{name}-libs = %{version}-%{release}
+Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 Requires:	browser-plugins >= 2.0
 Requires:	myspell-common
 Requires:	nspr >= 1:4.8
@@ -125,7 +126,7 @@ Biblioteki współdzielone XULRunnera.
 Summary:	Headers for developing programs that will use XULRunner
 Summary(pl.UTF-8):	Pliki nagłówkowe do tworzenia programów używających XULRunnera
 Group:		X11/Development/Libraries
-Requires:	%{name}-libs = %{version}-%{release}
+Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 Requires:	nspr-devel >= 1:4.8
 Requires:	nss-devel >= 1:3.12.3
 Obsoletes:	mozilla-devel
@@ -142,7 +143,7 @@ Pakiet programistyczny XULRunnera.
 Summary:	GNOME support package for XULRunner
 Summary(pl.UTF-8):	Pakiet wspierający integrację XULRunnera z GNOME
 Group:		X11/Libraries
-Requires:	%{name} = %{version}-%{release}
+Requires:	%{name} = %{epoch}:%{version}-%{release}
 
 %description gnome
 GNOME support package for XULRunner.
