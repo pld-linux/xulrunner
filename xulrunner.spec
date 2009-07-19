@@ -176,6 +176,14 @@ echo 'LOCAL_INCLUDES += $(MOZ_HUNSPELL_CFLAGS)' >> extensions/spellcheck/src/Mak
 %patch10 -p1
 
 %build
+
+if [ "$(grep -E '^[0-9]\.' mozilla/config/milestone.txt)" != "%{version}" ]; then
+	echo >&2
+	echo "Version %{version} does not match mozilla/config/milestone.txt!" >&2
+	echo >&2
+	exit 1
+fi
+
 cd mozilla
 cp -f %{_datadir}/automake/config.* build/autoconf
 
