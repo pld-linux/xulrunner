@@ -4,13 +4,14 @@
 %bcond_without	gnome		# disable all GNOME components (gnomevfs, gnome, gnomeui)
 %bcond_without	kerberos	# disable krb5 support
 %bcond_with	mozldap		# build with system mozldap
+%bcond_with	qt			# build with qt toolkit
 #
 %define		rel	1
-%define		firefox_ver	3.5.1
+%define		firefox_ver	3.5.2
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
-Version:	1.9.1.1
+Version:	1.9.1.2
 Release:	%{rel}
 Epoch:		1
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
@@ -18,7 +19,7 @@ Group:		X11/Applications
 # Source tarball for xulrunner is in fact firefox tarball (checked on 1.9), so lets use it
 # instead of waiting for mozilla to copy file on ftp.
 Source0:	http://releases.mozilla.org/pub/mozilla.org/firefox/releases/%{firefox_ver}/source/firefox-%{firefox_ver}-source.tar.bz2
-# Source0-md5:	18169e189785d680827d4fce94524449
+# Source0-md5:	136867f95c86f3988b7f825e874b85de
 Patch0:		%{name}-install.patch
 Patch1:		%{name}-rpath.patch
 Patch2:		%{name}-mozldap.patch
@@ -39,7 +40,7 @@ BuildRequires:	curl-devel
 BuildRequires:	dbus-glib-devel >= 0.60
 BuildRequires:	freetype-devel >= 1:2.1.8
 %{?with_gnome:BuildRequires:	gnome-vfs2-devel >= 2.0}
-BuildRequires:	gtk+2-devel >= 2:2.10.0
+%{!?with_qt:BuildRequires:	gtk+2-devel >= 2:2.10.0}
 BuildRequires:	hunspell-devel >= 1.2.3
 %{?with_kerberos:BuildRequires:	heimdal-devel >= 0.7.1}
 BuildRequires:	lcms-devel >= 1.17
@@ -110,7 +111,7 @@ Summary:	XULRunner shared libraries
 Summary(pl.UTF-8):	Biblioteki współdzielone XULRunnera
 Group:		X11/Libraries
 Requires:	cairo >= 1.6.0
-Requires:	gtk+2 >= 2:2.10.0
+%{!?with_qt:Requires:	gtk+2 >= 2:2.10.0}
 Requires:	libpng >= 1.2.7
 Requires:	libpng(APNG) >= 0.10
 Requires:	pango >= 1:1.10.0
@@ -234,7 +235,11 @@ ac_add_options --disable-installer
 ac_add_options --disable-javaxpcom
 ac_add_options --disable-updater
 ac_add_options --enable-xinerama
+%if %{with qt}
+ac_add_options --enable-default-toolkit=cairo-qt
+%else
 ac_add_options --enable-default-toolkit=cairo-gtk2
+%endif
 ac_add_options --enable-system-cairo
 ac_add_options --enable-system-hunspell
 ac_add_options --enable-system-lcms
@@ -342,9 +347,6 @@ fi
 %dir %{_libdir}/%{name}/plugins
 %dir %{_libdir}/%{name}/components
 
-%{_libdir}/%{name}/LICENSE
-%{_libdir}/%{name}/README.txt
-%{_libdir}/%{name}/dependentlibs.list
 %{_libdir}/%{name}/platform.ini
 
 %attr(755,root,root) %{_libdir}/%{name}/plugins/*.so
