@@ -309,7 +309,10 @@ install dist/bin/regxpcom $RPM_BUILD_ROOT%{_libdir}/%{name}
 %browser_plugins_add_browser %{name} -p %{_libdir}/%{name}/plugins
 
 # remove unecessary stuff
-rm -f $RPM_BUILD_ROOT%{_libdir}/%{name}/xulrunner
+rm $RPM_BUILD_ROOT%{_libdir}/%{name}/xulrunner
+rm $RPM_BUILD_ROOT%{_libdir}/%{name}/LICENSE
+rm $RPM_BUILD_ROOT%{_libdir}/%{name}/README.txt
+rm $RPM_BUILD_ROOT%{_libdir}/%{name}/dependentlibs.list
 
 %clean
 rm -rf $RPM_BUILD_ROOT
