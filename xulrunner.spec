@@ -300,8 +300,10 @@ ln -s %{_datadir}/myspell $RPM_BUILD_ROOT%{_libdir}/%{name}/dictionaries
 # files created by regxpcom
 touch $RPM_BUILD_ROOT%{_libdir}/%{name}/components/compreg.dat
 touch $RPM_BUILD_ROOT%{_libdir}/%{name}/components/xpti.dat
-
 install dist/bin/regxpcom $RPM_BUILD_ROOT%{_libdir}/%{name}
+
+# created by --register-glibal
+touch $RPM_BUILD_ROOT%{_sysconfdir}/gre.d/%{version}.conf
 
 %{__make} -C build/unix install \
 	DESTDIR=$RPM_BUILD_ROOT
@@ -319,10 +321,14 @@ rm -rf $RPM_BUILD_ROOT
 
 %post
 %update_browser_plugins
+umask 022
+xulrunner --register-global
 
 %postun
 if [ "$1" = 0 ]; then
 	%update_browser_plugins
+	umask 022
+	xulrunner --unregister-global
 fi
 
 %post	libs -p /sbin/ldconfig
@@ -333,7 +339,10 @@ fi
 %attr(755,root,root) %{_bindir}/xulrunner
 %attr(755,root,root) %{_libdir}/%{name}/xulrunner-bin
 
+%dir %{_sysconfdir}/gre.d
 %{_sysconfdir}/gre.d
+%ghost %{_sysconfdir}/gre.d/%{version}.conf
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/gre.d/%{version}.system.conf
 
 # symlinks
 %{_libdir}/%{name}/chrome
