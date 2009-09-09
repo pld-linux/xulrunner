@@ -7,19 +7,19 @@
 %bcond_with	qt			# build with qt toolkit
 #
 %define		rel	1
-%define		firefox_ver	3.5.2
+%define		firefox_ver	3.5.3
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
-Version:	1.9.1.2
+Version:	1.9.1.3
 Release:	%{rel}
 Epoch:		1
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
 # Source tarball for xulrunner is in fact firefox tarball (checked on 1.9), so lets use it
 # instead of waiting for mozilla to copy file on ftp.
-Source0:	http://releases.mozilla.org/pub/mozilla.org/firefox/releases/%{firefox_ver}/source/firefox-%{firefox_ver}-source.tar.bz2
-# Source0-md5:	136867f95c86f3988b7f825e874b85de
+Source0:	http://releases.mozilla.org/pub/mozilla.org/firefox/releases/%{firefox_ver}/source/firefox-%{firefox_ver}.source.tar.bz2
+# Source0-md5:	ca167e69180ab1230aea0763da270a95
 Patch0:		%{name}-install.patch
 Patch1:		%{name}-rpath.patch
 Patch2:		%{name}-mozldap.patch
