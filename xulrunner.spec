@@ -11,7 +11,7 @@ Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
 Version:	1.9.1.3
-Release:	2
+Release:	3
 Epoch:		1
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
@@ -320,12 +320,10 @@ rm -rf $RPM_BUILD_ROOT
 
 %post
 %update_browser_plugins
-umask 022
 
 %postun
 if [ "$1" = 0 ]; then
 	%update_browser_plugins
-	umask 022
 fi
 
 %post	libs -p /sbin/ldconfig
@@ -339,7 +337,7 @@ fi
 %dir %{_sysconfdir}/gre.d
 %{_sysconfdir}/gre.d
 %ghost %{_sysconfdir}/gre.d/%{version}.conf
-%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/gre.d/%{version}.system.conf
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/gre.d/%{version}.conf
 
 # symlinks
 %{_libdir}/%{name}/chrome
