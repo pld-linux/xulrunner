@@ -5,14 +5,13 @@
 %bcond_without	kerberos	# disable krb5 support
 %bcond_with	mozldap		# build with system mozldap
 %bcond_with	qt			# build with qt toolkit
-#
-%define		rel	1
+
 %define		firefox_ver	3.5.3
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
 Version:	1.9.1.3
-Release:	%{rel}
+Release:	2
 Epoch:		1
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
@@ -302,11 +301,11 @@ touch $RPM_BUILD_ROOT%{_libdir}/%{name}/components/compreg.dat
 touch $RPM_BUILD_ROOT%{_libdir}/%{name}/components/xpti.dat
 install dist/bin/regxpcom $RPM_BUILD_ROOT%{_libdir}/%{name}
 
-# created by --register-glibal
-touch $RPM_BUILD_ROOT%{_sysconfdir}/gre.d/%{version}.conf
-
 %{__make} -C build/unix install \
 	DESTDIR=$RPM_BUILD_ROOT
+
+# act like xulrunner --register-global was run
+mv $RPM_BUILD_ROOT/etc/gre.d/%{version}{.system,}.conf
 
 %browser_plugins_add_browser %{name} -p %{_libdir}/%{name}/plugins
 
@@ -322,13 +321,11 @@ rm -rf $RPM_BUILD_ROOT
 %post
 %update_browser_plugins
 umask 022
-xulrunner --register-global
 
 %postun
 if [ "$1" = 0 ]; then
 	%update_browser_plugins
 	umask 022
-	xulrunner --unregister-global
 fi
 
 %post	libs -p /sbin/ldconfig
@@ -358,8 +355,6 @@ fi
 
 %dir %{_libdir}/%{name}/plugins
 %dir %{_libdir}/%{name}/components
-
-%{_libdir}/%{name}/platform.ini
 
 %attr(755,root,root) %{_libdir}/%{name}/plugins/*.so
 
@@ -498,6 +493,7 @@ fi
 %files libs
 %defattr(644,root,root,755)
 %dir %{_libdir}/%{name}
+%{_libdir}/%{name}/platform.ini
 %attr(755,root,root) %{_libdir}/%{name}/libmozjs.so
 %attr(755,root,root) %{_libdir}/%{name}/libxpcom.so
 %attr(755,root,root) %{_libdir}/%{name}/libxul.so
