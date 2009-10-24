@@ -59,7 +59,7 @@ BuildRequires:	pkgconfig
 BuildRequires:	rpm >= 4.4.9-56
 BuildRequires:	rpmbuild(macros) >= 1.453
 BuildRequires:	sed >= 4.0
-BuildRequires:	sqlite3-devel >= 3.5.4
+BuildRequires:	sqlite3-devel >= 3.6.10
 %if "%{pld_release}" == "ac"
 BuildRequires:	xcursor-devel
 BuildRequires:	xft-devel >= 2.1-2
