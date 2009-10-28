@@ -6,7 +6,9 @@
 %bcond_with	mozldap		# build with system mozldap
 %bcond_with	qt			# build with qt toolkit
 
-%define		firefox_ver	3.5.4
+# convert platform for firefox release number: 1.9.1.x -> 3.5.x
+%define		firefox_ver	%(v=%{version}; echo 3.5.${v#1.9.1.})
+
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
