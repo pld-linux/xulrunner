@@ -7,8 +7,8 @@
 %bcond_with	qt			# build with qt toolkit
 
 # convert firefox release number to platform version: 3.5.x -> 1.9.1.x
-%define		xulrunner_ver	%(v=%{firefox_version}; echo 1.9.1.${v#3.5.})
-%define		firefox_ver		3.5.4
+%define		xulrunner_ver	%(v=%{firefox_ver}; echo 1.9.1.${v#3.5.})
+%define		firefox_ver		3.5.5
 
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
@@ -21,7 +21,7 @@ Group:		X11/Applications
 # Source tarball for xulrunner is in fact firefox tarball (checked on 1.9), so lets use it
 # instead of waiting for mozilla to copy file on ftp.
 Source0:	http://releases.mozilla.org/pub/mozilla.org/firefox/releases/%{firefox_ver}/source/firefox-%{firefox_ver}.source.tar.bz2
-# Source0-md5:	0b6ccb1e50d96b7127a18a69399fcf05
+# Source0-md5:	b3d92dfb40584141dc1068efc9bdfccc
 Patch0:		%{name}-install.patch
 Patch1:		%{name}-rpath.patch
 Patch2:		%{name}-mozldap.patch
