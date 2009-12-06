@@ -1,10 +1,17 @@
 #
 # Conditional build:
 %bcond_with	tests		# enable tests (whatever they check)
-%bcond_without	gnome		# disable all GNOME components (gnomevfs, gnome, gnomeui)
+%bcond_without	gnomeui		# disable gnomeui support
+%bcond_without	gnomevfs	# disable GNOME comp. (gconf+libgnome+gnomevfs) and gnomevfs ext.
+%bcond_without	gnome		# disable all GNOME components (gnome+gnomeui+gnomevfs)
 %bcond_without	kerberos	# disable krb5 support
 %bcond_with	mozldap		# build with system mozldap
 %bcond_with	qt			# build with qt toolkit
+
+%if %{without gnome}
+%undefine	with_gnomeui
+%undefine	with_gnomevfs
+%endif
 
 # convert firefox release number to platform version: 3.5.x -> 1.9.1.x
 %define		xulrunner_ver	%(v=%{firefox_ver}; echo 1.9.1.${v#3.5.})
@@ -14,7 +21,7 @@ Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
 Version:	%{xulrunner_ver}
-Release:	2
+Release:	2.1
 Epoch:		1
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
@@ -34,21 +41,21 @@ Patch8:		%{name}-ssl_oldapi.patch
 Patch9:		%{name}-gcc44.patch
 Patch10:	%{name}-ppc.patch
 URL:		http://developer.mozilla.org/en/docs/XULRunner
-%{?with_gnome:BuildRequires:	GConf2-devel >= 1.2.1}
+%{?with_gnomevfs:BuildRequires:	GConf2-devel >= 1.2.1}
 BuildRequires:	automake
 BuildRequires:	bzip2-devel
 BuildRequires:	cairo-devel >= 1.6.0
 BuildRequires:	curl-devel
 BuildRequires:	dbus-glib-devel >= 0.60
 BuildRequires:	freetype-devel >= 1:2.1.8
-%{?with_gnome:BuildRequires:	gnome-vfs2-devel >= 2.0}
+%{?with_gnomevfs:BuildRequires:	gnome-vfs2-devel >= 2.0}
 %{!?with_qt:BuildRequires:	gtk+2-devel >= 2:2.10.0}
-BuildRequires:	hunspell-devel >= 1.2.3
 %{?with_kerberos:BuildRequires:	heimdal-devel >= 0.7.1}
+BuildRequires:	hunspell-devel >= 1.2.3
 BuildRequires:	lcms-devel >= 1.17
 BuildRequires:	libIDL-devel >= 0.8.0
-%{?with_gnome:BuildRequires:	libgnome-devel >= 2.0}
-%{?with_gnome:BuildRequires:	libgnomeui-devel >= 2.2.0}
+%{?with_gnomevfs:BuildRequires:	libgnome-devel >= 2.0}
+%{?with_gnomeui:BuildRequires:	libgnomeui-devel >= 2.2.0}
 BuildRequires:	libjpeg-devel >= 6b
 BuildRequires:	libpng(APNG)-devel >= 0.10
 BuildRequires:	libpng-devel >= 1.2.7
@@ -62,7 +69,8 @@ BuildRequires:	pkgconfig
 BuildRequires:	rpm >= 4.4.9-56
 BuildRequires:	rpmbuild(macros) >= 1.453
 BuildRequires:	sed >= 4.0
-BuildRequires:	sqlite3-devel >= 3.6.10
+BuildRequires:	sqlite3-devel >= 3.6.15
+BuildRequires:	startup-notification-devel
 %if "%{pld_release}" == "ac"
 BuildRequires:	xcursor-devel
 BuildRequires:	xft-devel >= 2.1-2
@@ -193,6 +201,8 @@ cp -f %{_datadir}/automake/config.* build/autoconf
 cat << 'EOF' > .mozconfig
 . $topsrcdir/xulrunner/config/mozconfig
 
+mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/obj-%{_target_cpu}
+
 # Options for 'configure' (same as command-line options).
 ac_add_options --prefix=%{_prefix}
 ac_add_options --exec-prefix=%{_exec_prefix}
@@ -215,8 +225,9 @@ ac_add_options --enable-debugger-info-modules
 ac_add_options --enable-crash-on-assert
 %else
 ac_add_options --disable-debug
+ac_add_options --disable-debug-modules
 ac_add_options --disable-logging
-ac_add_options --enable-optimize="%{rpmcflags}"
+ac_add_options --enable-optimize="%{rpmcflags} -Os"
 %endif
 ac_add_options --disable-strip
 ac_add_options --disable-strip-libs
@@ -225,29 +236,39 @@ ac_add_options --enable-tests
 %else
 ac_add_options --disable-tests
 %endif
-%if %{with gnome}
-ac_add_options --enable-gnomevfs
+%if %{with gnomeui}
 ac_add_options --enable-gnomeui
 %else
-ac_add_options --disable-gnomevfs
 ac_add_options --disable-gnomeui
 %endif
-ac_add_options --disable-freetype2
+%if %{with gnomevfs}
+ac_add_options --enable-gnomevfs
+%else
+ac_add_options --disable-gnomevfs
+%endif
+ac_add_options --disable-crashreporter
 ac_add_options --disable-installer
 ac_add_options --disable-javaxpcom
 ac_add_options --disable-updater
-ac_add_options --enable-xinerama
 %if %{with qt}
 ac_add_options --enable-default-toolkit=cairo-qt
 %else
 ac_add_options --enable-default-toolkit=cairo-gtk2
 %endif
+ac_add_options --disable-xprint
+ac_add_options --enable-canvas
+ac_add_options --enable-libxul
+ac_add_options --enable-pango
+ac_add_options --enable-startup-notification
+ac_add_options --enable-svg
 ac_add_options --enable-system-cairo
 ac_add_options --enable-system-hunspell
 ac_add_options --enable-system-lcms
 ac_add_options --enable-system-sqlite
-ac_add_options --enable-xft
+#ac_add_options --enable-xft
+ac_add_options --enable-xinerama
 ac_add_options --with-distribution-id=org.pld-linux
+ac_add_options --with-pthreads
 ac_add_options --with-system-bz2
 ac_add_options --with-system-jpeg
 ac_add_options --with-system-nspr
@@ -259,8 +280,6 @@ ac_add_options --with-default-mozilla-five-home=%{_libdir}/%{name}
 ac_add_options --disable-pedantic
 ac_add_options --disable-xterm-updates
 ac_add_options --enable-extensions="default,cookie,permissions,spellcheck"
-ac_add_options --enable-xprint
-ac_add_options --with-pthreads
 ac_add_options --with-x
 ac_cv_visibility_pragma=no
 EOF
@@ -273,7 +292,7 @@ EOF
 rm -rf $RPM_BUILD_ROOT
 cd mozilla
 
-%{__make} -C xulrunner/installer install \
+%{__make} -C obj-%{_target_cpu}/xulrunner/installer install \
 	DESTDIR=$RPM_BUILD_ROOT \
 	MOZ_PKG_APPDIR=%{_libdir}/%{name} \
 	INSTALL_SDK=1 \
@@ -302,9 +321,9 @@ ln -s %{_datadir}/myspell $RPM_BUILD_ROOT%{_libdir}/%{name}/dictionaries
 # files created by regxpcom
 touch $RPM_BUILD_ROOT%{_libdir}/%{name}/components/compreg.dat
 touch $RPM_BUILD_ROOT%{_libdir}/%{name}/components/xpti.dat
-install dist/bin/regxpcom $RPM_BUILD_ROOT%{_libdir}/%{name}
+install obj-%{_target_cpu}/dist/bin/regxpcom $RPM_BUILD_ROOT%{_libdir}/%{name}
 
-%{__make} -C build/unix install \
+%{__make} -C obj-%{_target_cpu}/build/unix install \
 	DESTDIR=$RPM_BUILD_ROOT
 
 # act like xulrunner --register-global was run
@@ -522,9 +541,13 @@ fi
 %{_pkgconfigdir}/mozilla-gtkmozembed.pc
 %{_pkgconfigdir}/mozilla-gtkmozembed-embedding.pc
 
-%if %{with gnome}
+%if %{with gnomevfs} || %{with gnomeui}
 %files gnome
 %defattr(644,root,root,755)
+%if %{with gnomeui}
 %attr(755,root,root) %{_libdir}/%{name}/components/libmozgnome.so
+%endif
+%if %{with gnomevfs} || %{with gnomeui}
 %attr(755,root,root) %{_libdir}/%{name}/components/libnkgnomevfs.so
+%endif
 %endif
