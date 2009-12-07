@@ -17,6 +17,9 @@
 %define		xulrunner_ver	%(v=%{firefox_ver}; echo 1.9.1.${v#3.5.})
 %define		firefox_ver		3.5.5
 
+# The actual sqlite version (see RHBZ#480989):
+%define		sqlite_build_version %(pkg-config --silence-errors --modversion sqlite3 2>/dev/null || echo ERROR)
+
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
@@ -125,7 +128,7 @@ Requires:	cairo >= 1.6.0
 Requires:	libpng >= 1.2.7
 Requires:	libpng(APNG) >= 0.10
 Requires:	pango >= 1:1.10.0
-Requires:	sqlite3 >= 3.5.4
+Requires:	sqlite3 >= %{sqlite_build_version}
 
 %description libs
 XULRunner shared libraries.
