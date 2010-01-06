@@ -15,7 +15,7 @@
 
 # convert firefox release number to platform version: 3.5.x -> 1.9.1.x
 %define		xulrunner_ver	%(v=%{firefox_ver}; echo 1.9.1.${v#3.5.})
-%define		firefox_ver		3.5.6
+%define		firefox_ver		3.5.7
 
 # The actual sqlite version (see RHBZ#480989):
 %define		sqlite_build_version %(pkg-config --silence-errors --modversion sqlite3 2>/dev/null || echo ERROR)
@@ -31,7 +31,7 @@ Group:		X11/Applications
 # Source tarball for xulrunner is in fact firefox tarball (checked on 1.9), so lets use it
 # instead of waiting for mozilla to copy file on ftp.
 Source0:	http://releases.mozilla.org/pub/mozilla.org/firefox/releases/%{firefox_ver}/source/firefox-%{firefox_ver}.source.tar.bz2
-# Source0-md5:	54d73156dfedc6e4981f2a3c46817f9a
+# Source0-md5:	82e6f568ddeaae52e85aa089277f5d14
 Patch0:		%{name}-install.patch
 Patch1:		%{name}-rpath.patch
 Patch2:		%{name}-mozldap.patch
