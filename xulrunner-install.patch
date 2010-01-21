@@ -5,7 +5,7 @@
  # do not strip the binaries actually in the tree.
  	@echo "Creating package directory..."
 -	@mkdir $(DIST)/$(MOZ_PKG_DIR)
-+	@mkdir $(DESTDIR)/$(MOZ_PKG_DIR)
++	@mkdir -p $(DESTDIR)/$(MOZ_PKG_DIR) $(DESTDIR)/$(MOZ_PKG_APPDIR)
  ifdef MOZ_PKG_MANIFEST
  	$(RM) -rf $(DIST)/xpt
  	$(call PACKAGER_COPY, "$(call core_abspath,$(DIST))",\
