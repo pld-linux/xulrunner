@@ -13,9 +13,11 @@
 %undefine	with_gnomevfs
 %endif
 
-# convert firefox release number to platform version: 3.5.x -> 1.9.1.x
-%define		xulrunner_ver	%(v=%{firefox_ver}; echo 1.9.1.${v#3.5.})
-%define		firefox_ver		3.5.7
+# convert firefox release number to platform version: 3.6.x -> 1.9.2.x
+%define		xulrunner_main	1.9.2
+# %%define		xulrunner_ver	%(v=%{firefox_ver}; echo %{xulrunner_main}.${v#3.6.})
+%define		xulrunner_ver   %{xulrunner_main}
+%define		firefox_ver		3.6
 
 # The actual sqlite version (see RHBZ#480989):
 %define		sqlite_build_version %(pkg-config --silence-errors --modversion sqlite3 2>/dev/null || echo ERROR)
@@ -24,14 +26,14 @@ Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
 Version:	%{xulrunner_ver}
-Release:	2
+Release:	1
 Epoch:		1
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
 # Source tarball for xulrunner is in fact firefox tarball (checked on 1.9), so lets use it
 # instead of waiting for mozilla to copy file on ftp.
 Source0:	http://releases.mozilla.org/pub/mozilla.org/firefox/releases/%{firefox_ver}/source/firefox-%{firefox_ver}.source.tar.bz2
-# Source0-md5:	82e6f568ddeaae52e85aa089277f5d14
+# Source0-md5:	458051557ff49e6a352c1d56eee5782a
 Patch0:		%{name}-install.patch
 Patch1:		%{name}-rpath.patch
 Patch2:		%{name}-mozldap.patch
@@ -41,8 +43,7 @@ Patch5:		%{name}-paths.patch
 Patch6:		%{name}-pc.patch
 Patch7:		%{name}-prefs.patch
 Patch8:		%{name}-ssl_oldapi.patch
-Patch9:		%{name}-gcc44.patch
-Patch10:	%{name}-ppc.patch
+Patch9:		%{name}-ppc.patch
 URL:		http://developer.mozilla.org/en/docs/XULRunner
 %{?with_gnomevfs:BuildRequires:	GConf2-devel >= 1.2.1}
 BuildRequires:	automake
@@ -167,7 +168,7 @@ Pakiet wspierający integrację XULRunnera z GNOME.
 
 %prep
 %setup -qc
-mv -f mozilla-1.9.1 mozilla
+mv -f mozilla-%{xulrunner_main} mozilla
 cd mozilla
 rm -r nsprpub
 # avoid using included headers (-I. is before HUNSPELL_CFLAGS)
@@ -187,7 +188,6 @@ echo 'LOCAL_INCLUDES += $(MOZ_HUNSPELL_CFLAGS)' >> extensions/spellcheck/src/Mak
 %patch7 -p1
 %patch8 -p1
 %patch9 -p1
-%patch10 -p1
 
 %build
 
@@ -537,8 +537,6 @@ fi
 %{_libdir}/%{name}-sdk
 %{_pkgconfigdir}/libxul.pc
 %{_pkgconfigdir}/libxul-embedding.pc
-%{_pkgconfigdir}/libxul-embedding-unstable.pc
-%{_pkgconfigdir}/libxul-unstable.pc
 %{_pkgconfigdir}/mozilla-js.pc
 %{_pkgconfigdir}/mozilla-plugin.pc
 %{_pkgconfigdir}/mozilla-gtkmozembed.pc
