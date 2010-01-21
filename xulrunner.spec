@@ -1,3 +1,7 @@
+# TODO:
+# - package:
+#  /usr/lib64/xulrunner/js
+#  /usr/lib64/xulrunner/nsinstall
 #
 # Conditional build:
 %bcond_with	tests		# enable tests (whatever they check)
@@ -428,7 +432,6 @@ fi
 %{_libdir}/%{name}/components/mimetype.xpt
 %{_libdir}/%{name}/components/moz*.xpt
 %{_libdir}/%{name}/components/necko*.xpt
-%{_libdir}/%{name}/components/oji.xpt
 %{_libdir}/%{name}/components/parentalcontrols.xpt
 %{_libdir}/%{name}/components/pipboot.xpt
 %{_libdir}/%{name}/components/pipnss.xpt
@@ -465,6 +468,7 @@ fi
 %{_libdir}/%{name}/components/zipwriter.xpt
 
 %{_libdir}/%{name}/components/FeedProcessor.js
+%{_libdir}/%{name}/components/GPSDGeolocationProvider.js
 %{_libdir}/%{name}/components/jsconsole-clhandler.js
 %{_libdir}/%{name}/components/NetworkGeolocationProvider.js
 %{_libdir}/%{name}/components/nsAddonRepository.js
@@ -476,12 +480,14 @@ fi
 %{_libdir}/%{name}/components/nsDownloadManagerUI.js
 %{_libdir}/%{name}/components/nsExtensionManager.js
 %{_libdir}/%{name}/components/nsFilePicker.js
+%{_libdir}/%{name}/components/nsFormAutoComplete.js
 %{_libdir}/%{name}/components/nsHandlerService.js
 %{_libdir}/%{name}/components/nsHelperAppDlg.js
 %{_libdir}/%{name}/components/nsLivemarkService.js
 %{_libdir}/%{name}/components/nsLoginInfo.js
 %{_libdir}/%{name}/components/nsLoginManager.js
 %{_libdir}/%{name}/components/nsLoginManagerPrompter.js
+%{_libdir}/%{name}/components/nsPlacesAutoComplete.js
 %{_libdir}/%{name}/components/nsPlacesDBFlush.js
 %{_libdir}/%{name}/components/nsProgressDialog.js
 %{_libdir}/%{name}/components/nsProxyAutoConfig.js
@@ -489,8 +495,8 @@ fi
 %{_libdir}/%{name}/components/nsSearchSuggestions.js
 %{_libdir}/%{name}/components/nsTaggingService.js
 %{_libdir}/%{name}/components/nsTryToClose.js
+%{_libdir}/%{name}/components/nsUpdateTimerManager.js
 %{_libdir}/%{name}/components/nsURLFormatter.js
-%{_libdir}/%{name}/components/nsUpdateService.js
 %{_libdir}/%{name}/components/nsWebHandlerApp.js
 %{_libdir}/%{name}/components/nsXULAppInstall.js
 %{_libdir}/%{name}/components/pluginGlue.js
