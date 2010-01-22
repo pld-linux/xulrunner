@@ -335,7 +335,7 @@ install obj-%{_target_cpu}/dist/bin/regxpcom $RPM_BUILD_ROOT%{_libdir}/%{name}
 	DESTDIR=$RPM_BUILD_ROOT
 
 # act like xulrunner --register-global was run
-mv $RPM_BUILD_ROOT/etc/gre.d/%{version}{.system,}.conf
+mv $RPM_BUILD_ROOT/etc/gre.d/%{xulrunner_main}{.system,}.conf
 
 %browser_plugins_add_browser %{name} -p %{_libdir}/%{name}/plugins
 
@@ -365,7 +365,7 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/xulrunner-bin
 
 %dir %{_sysconfdir}/gre.d
-%{_sysconfdir}/gre.d/%{version}.conf
+%{_sysconfdir}/gre.d/%{xulrunner_main}.conf
 
 # symlinks
 %{_libdir}/%{name}/chrome
