@@ -65,6 +65,7 @@ BuildRequires:	libIDL-devel >= 0.8.0
 %{?with_gnomevfs:BuildRequires:	libgnome-devel >= 2.0}
 %{?with_gnomeui:BuildRequires:	libgnomeui-devel >= 2.2.0}
 BuildRequires:	libjpeg-devel >= 6b
+BuildRequires:	libnotify-devel >= 0.4
 BuildRequires:	libpng(APNG)-devel >= 0.10
 BuildRequires:	libpng-devel >= 1.2.7
 BuildRequires:	libstdc++-devel
