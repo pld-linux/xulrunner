@@ -62,8 +62,10 @@ BuildRequires:	freetype-devel >= 1:2.1.8
 BuildRequires:	hunspell-devel >= 1.2.3
 BuildRequires:	lcms-devel >= 1.17
 BuildRequires:	libIDL-devel >= 0.8.0
+BuildRequires:	libdnet-devel
 %{?with_gnomevfs:BuildRequires:	libgnome-devel >= 2.0}
 %{?with_gnomeui:BuildRequires:	libgnomeui-devel >= 2.2.0}
+BuildRequires:	libiw-devel
 BuildRequires:	libjpeg-devel >= 6b
 BuildRequires:	libnotify-devel >= 0.4
 BuildRequires:	libpng(APNG)-devel >= 0.10
