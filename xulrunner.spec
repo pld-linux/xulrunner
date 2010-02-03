@@ -8,7 +8,6 @@
 %bcond_without	gnomeui		# disable gnomeui support
 %bcond_without	gnomevfs	# disable GNOME comp. (gconf+libgnome+gnomevfs) and gnomevfs ext.
 %bcond_without	gnome		# disable all GNOME components (gnome+gnomeui+gnomevfs)
-%bcond_without	kerberos	# disable krb5 support
 %bcond_with	mozldap		# build with system mozldap
 %bcond_with	qt			# build with qt toolkit
 
@@ -54,14 +53,11 @@ URL:		http://developer.mozilla.org/en/docs/XULRunner
 BuildRequires:	automake
 BuildRequires:	bzip2-devel
 BuildRequires:	cairo-devel >= 1.6.0
-BuildRequires:	curl-devel
 BuildRequires:	dbus-glib-devel >= 0.60
 BuildRequires:	freetype-devel >= 1:2.1.8
 %{?with_gnomevfs:BuildRequires:	gnome-vfs2-devel >= 2.0}
 %{!?with_qt:BuildRequires:	gtk+2-devel >= 2:2.10.0}
-%{?with_kerberos:BuildRequires:	heimdal-devel >= 0.7.1}
 BuildRequires:	hunspell-devel >= 1.2.3
-BuildRequires:	lcms-devel >= 1.17
 BuildRequires:	libIDL-devel >= 0.8.0
 BuildRequires:	libdnet-devel
 %{?with_gnomevfs:BuildRequires:	libgnome-devel >= 2.0}
@@ -76,7 +72,6 @@ BuildRequires:	libstdc++-devel
 BuildRequires:	nspr-devel >= 1:4.8
 BuildRequires:	nss-devel >= 1:3.12.3
 BuildRequires:	pango-devel >= 1:1.10.0
-BuildRequires:	perl-modules >= 1:5.6
 BuildRequires:	pkgconfig
 BuildRequires:	rpm >= 4.4.9-56
 BuildRequires:	rpmbuild(macros) >= 1.453
@@ -88,9 +83,7 @@ BuildRequires:	xcursor-devel
 BuildRequires:	xft-devel >= 2.1-2
 %else
 BuildRequires:	xorg-lib-libXext-devel
-BuildRequires:	xorg-lib-libXft-devel >= 2.1
 BuildRequires:	xorg-lib-libXinerama-devel
-BuildRequires:	xorg-lib-libXp-devel
 BuildRequires:	xorg-lib-libXt-devel
 %endif
 BuildRequires:	zip
