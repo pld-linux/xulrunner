@@ -50,6 +50,7 @@ Patch9:		%{name}-ppc.patch
 Patch10:	%{name}-libpng.patch
 URL:		http://developer.mozilla.org/en/docs/XULRunner
 %{?with_gnomevfs:BuildRequires:	GConf2-devel >= 1.2.1}
+BuildRequires:	alsa-lib-devel
 BuildRequires:	automake
 BuildRequires:	bzip2-devel
 BuildRequires:	cairo-devel >= 1.6.0
