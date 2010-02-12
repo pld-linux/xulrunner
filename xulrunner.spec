@@ -18,9 +18,13 @@
 
 # convert firefox release number to platform version: 3.6.x -> 1.9.2.x
 %define		xulrunner_main	1.9.2
+%define		firefox_ver	3.6
+%if "%{pld_release}" == "ti"
+%define		xulrunner_ver	%(v=%{firefox_ver}; echo %{xulrunner_main}${v#3.6})
+%else
 # %%define		xulrunner_ver	%(v=%{firefox_ver}; echo %{xulrunner_main}.${v#3.6.})
 %define		xulrunner_ver   %{xulrunner_main}.%{firefox_ver}
-%define		firefox_ver		3.6
+%endif
 
 # The actual sqlite version (see RHBZ#480989):
 %define		sqlite_build_version %(pkg-config --silence-errors --modversion sqlite3 2>/dev/null || echo ERROR)
