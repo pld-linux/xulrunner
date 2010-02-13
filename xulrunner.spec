@@ -16,14 +16,10 @@
 %undefine	with_gnomevfs
 %endif
 
-# convert firefox release number to platform version: 3.6.x -> 1.9.2.x
+# convert firefox release number to platform version: 3.6 -> 1.9.2, 3.6.x -> 1.9.2.x
 %define		xulrunner_main	1.9.2
 %define		firefox_ver	3.6
-%if "%{pld_release}" == "ti"
 %define		xulrunner_ver	%(v=%{firefox_ver}; echo %{xulrunner_main}${v#3.6})
-%else
-# %%define		xulrunner_ver	%(v=%{firefox_ver}; echo %{xulrunner_main}.${v#3.6.})
-%define		xulrunner_ver   %{xulrunner_main}.%{firefox_ver}
 %endif
 
 # The actual sqlite version (see RHBZ#480989):
@@ -33,7 +29,7 @@ Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
 Version:	%{xulrunner_ver}
-Release:	2
+Release:	3
 Epoch:		1
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
