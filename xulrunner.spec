@@ -20,7 +20,6 @@
 %define		xulrunner_main	1.9.2
 %define		firefox_ver	3.6
 %define		xulrunner_ver	%(v=%{firefox_ver}; echo %{xulrunner_main}${v#3.6})
-%endif
 
 # The actual sqlite version (see RHBZ#480989):
 %define		sqlite_build_version %(pkg-config --silence-errors --modversion sqlite3 2>/dev/null || echo ERROR)
