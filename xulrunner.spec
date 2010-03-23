@@ -18,7 +18,7 @@
 
 # convert firefox release number to platform version: 3.6 -> 1.9.2, 3.6.x -> 1.9.2.x
 %define		xulrunner_main	1.9.2
-%define		firefox_ver	3.6.2
+%define		firefox_ver		3.6.2
 %define		xulrunner_ver	%(v=%{firefox_ver}; echo %{xulrunner_main}${v#3.6})
 
 # The actual sqlite version (see RHBZ#480989):
@@ -193,7 +193,7 @@ echo 'LOCAL_INCLUDES += $(MOZ_HUNSPELL_CFLAGS)' >> extensions/spellcheck/src/Mak
 
 %build
 
-if [ "$(grep -E '^[0-9]\.' mozilla/config/milestone.txt)" != "%{xulrunner_ver}" ]; then
+if [ "$(grep -E '^[0-9]\.' mozilla/config/milestone.txt)" != "%{version}" ]; then
 	echo >&2
 	echo "Version %{version} does not match mozilla/config/milestone.txt!" >&2
 	echo >&2
@@ -332,7 +332,7 @@ install obj-%{_target_cpu}/dist/bin/regxpcom $RPM_BUILD_ROOT%{_libdir}/%{name}
 	DESTDIR=$RPM_BUILD_ROOT
 
 # act like xulrunner --register-global was run
-mv $RPM_BUILD_ROOT/etc/gre.d/%{xulrunner_main}{.system,}.conf
+mv $RPM_BUILD_ROOT/etc/gre.d/%{version}{.system,}.conf
 
 %browser_plugins_add_browser %{name} -p %{_libdir}/%{name}/plugins
 
@@ -362,7 +362,7 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/xulrunner-bin
 
 %dir %{_sysconfdir}/gre.d
-%{_sysconfdir}/gre.d/%{xulrunner_main}.conf
+%{_sysconfdir}/gre.d/%{version}.conf
 
 # symlinks
 %{_libdir}/%{name}/chrome
