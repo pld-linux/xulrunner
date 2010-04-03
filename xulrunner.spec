@@ -18,7 +18,7 @@
 
 # convert firefox release number to platform version: 3.6 -> 1.9.2, 3.6.x -> 1.9.2.x
 %define		xulrunner_main	1.9.2
-%define		firefox_ver		3.6.2
+%define		firefox_ver		3.6.3
 %define		xulrunner_ver	%(v=%{firefox_ver}; echo %{xulrunner_main}${v#3.6})
 
 # The actual sqlite version (see RHBZ#480989):
@@ -28,14 +28,14 @@ Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
 Version:	%{xulrunner_ver}
-Release:	2
+Release:	1
 Epoch:		2
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
 # Source tarball for xulrunner is in fact firefox tarball (checked on 1.9), so lets use it
 # instead of waiting for mozilla to copy file on ftp.
 Source0:	http://releases.mozilla.org/pub/mozilla.org/firefox/releases/%{firefox_ver}/source/firefox-%{firefox_ver}.source.tar.bz2
-# Source0-md5:	a1972a2216ac7139b92b7378a328ec93
+# Source0-md5:	5e4541ab23084b7b14ba228291ce2688
 Patch0:		%{name}-install.patch
 Patch1:		%{name}-rpath.patch
 Patch2:		%{name}-mozldap.patch
@@ -519,7 +519,15 @@ fi
 %defattr(644,root,root,755)
 %dir %{_libdir}/%{name}
 %{_libdir}/%{name}/platform.ini
+%attr(755,root,root) %{_libdir}/%{name}/libfreebl3.so
 %attr(755,root,root) %{_libdir}/%{name}/libmozjs.so
+%attr(755,root,root) %{_libdir}/%{name}/libnss3.so
+%attr(755,root,root) %{_libdir}/%{name}/libnssckbi.so
+%attr(755,root,root) %{_libdir}/%{name}/libnssdbm3.so
+%attr(755,root,root) %{_libdir}/%{name}/libnssutil3.so
+%attr(755,root,root) %{_libdir}/%{name}/libsmime3.so
+%attr(755,root,root) %{_libdir}/%{name}/libsoftokn3.so
+%attr(755,root,root) %{_libdir}/%{name}/libssl3.so
 %attr(755,root,root) %{_libdir}/%{name}/libxpcom.so
 %attr(755,root,root) %{_libdir}/%{name}/libxul.so
 
