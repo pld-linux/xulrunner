@@ -18,7 +18,7 @@
 
 # convert firefox release number to platform version: 3.6 -> 1.9.2, 3.6.x -> 1.9.2.x
 %define		xulrunner_main	1.9.2
-%define		firefox_ver		3.6.3
+%define		firefox_ver		3.6.4
 %define		xulrunner_ver	%(v=%{firefox_ver}; echo %{xulrunner_main}${v#3.6})
 
 # The actual sqlite version (see RHBZ#480989):
@@ -28,14 +28,14 @@ Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
 Version:	%{xulrunner_ver}
-Release:	3
+Release:	1
 Epoch:		2
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
 # Source tarball for xulrunner is in fact firefox tarball (checked on 1.9), so lets use it
 # instead of waiting for mozilla to copy file on ftp.
 Source0:	http://releases.mozilla.org/pub/mozilla.org/firefox/releases/%{firefox_ver}/source/firefox-%{firefox_ver}.source.tar.bz2
-# Source0-md5:	5e4541ab23084b7b14ba228291ce2688
+# Source0-md5:	66b1610362ed6009d66fe762645679a0
 Patch0:		%{name}-install.patch
 Patch1:		%{name}-rpath.patch
 Patch2:		%{name}-mozldap.patch
@@ -382,7 +382,10 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/plugins/*.so
 
 %attr(755,root,root) %{_libdir}/%{name}/*.sh
+%attr(755,root,root) %{_libdir}/%{name}/js
 %attr(755,root,root) %{_libdir}/%{name}/mozilla-xremote-client
+%attr(755,root,root) %{_libdir}/%{name}/nsinstall
+%attr(755,root,root) %{_libdir}/%{name}/plugin-container
 
 %attr(755,root,root) %{_libdir}/%{name}/components/libdbusservice.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libimgicon.so
@@ -481,6 +484,7 @@ fi
 %{_libdir}/%{name}/components/nsFormAutoComplete.js
 %{_libdir}/%{name}/components/nsHandlerService.js
 %{_libdir}/%{name}/components/nsHelperAppDlg.js
+%{_libdir}/%{name}/components/nsINIProcessor.js
 %{_libdir}/%{name}/components/nsLivemarkService.js
 %{_libdir}/%{name}/components/nsLoginInfo.js
 %{_libdir}/%{name}/components/nsLoginManager.js
