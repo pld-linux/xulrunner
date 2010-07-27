@@ -209,6 +209,8 @@ cat << 'EOF' > .mozconfig
 mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/obj-%{_target_cpu}
 
 # Options for 'configure' (same as command-line options).
+ac_add_options --build=%{_target_platform}
+ac_add_options --host=%{_target_platform}
 ac_add_options --prefix=%{_prefix}
 ac_add_options --exec-prefix=%{_exec_prefix}
 ac_add_options --bindir=%{_bindir}
