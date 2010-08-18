@@ -1,0 +1,4 @@
+- "this is wrong, those are already provided by nss" said Fryderyk
+  Dziarmagowski and he was right, obviously. There's no need to add
+  those libs. Reverted.
+- rel. 2
