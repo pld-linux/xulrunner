@@ -28,7 +28,7 @@ Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
 Version:	%{xulrunner_ver}
-Release:	2
+Release:	2.2
 Epoch:		2
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
@@ -328,12 +328,11 @@ ln -s %{_datadir}/myspell $RPM_BUILD_ROOT%{_libdir}/%{name}/dictionaries
 # files created by regxpcom
 touch $RPM_BUILD_ROOT%{_libdir}/%{name}/components/compreg.dat
 touch $RPM_BUILD_ROOT%{_libdir}/%{name}/components/xpti.dat
-install obj-%{_target_cpu}/dist/bin/regxpcom $RPM_BUILD_ROOT%{_libdir}/%{name}
 
 %{__make} -C obj-%{_target_cpu}/build/unix install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-# act like xulrunner --register-global was run
+# act like "xulrunner --register-global" was run
 mv $RPM_BUILD_ROOT/etc/gre.d/%{version}{.system,}.conf
 
 %browser_plugins_add_browser %{name} -p %{_libdir}/%{name}/plugins
@@ -343,6 +342,7 @@ rm $RPM_BUILD_ROOT%{_libdir}/%{name}/xulrunner
 rm $RPM_BUILD_ROOT%{_libdir}/%{name}/LICENSE
 rm $RPM_BUILD_ROOT%{_libdir}/%{name}/README.txt
 rm $RPM_BUILD_ROOT%{_libdir}/%{name}/dependentlibs.list
+rm $RPM_BUILD_ROOT%{_libdir}/%{name}/components/components.list
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -536,12 +536,8 @@ fi
 %attr(755,root,root) %{_bindir}/xpidl
 %attr(755,root,root) %{_bindir}/xpt_dump
 %attr(755,root,root) %{_bindir}/xpt_link
-%attr(755,root,root) %{_libdir}/%{name}/regxpcom
-%attr(755,root,root) %{_libdir}/%{name}/xpcshell
-%attr(755,root,root) %{_libdir}/%{name}/xpidl
-%attr(755,root,root) %{_libdir}/%{name}/xpt_dump
-%attr(755,root,root) %{_libdir}/%{name}/xpt_link
 %attr(755,root,root) %{_libdir}/%{name}/xulrunner-stub
+%attr(755,root,root) %{_libdir}/%{name}/xpcshell
 %{_includedir}/%{name}
 %{_datadir}/idl/%{name}
 %{_libdir}/%{name}-sdk
