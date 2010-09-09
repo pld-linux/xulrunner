@@ -76,7 +76,7 @@ BuildRequires:	pkgconfig
 BuildRequires:	rpm >= 4.4.9-56
 BuildRequires:	rpmbuild(macros) >= 1.453
 BuildRequires:	sed >= 4.0
-BuildRequires:	sqlite3-devel >= 3.6.22
+BuildRequires:	sqlite3-devel >= 3.7.2
 BuildRequires:	startup-notification-devel
 %if "%{pld_release}" == "ac"
 BuildRequires:	xcursor-devel
