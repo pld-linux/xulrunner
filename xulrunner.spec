@@ -1,7 +1,3 @@
-# TODO:
-# - package:
-#  /usr/lib64/xulrunner/js
-#  /usr/lib64/xulrunner/nsinstall
 #
 # Conditional build:
 %bcond_with	tests		# enable tests (whatever they check)
@@ -9,7 +5,7 @@
 %bcond_without	gnomevfs	# disable GNOME comp. (gconf+libgnome+gnomevfs) and gnomevfs ext.
 %bcond_without	gnome		# disable all GNOME components (gnome+gnomeui+gnomevfs)
 %bcond_with	mozldap		# build with system mozldap
-%bcond_with	qt			# build with qt toolkit
+%bcond_with	qt		# build with qt toolkit
 
 %if %{without gnome}
 %undefine	with_gnomeui
@@ -18,7 +14,7 @@
 
 # convert firefox release number to platform version: 3.6 -> 1.9.2, 3.6.x -> 1.9.2.x
 %define		xulrunner_main	1.9.2
-%define		firefox_ver		3.6.10
+%define		firefox_ver	3.6.10
 %define		xulrunner_ver	%(v=%{firefox_ver}; echo %{xulrunner_main}${v#3.6})
 
 # The actual sqlite version (see RHBZ#480989):
@@ -553,7 +549,5 @@ fi
 %if %{with gnomeui}
 %attr(755,root,root) %{_libdir}/%{name}/components/libmozgnome.so
 %endif
-%if %{with gnomevfs} || %{with gnomeui}
 %attr(755,root,root) %{_libdir}/%{name}/components/libnkgnomevfs.so
-%endif
 %endif
