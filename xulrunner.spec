@@ -48,7 +48,7 @@ URL:		http://developer.mozilla.org/en/docs/XULRunner
 BuildRequires:	alsa-lib-devel
 BuildRequires:	automake
 BuildRequires:	bzip2-devel
-BuildRequires:	cairo-devel >= 1.6.0
+BuildRequires:	cairo-devel >= 1.8.8
 BuildRequires:	dbus-glib-devel >= 0.60
 BuildRequires:	freetype-devel >= 1:2.1.8
 %{?with_gnomevfs:BuildRequires:	gnome-vfs2-devel >= 2.0}
@@ -67,13 +67,13 @@ BuildRequires:	libstdc++-devel
 %{?with_mozldap:BuildRequires:	mozldap-devel >= 6.0}
 BuildRequires:	nspr-devel >= 1:4.8
 BuildRequires:	nss-devel >= 1:3.12.6
-BuildRequires:	pango-devel >= 1:1.10.0
+BuildRequires:	pango-devel >= 1:1.14.0
 BuildRequires:	pkgconfig
 BuildRequires:	rpm >= 4.4.9-56
 BuildRequires:	rpmbuild(macros) >= 1.453
 BuildRequires:	sed >= 4.0
 BuildRequires:	sqlite3-devel >= 3.7.2
-BuildRequires:	startup-notification-devel
+BuildRequires:	startup-notification-devel >= 0.8
 %if "%{pld_release}" == "ac"
 BuildRequires:	xcursor-devel
 BuildRequires:	xft-devel >= 2.1-2
@@ -121,12 +121,14 @@ innych projektach i produktach.
 Summary:	XULRunner shared libraries
 Summary(pl.UTF-8):	Biblioteki współdzielone XULRunnera
 Group:		X11/Libraries
-Requires:	cairo >= 1.6.0
+Requires:	cairo >= 1.8.8
+Requires:	dbus-glib >= 0.60
 %{!?with_qt:Requires:	gtk+2 >= 2:2.10.0}
 Requires:	libpng >= 1.2.7
 Requires:	libpng(APNG) >= 0.10
-Requires:	pango >= 1:1.10.0
+Requires:	pango >= 1:1.14.0
 Requires:	sqlite3 >= %{sqlite_build_version}
+Requires:	startup-notification >= 0.8
 
 %description libs
 XULRunner shared libraries.
