@@ -69,6 +69,7 @@ BuildRequires:	nspr-devel >= 1:4.8
 BuildRequires:	nss-devel >= 1:3.12.6
 BuildRequires:	pango-devel >= 1:1.14.0
 BuildRequires:	pkgconfig
+BuildRequires:	python >= 1:2.4
 BuildRequires:	rpm >= 4.4.9-56
 BuildRequires:	rpmbuild(macros) >= 1.453
 BuildRequires:	sed >= 4.0
