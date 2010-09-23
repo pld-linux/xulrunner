@@ -62,7 +62,7 @@ BuildRequires:	libiw-devel
 BuildRequires:	libjpeg-devel >= 6b
 BuildRequires:	libnotify-devel >= 0.4
 BuildRequires:	libpng(APNG)-devel >= 0.10
-BuildRequires:	libpng-devel >= 1.2.7
+BuildRequires:	libpng-devel >= 1.2.17
 BuildRequires:	libstdc++-devel
 %{?with_mozldap:BuildRequires:	mozldap-devel >= 6.0}
 BuildRequires:	nspr-devel >= 1:4.8
@@ -124,7 +124,7 @@ Group:		X11/Libraries
 Requires:	cairo >= 1.8.8
 Requires:	dbus-glib >= 0.60
 %{!?with_qt:Requires:	gtk+2 >= 2:2.10.0}
-Requires:	libpng >= 1.2.7
+Requires:	libpng >= 1.2.17
 Requires:	libpng(APNG) >= 0.10
 Requires:	pango >= 1:1.14.0
 Requires:	sqlite3 >= %{sqlite_build_version}
