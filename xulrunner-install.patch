@@ -38,10 +38,10 @@
  	$(RM) -f $(DESTDIR)$(bindir)/$(MOZ_APP_NAME)
 -	ln -s $(installdir)/$(MOZ_APP_NAME) $(DESTDIR)$(bindir)
 +	ln -s $(installdir)/$(MOZ_APP_NAME)-bin $(DESTDIR)$(bindir)/$(MOZ_APP_NAME)
-+	mv $(DESTDIR)$(MOZ_PKG_APPDIR)/regxpcom $(DESTDIR)$(bindir)/regxpcom
-+	mv $(DESTDIR)$(MOZ_PKG_APPDIR)/xpidl $(DESTDIR)$(bindir)/xpidl
-+	mv $(DESTDIR)$(MOZ_PKG_APPDIR)/xpt_dump $(DESTDIR)$(bindir)/xpt_dump
-+	mv $(DESTDIR)$(MOZ_PKG_APPDIR)/xpt_link $(DESTDIR)$(bindir)/xpt_link
++	ln -s $(MOZ_PKG_APPDIR)/regxpcom $(DESTDIR)$(bindir)/regxpcom
++	ln -s $(MOZ_PKG_APPDIR)/xpidl $(DESTDIR)$(bindir)/xpidl
++	ln -s $(MOZ_PKG_APPDIR)/xpt_dump $(DESTDIR)$(bindir)/xpt_dump
++	ln -s $(MOZ_PKG_APPDIR)/xpt_link $(DESTDIR)$(bindir)/xpt_link
  ifdef INSTALL_SDK # Here comes the hard part
  	$(NSINSTALL) -D $(DESTDIR)$(includedir)
 -	(cd $(DIST)/include && tar $(TAR_CREATE_FLAGS) - .) | \
