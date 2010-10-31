@@ -65,8 +65,8 @@ BuildRequires:	libpng(APNG)-devel >= 0.10
 BuildRequires:	libpng-devel >= 1.2.17
 BuildRequires:	libstdc++-devel
 %{?with_mozldap:BuildRequires:	mozldap-devel >= 6.0}
-BuildRequires:	nspr-devel >= 1:4.8
-BuildRequires:	nss-devel >= 1:3.12.6
+BuildRequires:	nspr-devel >= 1:4.8.6
+BuildRequires:	nss-devel >= 1:3.12.8
 BuildRequires:	pango-devel >= 1:1.14.0
 BuildRequires:	pkgconfig
 BuildRequires:	python >= 1:2.4
@@ -89,8 +89,8 @@ Requires(post):	mktemp >= 1.5-18
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 Requires:	browser-plugins >= 2.0
 Requires:	myspell-common
-Requires:	nspr >= 1:4.8
-Requires:	nss >= 1:3.12.6
+Requires:	nspr >= 1:4.8.6
+Requires:	nss >= 1:3.12.8
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		filterout_cpp	-D_FORTIFY_SOURCE=[0-9]+
@@ -142,8 +142,8 @@ Summary:	Headers for developing programs that will use XULRunner
 Summary(pl.UTF-8):	Pliki nagłówkowe do tworzenia programów używających XULRunnera
 Group:		X11/Development/Libraries
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
-Requires:	nspr-devel >= 1:4.8
-Requires:	nss-devel >= 1:3.12.3
+Requires:	nspr-devel >= 1:4.8.6
+Requires:	nss-devel >= 1:3.12.8
 Obsoletes:	mozilla-devel
 Obsoletes:	mozilla-firefox-devel
 Obsoletes:	seamonkey-devel
