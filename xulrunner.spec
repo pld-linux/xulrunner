@@ -27,7 +27,7 @@ Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
 Version:	%{xulrunner_ver}
-Release:	1
+Release:	2
 Epoch:		2
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
@@ -46,6 +46,8 @@ Patch7:		%{name}-prefs.patch
 Patch8:		%{name}-ssl_oldapi.patch
 Patch9:		%{name}-ppc.patch
 Patch10:	%{name}-libpng.patch
+# http://bugzilla.mozilla.org/show_bug.cgi?id=597174
+Patch11:	fix-animated-gifs.patch
 URL:		http://developer.mozilla.org/en/docs/XULRunner
 %{?with_gnomevfs:BuildRequires:	GConf2-devel >= 1.2.1}
 BuildRequires:	alsa-lib-devel
@@ -192,6 +194,7 @@ echo 'LOCAL_INCLUDES += $(MOZ_HUNSPELL_CFLAGS)' >> extensions/spellcheck/src/Mak
 %patch8 -p1
 %patch9 -p1
 %patch10 -p0
+%patch11 -p1
 
 %build
 
