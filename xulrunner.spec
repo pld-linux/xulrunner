@@ -17,7 +17,7 @@
 
 # convert firefox release number to platform version: 3.6 -> 1.9.2, 3.6.x -> 1.9.2.x
 %define		xulrunner_main	1.9.2
-%define		firefox_ver		3.6.14
+%define		firefox_ver		3.6.15
 %define		xulrunner_ver	%(v=%{firefox_ver}; echo %{xulrunner_main}${v#3.6})
 
 # The actual sqlite version (see RHBZ#480989):
@@ -27,14 +27,14 @@ Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
 Version:	%{xulrunner_ver}
-Release:	2
+Release:	1
 Epoch:		2
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
 # Source tarball for xulrunner is in fact firefox tarball (checked on 1.9), so lets use it
 # instead of waiting for mozilla to copy file on ftp.
-Source0:	http://releases.mozilla.org/pub/mozilla.org/firefox/releases/latest-3.6/source/firefox-%{firefox_ver}.source.tar.bz2
-# Source0-md5:	ab0d00cd33e6b2388429dda1c01abd01
+Source0:	http://releases.mozilla.org/pub/mozilla.org/firefox/releases/%{firefox_ver}/source/firefox-%{firefox_ver}.source.tar.bz2
+# Source0-md5:	fcf8042948d91f1f3d9c33599b79cf35
 Patch0:		%{name}-install.patch
 Patch1:		%{name}-rpath.patch
 Patch2:		%{name}-mozldap.patch
@@ -175,9 +175,9 @@ Pakiet wspierający integrację XULRunnera z GNOME.
 %setup -qc
 mv -f mozilla-%{xulrunner_main} mozilla
 cd mozilla
-rm -r nsprpub
+%{__rm} -r nsprpub
 # avoid using included headers (-I. is before HUNSPELL_CFLAGS)
-rm extensions/spellcheck/hunspell/src/{*.hxx,hunspell.h}
+%{__rm} extensions/spellcheck/hunspell/src/{*.hxx,hunspell.h}
 # hunspell needed for factory including mozHunspell.h
 echo 'LOCAL_INCLUDES += $(MOZ_HUNSPELL_CFLAGS)' >> extensions/spellcheck/src/Makefile.in
 
@@ -206,7 +206,7 @@ if [ "$(grep -E '^[0-9]\.' mozilla/config/milestone.txt)" != "%{version}" ]; the
 fi
 
 cd mozilla
-cp -f %{_datadir}/automake/config.* build/autoconf
+cp -a %{_datadir}/automake/config.* build/autoconf
 
 cat << 'EOF' > .mozconfig
 . $topsrcdir/xulrunner/config/mozconfig
@@ -343,11 +343,11 @@ mv $RPM_BUILD_ROOT/etc/gre.d/%{version}{.system,}.conf
 %browser_plugins_add_browser %{name} -p %{_libdir}/%{name}/plugins
 
 # remove unecessary stuff
-rm $RPM_BUILD_ROOT%{_libdir}/%{name}/xulrunner
-rm $RPM_BUILD_ROOT%{_libdir}/%{name}/LICENSE
-rm $RPM_BUILD_ROOT%{_libdir}/%{name}/README.txt
-rm $RPM_BUILD_ROOT%{_libdir}/%{name}/dependentlibs.list
-rm $RPM_BUILD_ROOT%{_libdir}/%{name}/components/components.list
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/%{name}/xulrunner
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/%{name}/LICENSE
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/%{name}/README.txt
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/%{name}/dependentlibs.list
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/%{name}/components/components.list
 
 %clean
 rm -rf $RPM_BUILD_ROOT
