@@ -170,7 +170,6 @@ Pakiet wspierający integrację XULRunnera z GNOME.
 %setup -qc
 mv -f mozilla-%{xulrunner_main} mozilla
 cd mozilla
-%{__rm} -r nsprpub
 # avoid using included headers (-I. is before HUNSPELL_CFLAGS)
 %{__rm} extensions/spellcheck/hunspell/src/{*.hxx,hunspell.h}
 # hunspell needed for factory including mozHunspell.h
@@ -278,7 +277,6 @@ ac_add_options --disable-pedantic
 ac_add_options --disable-xterm-updates
 ac_add_options --enable-extensions="default,cookie,permissions,spellcheck"
 ac_add_options --with-x
-ac_cv_visibility_pragma=no
 EOF
 
 %{__make} -j1 -f client.mk build \
