@@ -1,26 +1,29 @@
---- mozilla/toolkit/mozapps/installer/packager.mk.org	2010-01-21 13:25:04.436839154 +0100
-+++ mozilla/toolkit/mozapps/installer/packager.mk	2010-01-21 13:32:14.673453287 +0100
-@@ -362,11 +362,11 @@
+diff -urN mozilla-2.0/toolkit//mozapps/installer/packager.mk mozilla-2.0.new/toolkit//mozapps/installer/packager.mk
+--- mozilla-2.0/toolkit//mozapps/installer/packager.mk	2011-03-19 00:34:12.000000000 +0100
++++ mozilla-2.0.new/toolkit//mozapps/installer/packager.mk	2011-03-23 16:13:50.400006328 +0100
+@@ -500,14 +500,14 @@
  # NOTE: this must be a tar now that dist links into the tree so that we
  # do not strip the binaries actually in the tree.
  	@echo "Creating package directory..."
 -	@mkdir $(DIST)/$(MOZ_PKG_DIR)
 +	@mkdir -p $(DESTDIR)/$(MOZ_PKG_DIR) $(DESTDIR)/$(MOZ_PKG_APPDIR)
+ ifndef UNIVERSAL_BINARY
+ # If UNIVERSAL_BINARY, the package will be made from an already-prepared
+ # STAGEPATH
  ifdef MOZ_PKG_MANIFEST
- 	$(RM) -rf $(DIST)/xpt
+ 	$(RM) -rf $(DIST)/xpt $(RM) -rf $(DIST)/manifests
  	$(call PACKAGER_COPY, "$(call core_abspath,$(DIST))",\
--		 "$(call core_abspath,$(DIST)/$(MOZ_PKG_DIR))", \
-+		 "$(call core_abspath,$(DESTDIR)/$(MOZ_PKG_DIR))", \
- 		"$(MOZ_PKG_MANIFEST)", "$(PKGCP_OS)", 1, 0, 1)
+-	  "$(call core_abspath,$(DIST)/$(MOZ_PKG_DIR))", \
++	  "$(call core_abspath,$(DESTDIR)/$(MOZ_PKG_DIR))", \
+ 	  "$(MOZ_PKG_MANIFEST)", "$(PKGCP_OS)", 1, 0, 1)
  	$(PERL) $(MOZILLA_DIR)/xpinstall/packager/xptlink.pl -s $(DIST) -d $(DIST)/xpt -f $(DIST)/$(MOZ_PKG_DIR)/$(_BINPATH)/components -v -x "$(XPIDL_LINK)"
- else # !MOZ_PKG_MANIFEST
-@@ -377,11 +377,11 @@
- ifndef STAGE_SDK
- 	@cd $(DIST) && rsync -auv --copy-unsafe-links $(_APPNAME) $(MOZ_PKG_DIR)
+ 	$(PYTHON) $(MOZILLA_DIR)/toolkit/mozapps/installer/link-manifests.py \
+@@ -529,10 +529,10 @@
+ 	@$(NSINSTALL) -D $(DIST)/xpt
+ 	@($(XPIDL_LINK) $(DIST)/xpt/$(MOZ_PKG_APPNAME).xpt $(DIST)/$(STAGEPATH)$(MOZ_PKG_DIR)$(_BINPATH)/components/*.xpt && rm -f $(DIST)/$(STAGEPATH)$(MOZ_PKG_DIR)$(_BINPATH)/components/*.xpt && cp $(DIST)/xpt/$(MOZ_PKG_APPNAME).xpt $(DIST)/$(STAGEPATH)$(MOZ_PKG_DIR)$(_BINPATH)/components && printf "interfaces $(MOZ_PKG_APPNAME).xpt\n" >$(DIST)/$(STAGEPATH)$(MOZ_PKG_DIR)$(_BINPATH)/components/interfaces.manifest) || echo No *.xpt files found in: $(DIST)/$(STAGEPATH)$(MOZ_PKG_DIR)$(_BINPATH)/components/.  Continuing...
  else
 -	@cd $(DIST)/bin && tar $(TAR_CREATE_FLAGS) - * | (cd ../$(MOZ_PKG_DIR); tar -xf -)
 +	cp -rfLp $(DIST)/bin/* $(DESTDIR)$(MOZ_PKG_APPDIR)
- endif
  endif
  else
 -	@cd $(DIST)/bin && tar $(TAR_CREATE_FLAGS) - * | (cd ../$(MOZ_PKG_DIR); tar -xf -)
@@ -28,8 +31,8 @@
  	@echo "Linking XPT files..."
  	@rm -rf $(DIST)/xpt
  	@$(NSINSTALL) -D $(DIST)/xpt
-@@ -450,24 +450,27 @@
- 	$(error "make install" is not supported on this platform. Use "make package" instead.)
+@@ -620,24 +620,26 @@
+ 	cd $(DIST)/$(STAGEPATH)$(MOZ_PKG_DIR)$(_BINPATH) && $(PACK_OMNIJAR)
  endif
  	$(NSINSTALL) -D $(DESTDIR)$(installdir)
 -	(cd $(DIST)/$(MOZ_PKG_DIR) && tar $(TAR_CREATE_FLAGS) - .) | \
@@ -38,7 +41,6 @@
  	$(RM) -f $(DESTDIR)$(bindir)/$(MOZ_APP_NAME)
 -	ln -s $(installdir)/$(MOZ_APP_NAME) $(DESTDIR)$(bindir)
 +	ln -s $(installdir)/$(MOZ_APP_NAME)-bin $(DESTDIR)$(bindir)/$(MOZ_APP_NAME)
-+	ln -s $(MOZ_PKG_APPDIR)/regxpcom $(DESTDIR)$(bindir)/regxpcom
 +	ln -s $(MOZ_PKG_APPDIR)/xpidl $(DESTDIR)$(bindir)/xpidl
 +	ln -s $(MOZ_PKG_APPDIR)/xpt_dump $(DESTDIR)$(bindir)/xpt_dump
 +	ln -s $(MOZ_PKG_APPDIR)/xpt_link $(DESTDIR)$(bindir)/xpt_link

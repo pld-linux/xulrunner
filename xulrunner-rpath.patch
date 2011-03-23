@@ -1,22 +1,22 @@
---- mozilla/configure.in.orig	2009-06-24 10:20:32.000000000 +0200
-+++ mozilla/configure.in	2009-06-28 19:07:33.000000000 +0200
-@@ -1000,7 +1000,7 @@
- 
- MOZ_JS_LIBS='-L$(LIBXUL_DIST)/bin -lmozjs'
- DYNAMIC_XPCOM_LIBS='-L$(LIBXUL_DIST)/bin -lxpcom -lxpcom_core'
+--- mozilla-2.0/configure.in	2011-03-19 00:33:33.000000000 +0100
++++ mozilla-2.0.new/configure.in	2011-03-23 16:18:45.746667659 +0100
+@@ -1229,7 +1229,7 @@
+ MOZ_JS_STATIC_LIBS='-L$(LIBXUL_DIST)/bin -ljs_static'
+ MOZ_JS_SHARED_LIBS='-L$(LIBXUL_DIST)/bin -lmozjs'
+ DYNAMIC_XPCOM_LIBS='-L$(LIBXUL_DIST)/bin -lxpcom -lxpcom_core -lmozalloc'
 -MOZ_FIX_LINK_PATHS='-Wl,-rpath-link,$(LIBXUL_DIST)/bin -Wl,-rpath-link,$(prefix)/lib'
 +MOZ_FIX_LINK_PATHS='-Wl,-rpath-link,$(LIBXUL_DIST)/bin -Wl,-rpath-link,$(prefix)/lib -Wl,-rpath,$(installdir)'
- XPCOM_FROZEN_LDOPTS='-L$(LIBXUL_DIST)/bin -lxpcom'
+ XPCOM_FROZEN_LDOPTS='-L$(LIBXUL_DIST)/bin -lxpcom -lmozalloc'
  LIBXUL_LIBS='$(XPCOM_FROZEN_LDOPTS) -lxul'
  XPCOM_GLUE_LDOPTS='$(LIBXUL_DIST)/lib/$(LIB_PREFIX)xpcomglue_s.$(LIB_SUFFIX) $(XPCOM_FROZEN_LDOPTS)'
---- mozilla/configure.orig	2009-06-24 10:29:48.000000000 +0200
-+++ mozilla/configure	2009-06-28 19:07:50.000000000 +0200
-@@ -5185,7 +5185,7 @@
- 
- MOZ_JS_LIBS='-L$(LIBXUL_DIST)/bin -lmozjs'
- DYNAMIC_XPCOM_LIBS='-L$(LIBXUL_DIST)/bin -lxpcom -lxpcom_core'
+--- mozilla-2.0/configure	2011-03-19 00:48:56.000000000 +0100
++++ mozilla-2.0.new/configure	2011-03-23 16:19:10.449995855 +0100
+@@ -5856,7 +5856,7 @@
+ MOZ_JS_STATIC_LIBS='-L$(LIBXUL_DIST)/bin -ljs_static'
+ MOZ_JS_SHARED_LIBS='-L$(LIBXUL_DIST)/bin -lmozjs'
+ DYNAMIC_XPCOM_LIBS='-L$(LIBXUL_DIST)/bin -lxpcom -lxpcom_core -lmozalloc'
 -MOZ_FIX_LINK_PATHS='-Wl,-rpath-link,$(LIBXUL_DIST)/bin -Wl,-rpath-link,$(prefix)/lib'
 +MOZ_FIX_LINK_PATHS='-Wl,-rpath-link,$(LIBXUL_DIST)/bin -Wl,-rpath-link,$(prefix)/lib -Wl,-rpath,$(installdir)'
- XPCOM_FROZEN_LDOPTS='-L$(LIBXUL_DIST)/bin -lxpcom'
+ XPCOM_FROZEN_LDOPTS='-L$(LIBXUL_DIST)/bin -lxpcom -lmozalloc'
  LIBXUL_LIBS='$(XPCOM_FROZEN_LDOPTS) -lxul'
  XPCOM_GLUE_LDOPTS='$(LIBXUL_DIST)/lib/$(LIB_PREFIX)xpcomglue_s.$(LIB_SUFFIX) $(XPCOM_FROZEN_LDOPTS)'
