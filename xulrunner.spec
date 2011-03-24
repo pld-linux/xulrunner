@@ -183,9 +183,8 @@ echo 'LOCAL_INCLUDES += $(MOZ_HUNSPELL_CFLAGS)' >> extensions/spellcheck/src/Mak
 %patch4 -p1
 %patch5 -p1
 %patch6 -p1
-# needs update
-#%%patch7 -p1
-#%%patch8 -p1
+%patch7 -p1
+%patch8 -p1
 %patch9 -p1
 
 %build
