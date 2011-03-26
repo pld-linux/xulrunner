@@ -2,13 +2,11 @@
 # Conditional build:
 %bcond_with	tests		# enable tests (whatever they check)
 %bcond_without	gnomeui		# disable gnomeui support
-%bcond_without	gnomevfs	# disable GNOME comp. (gconf+libgnome+gnomevfs) and gnomevfs ext.
-%bcond_without	gnome		# disable all GNOME components (gnome+gnomeui+gnomevfs)
+%bcond_without	gnome		# synonym for gnomeui (gconf, libnotify and gio are still enabled)
 %bcond_with	qt		# build with qt toolkit
 
 %if %{without gnome}
 %undefine	with_gnomeui
-%undefine	with_gnomevfs
 %endif
 
 # On updating version, grab CVE links from:
@@ -44,7 +42,7 @@ Patch7:		%{name}-prefs.patch
 Patch8:		%{name}-ssl_oldapi.patch
 Patch9:		%{name}-ppc.patch
 URL:		http://developer.mozilla.org/en/docs/XULRunner
-%{?with_gnomevfs:BuildRequires:	GConf2-devel >= 1.2.1}
+%{!?with_qt:BuildRequires:	GConf2-devel >= 1.2.1}
 BuildRequires:	alsa-lib-devel
 BuildRequires:	automake
 BuildRequires:	bzip2-devel
@@ -59,7 +57,7 @@ BuildRequires:	libdnet-devel
 %{?with_gnomeui:BuildRequires:	libgnomeui-devel >= 2.2.0}
 BuildRequires:	libiw-devel
 BuildRequires:	libjpeg-devel >= 6b
-BuildRequires:	libnotify-devel >= 0.4
+%{!?with_qt:BuildRequires:	libnotify-devel >= 0.4}
 BuildRequires:	libpng(APNG)-devel >= 0.10
 BuildRequires:	libpng-devel >= 1.2.17
 BuildRequires:	libstdc++-devel
@@ -161,10 +159,12 @@ Group:		X11/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 
 %description gnome
-GNOME support package for XULRunner.
+GNOME support package for XULRunner. It integrates GConf, GIO,
+libnotify%{?with_gnomeui: and GNOME UI}.
 
 %description gnome -l pl.UTF-8
-Pakiet wspierający integrację XULRunnera z GNOME.
+Pakiet wspierający integrację XULRunnera z GNOME. Obejmuje komponenty
+GConf, GIO, libnotify%{?with_gnomeui: oraz GNOME UI}.
 
 %prep
 %setup -qc
@@ -581,10 +581,8 @@ fi
 %{_pkgconfigdir}/mozilla-gtkmozembed.pc
 %{_pkgconfigdir}/mozilla-gtkmozembed-embedding.pc
 
-%if %{with gnomevfs} || %{with gnomeui}
+%if %{without qt}
 %files gnome
 %defattr(644,root,root,755)
-%if %{with gnomeui}
 %attr(755,root,root) %{_libdir}/%{name}/components/libmozgnome.so
-%endif
 %endif
