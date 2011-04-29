@@ -14,7 +14,7 @@
 
 # convert firefox release number to platform version: 4.0.x -> 2.0.x
 %define		xulrunner_main	2.0
-%define		firefox_ver	4.0
+%define		firefox_ver	4.0.1
 %define		xulrunner_ver	%(v=%{firefox_ver}; echo %{xulrunner_main}${v#4.0})
 
 # The actual sqlite version (see RHBZ#480989):
@@ -24,14 +24,14 @@ Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
 Version:	%{xulrunner_ver}
-Release:	2
+Release:	0.1
 Epoch:		2
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
 # Source tarball for xulrunner is in fact firefox tarball (checked on 1.9), so lets use it
 # instead of waiting for mozilla to copy file on ftp.
 Source0:	http://releases.mozilla.org/pub/mozilla.org/firefox/releases/%{firefox_ver}/source/firefox-%{firefox_ver}.source.tar.bz2
-# Source0-md5:	3468a2c463b4fc2788ba621e4b511c30
+# Source0-md5:	9abda7d23151e97913c8555a64c13f34
 Patch0:		%{name}-install.patch
 Patch1:		%{name}-rpath.patch
 Patch3:		%{name}-gcc3.patch
