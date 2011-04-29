@@ -17,7 +17,7 @@
 
 # convert firefox release number to platform version: 3.6 -> 1.9.2, 3.6.x -> 1.9.2.x
 %define		xulrunner_main	1.9.2
-%define		firefox_ver		3.6.16
+%define		firefox_ver		3.6.17
 %define		xulrunner_ver	%(v=%{firefox_ver}; echo %{xulrunner_main}${v#3.6})
 
 # The actual sqlite version (see RHBZ#480989):
@@ -34,7 +34,7 @@ Group:		X11/Applications
 # Source tarball for xulrunner is in fact firefox tarball (checked on 1.9), so lets use it
 # instead of waiting for mozilla to copy file on ftp.
 Source0:	http://releases.mozilla.org/pub/mozilla.org/firefox/releases/%{firefox_ver}/source/firefox-%{firefox_ver}.source.tar.bz2
-# Source0-md5:	232a3c0160cd1cbe3dcaaaf7e4ae51c2
+# Source0-md5:	49509c51010bd91a198aee63780aeaf9
 Patch0:		%{name}-install.patch
 Patch1:		%{name}-rpath.patch
 Patch2:		%{name}-mozldap.patch
@@ -46,8 +46,6 @@ Patch7:		%{name}-prefs.patch
 Patch8:		%{name}-ssl_oldapi.patch
 Patch9:		%{name}-ppc.patch
 Patch10:	%{name}-libpng.patch
-# http://bugzilla.mozilla.org/show_bug.cgi?id=597174
-Patch11:	fix-animated-gifs.patch
 URL:		http://developer.mozilla.org/en/docs/XULRunner
 %{?with_gnomevfs:BuildRequires:	GConf2-devel >= 1.2.1}
 BuildRequires:	alsa-lib-devel
@@ -78,7 +76,7 @@ BuildRequires:	python >= 1:2.4
 BuildRequires:	rpm >= 4.4.9-56
 BuildRequires:	rpmbuild(macros) >= 1.453
 BuildRequires:	sed >= 4.0
-BuildRequires:	sqlite3-devel >= 3.7.2
+BuildRequires:	sqlite3-devel >= 3.7.4
 BuildRequires:	startup-notification-devel >= 0.8
 %if "%{pld_release}" == "ac"
 BuildRequires:	xcursor-devel
@@ -194,7 +192,6 @@ echo 'LOCAL_INCLUDES += $(MOZ_HUNSPELL_CFLAGS)' >> extensions/spellcheck/src/Mak
 %patch8 -p1
 %patch9 -p1
 %patch10 -p0
-%patch11 -p1
 
 %build
 
