@@ -13,9 +13,9 @@
 # https://www.mozilla.org/security/known-vulnerabilities/firefox36.html#firefox3.6.14
 
 # convert firefox release number to platform version: 4.0.x -> 2.0.x
-%define		xulrunner_main	2.0
-%define		firefox_ver	4.0.1
-%define		xulrunner_ver	%(v=%{firefox_ver}; echo %{xulrunner_main}${v#4.0})
+%define		xulrunner_main	5.0
+%define		firefox_ver	5.0
+%define		xulrunner_ver	%(v=%{firefox_ver}; echo %{xulrunner_main}${v#5.0})
 
 # The actual sqlite version (see RHBZ#480989):
 %define		sqlite_build_version %(pkg-config --silence-errors --modversion sqlite3 2>/dev/null || echo ERROR)
@@ -24,14 +24,14 @@ Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
 Version:	%{xulrunner_ver}
-Release:	2
+Release:	1
 Epoch:		2
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
 # Source tarball for xulrunner is in fact firefox tarball (checked on 1.9), so lets use it
 # instead of waiting for mozilla to copy file on ftp.
 Source0:	http://releases.mozilla.org/pub/mozilla.org/firefox/releases/%{firefox_ver}/source/firefox-%{firefox_ver}.source.tar.bz2
-# Source0-md5:	9abda7d23151e97913c8555a64c13f34
+# Source0-md5:	9f64a01e86a5d424e12a8e3305c5debe
 Patch0:		%{name}-install.patch
 Patch1:		%{name}-rpath.patch
 Patch3:		%{name}-gcc3.patch
@@ -168,7 +168,7 @@ GConf, GIO, libnotify%{?with_gnomeui: oraz GNOME UI}.
 
 %prep
 %setup -qc
-mv -f mozilla-%{xulrunner_main} mozilla
+mv -f mozilla-release mozilla
 cd mozilla
 # avoid using included headers (-I. is before HUNSPELL_CFLAGS)
 %{__rm} extensions/spellcheck/hunspell/src/{*.hxx,hunspell.h}
@@ -317,9 +317,6 @@ touch $RPM_BUILD_ROOT%{_libdir}/%{name}/components/xpti.dat
 %{__make} -C obj-%{_target_cpu}/build/unix install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-# act like "xulrunner --register-global" was run
-mv $RPM_BUILD_ROOT/etc/gre.d/%{version}{.system,}.conf
-
 %browser_plugins_add_browser %{name} -p %{_libdir}/%{name}/plugins
 
 # remove unecessary stuff
@@ -346,9 +343,6 @@ fi
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/xulrunner
 %attr(755,root,root) %{_libdir}/%{name}/xulrunner-bin
-
-%dir %{_sysconfdir}/gre.d
-%{_sysconfdir}/gre.d/%{version}.conf
 
 # symlinks
 %{_libdir}/%{name}/chrome
@@ -449,7 +443,6 @@ fi
 %{_libdir}/%{name}/components/webBrowser_core.xpt
 %{_libdir}/%{name}/components/webapps.xpt
 %{_libdir}/%{name}/components/webbrowserpersist.xpt
-%{_libdir}/%{name}/components/webshell_idls.xpt
 %{_libdir}/%{name}/components/widget.xpt
 %{_libdir}/%{name}/components/windowds.xpt
 %{_libdir}/%{name}/components/windowwatcher.xpt

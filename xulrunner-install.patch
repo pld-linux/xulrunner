@@ -11,7 +11,7 @@ diff -urN mozilla-2.0/toolkit//mozapps/installer/packager.mk mozilla-2.0.new/too
  # If UNIVERSAL_BINARY, the package will be made from an already-prepared
  # STAGEPATH
  ifdef MOZ_PKG_MANIFEST
- 	$(RM) -rf $(DIST)/xpt $(RM) -rf $(DIST)/manifests
+ 	$(RM) -rf $(DIST)/xpt $(DIST)/manifests
  	$(call PACKAGER_COPY, "$(call core_abspath,$(DIST))",\
 -	  "$(call core_abspath,$(DIST)/$(MOZ_PKG_DIR))", \
 +	  "$(call core_abspath,$(DESTDIR)/$(MOZ_PKG_DIR))", \
