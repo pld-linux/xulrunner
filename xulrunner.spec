@@ -12,26 +12,21 @@
 # On updating version, grab CVE links from:
 # https://www.mozilla.org/security/known-vulnerabilities/firefox36.html#firefox3.6.14
 
-# convert firefox release number to platform version: 4.0.x -> 2.0.x
-%define		xulrunner_main	5.0
-%define		firefox_ver	5.0
-%define		xulrunner_ver	%(v=%{firefox_ver}; echo %{xulrunner_main}${v#5.0})
-
 # The actual sqlite version (see RHBZ#480989):
 %define		sqlite_build_version %(pkg-config --silence-errors --modversion sqlite3 2>/dev/null || echo ERROR)
 
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
-Version:	%{xulrunner_ver}
+Version:	5.0.1
 Release:	1
 Epoch:		2
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
 # Source tarball for xulrunner is in fact firefox tarball (checked on 1.9), so lets use it
 # instead of waiting for mozilla to copy file on ftp.
-Source0:	http://releases.mozilla.org/pub/mozilla.org/firefox/releases/%{firefox_ver}/source/firefox-%{firefox_ver}.source.tar.bz2
-# Source0-md5:	9f64a01e86a5d424e12a8e3305c5debe
+Source0:	http://releases.mozilla.org/pub/mozilla.org/firefox/releases/%{version}/source/firefox-%{version}.source.tar.bz2
+# Source0-md5:	6d1f43e402cec84459a3d7f950bd5192
 Patch0:		%{name}-install.patch
 Patch1:		%{name}-rpath.patch
 Patch3:		%{name}-gcc3.patch
