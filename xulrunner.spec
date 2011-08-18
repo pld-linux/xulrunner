@@ -19,7 +19,7 @@ Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
 Version:	5.0.1
-Release:	1
+Release:	2
 Epoch:		2
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
@@ -29,13 +29,14 @@ Source0:	http://releases.mozilla.org/pub/mozilla.org/firefox/releases/%{version}
 # Source0-md5:	6d1f43e402cec84459a3d7f950bd5192
 Patch0:		%{name}-install.patch
 Patch1:		%{name}-rpath.patch
-Patch3:		%{name}-gcc3.patch
-Patch4:		%{name}-nss_cflags.patch
-Patch5:		%{name}-paths.patch
-Patch6:		%{name}-pc.patch
-Patch7:		%{name}-prefs.patch
-Patch8:		%{name}-ssl_oldapi.patch
-Patch9:		%{name}-ppc.patch
+Patch2:		%{name}-gcc3.patch
+Patch3:		%{name}-nss_cflags.patch
+Patch4:		%{name}-paths.patch
+Patch5:		%{name}-pc.patch
+Patch6:		%{name}-prefs.patch
+Patch7:		%{name}-ssl_oldapi.patch
+Patch8:		%{name}-ppc.patch
+Patch9:		%{name}-gtkmozembed.patch
 URL:		http://developer.mozilla.org/en/docs/XULRunner
 %{!?with_qt:BuildRequires:	GConf2-devel >= 1.2.1}
 BuildRequires:	alsa-lib-devel
@@ -49,14 +50,15 @@ BuildRequires:	glib2-devel >= 1:2.16.0
 BuildRequires:	hunspell-devel >= 1.2.3
 BuildRequires:	libIDL-devel >= 0.8.0
 BuildRequires:	libdnet-devel
+BuildRequires:	libevent-devel >= 1.4.7
 %{?with_gnomeui:BuildRequires:	libgnomeui-devel >= 2.2.0}
 BuildRequires:	libiw-devel
 BuildRequires:	libjpeg-devel >= 6b
 %{!?with_qt:BuildRequires:	libnotify-devel >= 0.4}
 BuildRequires:	libpng(APNG)-devel >= 0.10
-BuildRequires:	libpng-devel >= 1.2.17
+BuildRequires:	libpng-devel >= 1.4.1
 BuildRequires:	libstdc++-devel
-BuildRequires:  libvpx-devel
+BuildRequires:	libvpx-devel
 BuildRequires:	nspr-devel >= 1:4.8.7
 BuildRequires:	nss-devel >= 1:3.12.9
 BuildRequires:	pango-devel >= 1:1.14.0
@@ -71,7 +73,7 @@ BuildRequires:	startup-notification-devel >= 0.8
 BuildRequires:	xcursor-devel
 BuildRequires:	xft-devel >= 2.1-2
 %else
-BuildRequires:  xorg-lib-libXScrnSaver-devel
+BuildRequires:	xorg-lib-libXScrnSaver-devel
 BuildRequires:	xorg-lib-libXext-devel
 BuildRequires:	xorg-lib-libXinerama-devel
 BuildRequires:	xorg-lib-libXt-devel
@@ -118,7 +120,7 @@ Group:		X11/Libraries
 Requires:	cairo >= 1.10.2-5
 Requires:	dbus-glib >= 0.60
 %{!?with_qt:Requires:	gtk+2 >= 2:2.10.0}
-Requires:	libpng >= 1.2.17
+Requires:	libpng >= 1.4.1
 Requires:	libpng(APNG) >= 0.10
 Requires:	pango >= 1:1.14.0
 Requires:	sqlite3 >= %{sqlite_build_version}
@@ -173,17 +175,17 @@ echo 'LOCAL_INCLUDES += $(MOZ_HUNSPELL_CFLAGS)' >> extensions/spellcheck/src/Mak
 %patch0 -p1
 %patch1 -p1
 %if "%{cc_version}" < "3.4"
-#%%patch3 -p2
+#%%patch2 -p2
 %endif
+%patch3 -p1
 %patch4 -p1
 %patch5 -p1
 %patch6 -p1
 %patch7 -p1
 %patch8 -p1
-%patch9 -p1
+%patch9 -p2
 
 %build
-
 if [ "$(grep -E '^[0-9]\.' mozilla/config/milestone.txt)" != "%{version}" ]; then
 	echo >&2
 	echo "Version %{version} does not match mozilla/config/milestone.txt!" >&2
@@ -261,10 +263,11 @@ ac_add_options --with-distribution-id=org.pld-linux
 ac_add_options --with-pthreads
 ac_add_options --with-system-bz2
 ac_add_options --with-system-jpeg
+ac_add_options --with-system-libevent
+ac_add_options --with-system-libvpx
 ac_add_options --with-system-nspr
 ac_add_options --with-system-nss
 ac_add_options --with-system-png
-ac_add_options --with-system-libvpx
 ac_add_options --with-system-zlib
 ac_add_options --with-default-mozilla-five-home=%{_libdir}/%{name}
 ac_add_options --disable-pedantic
