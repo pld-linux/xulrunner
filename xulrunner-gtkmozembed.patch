@@ -8777,10 +8777,9 @@ diff -up xulrunner-5.0/mozilla-release/toolkit/toolkit-makefiles.sh.gtkmozembed 
    embedding/components/Makefile
    embedding/components/appstartup/Makefile
    embedding/components/appstartup/src/Makefile
-diff -up xulrunner-5.0/mozilla-release/toolkit/toolkit-tiers.mk.gtkmozembed xulrunner-5.0/mozilla-release/toolkit/toolkit-tiers.mk
---- xulrunner-5.0/mozilla-release/toolkit/toolkit-tiers.mk.gtkmozembed	2011-06-15 23:57:56.000000000 +0200
-+++ xulrunner-5.0/mozilla-release/toolkit/toolkit-tiers.mk	2011-06-22 12:18:01.539746305 +0200
-@@ -234,6 +234,12 @@ endif
+--- xulrunner-6.0/mozilla/toolkit/toolkit-tiers.mk~	2011-08-27 14:43:16.000000000 +0300
++++ xulrunner-6.0/mozilla/toolkit/toolkit-tiers.mk	2011-08-27 14:44:44.646149063 +0300
+@@ -226,6 +226,12 @@
  
  tier_platform_dirs += services/crypto/component
  
@@ -8790,11 +8789,6 @@ diff -up xulrunner-5.0/mozilla-release/toolkit/toolkit-tiers.mk.gtkmozembed xulr
 +endif
 +endif
 +
- ifdef MOZ_ENABLE_LIBXUL
  tier_platform_dirs += startupcache
- endif
-@@ -286,4 +292,3 @@ tier_platform_dirs += testing/xpcshell 
- tier_platform_dirs += testing/mozmill
- tier_platform_dirs += testing/tools/screenshot
- endif
--
+ 
+ ifdef APP_LIBXUL_STATICDIRS

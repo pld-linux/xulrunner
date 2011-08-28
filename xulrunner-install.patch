@@ -1,49 +1,26 @@
-diff -urN mozilla-2.0/toolkit//mozapps/installer/packager.mk mozilla-2.0.new/toolkit//mozapps/installer/packager.mk
---- mozilla-2.0/toolkit//mozapps/installer/packager.mk	2011-03-19 00:34:12.000000000 +0100
-+++ mozilla-2.0.new/toolkit//mozapps/installer/packager.mk	2011-03-23 16:13:50.400006328 +0100
-@@ -500,14 +500,14 @@
- # NOTE: this must be a tar now that dist links into the tree so that we
- # do not strip the binaries actually in the tree.
- 	@echo "Creating package directory..."
--	@mkdir $(DIST)/$(MOZ_PKG_DIR)
-+	@mkdir -p $(DESTDIR)/$(MOZ_PKG_DIR) $(DESTDIR)/$(MOZ_PKG_APPDIR)
- ifndef UNIVERSAL_BINARY
- # If UNIVERSAL_BINARY, the package will be made from an already-prepared
- # STAGEPATH
- ifdef MOZ_PKG_MANIFEST
- 	$(RM) -rf $(DIST)/xpt $(DIST)/manifests
- 	$(call PACKAGER_COPY, "$(call core_abspath,$(DIST))",\
--	  "$(call core_abspath,$(DIST)/$(MOZ_PKG_DIR))", \
-+	  "$(call core_abspath,$(DESTDIR)/$(MOZ_PKG_DIR))", \
- 	  "$(MOZ_PKG_MANIFEST)", "$(PKGCP_OS)", 1, 0, 1)
- 	$(PERL) $(MOZILLA_DIR)/xpinstall/packager/xptlink.pl -s $(DIST) -d $(DIST)/xpt -f $(DIST)/$(MOZ_PKG_DIR)/$(_BINPATH)/components -v -x "$(XPIDL_LINK)"
- 	$(PYTHON) $(MOZILLA_DIR)/toolkit/mozapps/installer/link-manifests.py \
-@@ -529,10 +529,10 @@
+--- xulrunner-6.0/mozilla/toolkit/mozapps/installer/packager.mk	2011-08-28 13:50:44.993448811 +0300
++++ xulrunner-6.0/mozilla/toolkit/mozapps/installer/packager.mk	2011-08-28 13:53:53.825505243 +0300
+@@ -612,7 +612,7 @@
  	@$(NSINSTALL) -D $(DIST)/xpt
  	@($(XPIDL_LINK) $(DIST)/xpt/$(MOZ_PKG_APPNAME).xpt $(DIST)/$(STAGEPATH)$(MOZ_PKG_DIR)$(_BINPATH)/components/*.xpt && rm -f $(DIST)/$(STAGEPATH)$(MOZ_PKG_DIR)$(_BINPATH)/components/*.xpt && cp $(DIST)/xpt/$(MOZ_PKG_APPNAME).xpt $(DIST)/$(STAGEPATH)$(MOZ_PKG_DIR)$(_BINPATH)/components && printf "interfaces $(MOZ_PKG_APPNAME).xpt\n" >$(DIST)/$(STAGEPATH)$(MOZ_PKG_DIR)$(_BINPATH)/components/interfaces.manifest) || echo No *.xpt files found in: $(DIST)/$(STAGEPATH)$(MOZ_PKG_DIR)$(_BINPATH)/components/.  Continuing...
  else
 -	@cd $(DIST)/bin && tar $(TAR_CREATE_FLAGS) - * | (cd ../$(MOZ_PKG_DIR); tar -xf -)
-+	cp -rfLp $(DIST)/bin/* $(DESTDIR)$(MOZ_PKG_APPDIR)
++	cp -rfLp $(DIST)/bin/* $(MOZ_PKG_DIR)
  endif
  else
--	@cd $(DIST)/bin && tar $(TAR_CREATE_FLAGS) - * | (cd ../$(MOZ_PKG_DIR); tar -xf -)
-+	cp -rfLp $(DIST)/bin/* $(DESTDIR)$(MOZ_PKG_APPDIR)
- 	@echo "Linking XPT files..."
- 	@rm -rf $(DIST)/xpt
- 	@$(NSINSTALL) -D $(DIST)/xpt
-@@ -620,24 +620,26 @@
+ 	@cd $(DIST)/bin && tar $(TAR_CREATE_FLAGS) - * | (cd ../$(MOZ_PKG_DIR); tar -xf -)
+@@ -699,24 +699,27 @@
  	cd $(DIST)/$(STAGEPATH)$(MOZ_PKG_DIR)$(_BINPATH) && $(PACK_OMNIJAR)
  endif
  	$(NSINSTALL) -D $(DESTDIR)$(installdir)
 -	(cd $(DIST)/$(MOZ_PKG_DIR) && tar $(TAR_CREATE_FLAGS) - .) | \
 -	  (cd $(DESTDIR)$(installdir) && tar -xf -)
++	cp -rfLp $(DIST)/$(MOZ_PKG_DIR)/* $(DESTDIR)$(installdir)
  	$(NSINSTALL) -D $(DESTDIR)$(bindir)
  	$(RM) -f $(DESTDIR)$(bindir)/$(MOZ_APP_NAME)
 -	ln -s $(installdir)/$(MOZ_APP_NAME) $(DESTDIR)$(bindir)
 +	ln -s $(installdir)/$(MOZ_APP_NAME)-bin $(DESTDIR)$(bindir)/$(MOZ_APP_NAME)
 +	ln -s $(MOZ_PKG_APPDIR)/xpidl $(DESTDIR)$(bindir)/xpidl
-+	ln -s $(MOZ_PKG_APPDIR)/xpt_dump $(DESTDIR)$(bindir)/xpt_dump
-+	ln -s $(MOZ_PKG_APPDIR)/xpt_link $(DESTDIR)$(bindir)/xpt_link
  ifdef INSTALL_SDK # Here comes the hard part
  	$(NSINSTALL) -D $(DESTDIR)$(includedir)
 -	(cd $(DIST)/include && tar $(TAR_CREATE_FLAGS) - .) | \
@@ -59,10 +36,12 @@ diff -urN mozilla-2.0/toolkit//mozapps/installer/packager.mk mozilla-2.0.new/too
  	  $(SYSINSTALL) $(IFLAGS1) $(DIST)/include/xpcom-config.h $(DESTDIR)$(sdkdir); \
  	fi
 -	(cd $(DIST)/sdk/lib && tar $(TAR_CREATE_FLAGS) - .) | (cd $(DESTDIR)$(sdkdir)/sdk/lib && tar -xf -)
-+	cp -rfLp $(DIST)/sdk/lib/*.a $(DESTDIR)$(sdkdir)/sdk/lib
-+	ln -s $(installdir)/libmozjs.so $(DESTDIR)$(sdkdir)/sdk/lib/libmozjs.so
-+	ln -s $(installdir)/libxpcom.so $(DESTDIR)$(sdkdir)/sdk/lib/libxpcom.so
-+	ln -s $(installdir)/libxul.so $(DESTDIR)$(sdkdir)/sdk/lib/libxul.so
++	cp -rfLp $(DIST)/sdk/lib/* $(DESTDIR)$(sdkdir)/sdk/lib
++	# replace copies with symlinks
++	ln -sf $(installdir)/libmozjs.so $(DESTDIR)$(sdkdir)/sdk/lib/libmozjs.so
++	ln -sf $(installdir)/libxpcom.so $(DESTDIR)$(sdkdir)/sdk/lib/libxpcom.so
++	ln -sf $(installdir)/libxul.so $(DESTDIR)$(sdkdir)/sdk/lib/libxul.so
++	ln -sf $(installdir)/libmozalloc.so $(DESTDIR)$(sdkdir)/sdk/lib/libmozalloc.so
  	$(RM) -f $(DESTDIR)$(sdkdir)/lib $(DESTDIR)$(sdkdir)/bin $(DESTDIR)$(sdkdir)/include $(DESTDIR)$(sdkdir)/include $(DESTDIR)$(sdkdir)/sdk/idl $(DESTDIR)$(sdkdir)/idl
  	ln -s $(sdkdir)/sdk/lib $(DESTDIR)$(sdkdir)/lib
  	ln -s $(installdir) $(DESTDIR)$(sdkdir)/bin

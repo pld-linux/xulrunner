@@ -15,21 +15,23 @@
 # The actual sqlite version (see RHBZ#480989):
 %define		sqlite_build_version %(pkg-config --silence-errors --modversion sqlite3 2>/dev/null || echo ERROR)
 
+%define		nspr_ver		4.8.8
+%define		nss_ver			3.12.10
+
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
-Version:	5.0.1
-Release:	2
+Version:	6.0
+Release:	1
 Epoch:		2
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
 # Source tarball for xulrunner is in fact firefox tarball (checked on 1.9), so lets use it
 # instead of waiting for mozilla to copy file on ftp.
 Source0:	http://releases.mozilla.org/pub/mozilla.org/firefox/releases/%{version}/source/firefox-%{version}.source.tar.bz2
-# Source0-md5:	6d1f43e402cec84459a3d7f950bd5192
+# Source0-md5:	1840185865a1a8975df4a3db59080ddc
 Patch0:		%{name}-install.patch
 Patch1:		%{name}-rpath.patch
-Patch2:		%{name}-gcc3.patch
 Patch3:		%{name}-nss_cflags.patch
 Patch4:		%{name}-paths.patch
 Patch5:		%{name}-pc.patch
@@ -37,7 +39,7 @@ Patch6:		%{name}-prefs.patch
 Patch7:		%{name}-ssl_oldapi.patch
 Patch8:		%{name}-ppc.patch
 Patch9:		%{name}-gtkmozembed.patch
-URL:		http://developer.mozilla.org/en/docs/XULRunner
+URL:		https://developer.mozilla.org/en/XULRunner
 %{!?with_qt:BuildRequires:	GConf2-devel >= 1.2.1}
 BuildRequires:	alsa-lib-devel
 BuildRequires:	automake
@@ -59,8 +61,8 @@ BuildRequires:	libpng(APNG)-devel >= 0.10
 BuildRequires:	libpng-devel >= 1.4.1
 BuildRequires:	libstdc++-devel
 BuildRequires:	libvpx-devel
-BuildRequires:	nspr-devel >= 1:4.8.7
-BuildRequires:	nss-devel >= 1:3.12.9
+BuildRequires:	nspr-devel >= 1:%{nspr_ver}
+BuildRequires:	nss-devel >= 1:%{nss_ver}
 BuildRequires:	pango-devel >= 1:1.14.0
 BuildRequires:	pkgconfig
 BuildRequires:	python >= 1:2.5
@@ -84,8 +86,8 @@ Requires(post):	mktemp >= 1.5-18
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 Requires:	browser-plugins >= 2.0
 Requires:	myspell-common
-Requires:	nspr >= 1:4.8.7
-Requires:	nss >= 1:3.12.9
+Requires:	nspr >= 1:%{nspr_ver}
+Requires:	nss >= 1:%{nss_ver}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		filterout_cpp	-D_FORTIFY_SOURCE=[0-9]+
@@ -95,7 +97,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 # no Provides from private modules (don't use %{name} here, it expands to each subpackage name...)
 %define		_noautoprovfiles	%{_libdir}/xulrunner/components %{_libdir}/xulrunner/plugins
 # no need to require them (we have strict deps for these)
-%define		_noautoreq		libmozjs.so libxpcom.so libxul.so
+%define		_noautoreq		libmozjs.so libxpcom.so libxul.so libmozalloc.so
 
 %description
 XULRunner is a Mozilla runtime package that can be used to bootstrap
@@ -137,8 +139,8 @@ Summary:	Headers for developing programs that will use XULRunner
 Summary(pl.UTF-8):	Pliki nagłówkowe do tworzenia programów używających XULRunnera
 Group:		X11/Development/Libraries
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
-Requires:	nspr-devel >= 1:4.8.7
-Requires:	nss-devel >= 1:3.12.9
+Requires:	nspr-devel >= 1:%{nspr_ver}
+Requires:	nss-devel >= 1:%{nss_ver}
 Obsoletes:	mozilla-devel
 Obsoletes:	mozilla-firefox-devel
 Obsoletes:	seamonkey-devel
@@ -174,9 +176,6 @@ echo 'LOCAL_INCLUDES += $(MOZ_HUNSPELL_CFLAGS)' >> extensions/spellcheck/src/Mak
 
 %patch0 -p1
 %patch1 -p1
-%if "%{cc_version}" < "3.4"
-#%%patch2 -p2
-%endif
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
@@ -188,13 +187,13 @@ echo 'LOCAL_INCLUDES += $(MOZ_HUNSPELL_CFLAGS)' >> extensions/spellcheck/src/Mak
 %build
 if [ "$(grep -E '^[0-9]\.' mozilla/config/milestone.txt)" != "%{version}" ]; then
 	echo >&2
-	echo "Version %{version} does not match mozilla/config/milestone.txt!" >&2
+	echo >&2 "Version %{version} does not match mozilla/config/milestone.txt!"
 	echo >&2
 	exit 1
 fi
 
 cd mozilla
-cp -a %{_datadir}/automake/config.* build/autoconf
+cp -p %{_datadir}/automake/config.* build/autoconf
 
 cat << 'EOF' > .mozconfig
 . $topsrcdir/xulrunner/config/mozconfig
@@ -296,17 +295,13 @@ install -d \
 
 # move arch independant ones to datadir
 mv $RPM_BUILD_ROOT%{_libdir}/%{name}/chrome $RPM_BUILD_ROOT%{_datadir}/%{name}/chrome
-mv $RPM_BUILD_ROOT%{_libdir}/%{name}/defaults $RPM_BUILD_ROOT%{_datadir}/%{name}/defaults
 mv $RPM_BUILD_ROOT%{_libdir}/%{name}/icons $RPM_BUILD_ROOT%{_datadir}/%{name}/icons
-mv $RPM_BUILD_ROOT%{_libdir}/%{name}/modules $RPM_BUILD_ROOT%{_datadir}/%{name}/modules
-mv $RPM_BUILD_ROOT%{_libdir}/%{name}/res $RPM_BUILD_ROOT%{_datadir}/%{name}/res
 ln -s ../../share/%{name}/chrome $RPM_BUILD_ROOT%{_libdir}/%{name}/chrome
-ln -s ../../share/%{name}/defaults $RPM_BUILD_ROOT%{_libdir}/%{name}/defaults
-ln -s ../../share/%{name}/modules $RPM_BUILD_ROOT%{_libdir}/%{name}/modules
 ln -s ../../share/%{name}/icons $RPM_BUILD_ROOT%{_libdir}/%{name}/icons
-ln -s ../../share/%{name}/res $RPM_BUILD_ROOT%{_libdir}/%{name}/res
-rm -rf $RPM_BUILD_ROOT%{_libdir}/%{name}/dictionaries
+%{__rm} -r $RPM_BUILD_ROOT%{_libdir}/%{name}/dictionaries
 ln -s %{_datadir}/myspell $RPM_BUILD_ROOT%{_libdir}/%{name}/dictionaries
+%{__rm} -r $RPM_BUILD_ROOT%{_libdir}/%{name}/hyphenation
+ln -s %{_datadir}/hyphenation $RPM_BUILD_ROOT%{_libdir}/%{name}/hyphenation
 
 # files created by regxpcom
 touch $RPM_BUILD_ROOT%{_libdir}/%{name}/components/compreg.dat
@@ -344,11 +339,9 @@ fi
 
 # symlinks
 %{_libdir}/%{name}/chrome
-%{_libdir}/%{name}/defaults
 %{_libdir}/%{name}/dictionaries
+%{_libdir}/%{name}/hyphenation
 %{_libdir}/%{name}/icons
-%{_libdir}/%{name}/modules
-%{_libdir}/%{name}/res
 
 %{_browserpluginsconfdir}/browsers.d/%{name}.*
 %config(noreplace) %verify(not md5 mtime size) %{_browserpluginsconfdir}/blacklist.d/%{name}.*.blacklist
@@ -357,179 +350,14 @@ fi
 %dir %{_libdir}/%{name}/components
 
 %{_libdir}/%{name}/chrome.manifest
-%{_libdir}/%{name}/greprefs.js
+%{_libdir}/%{name}/omni.jar
 
 %attr(755,root,root) %{_libdir}/%{name}/*.sh
-%attr(755,root,root) %{_libdir}/%{name}/js
 %attr(755,root,root) %{_libdir}/%{name}/mozilla-xremote-client
-%attr(755,root,root) %{_libdir}/%{name}/nsinstall
 %attr(755,root,root) %{_libdir}/%{name}/plugin-container
 
 %attr(755,root,root) %{_libdir}/%{name}/components/libdbusservice.so
-
-%{_libdir}/%{name}/components/accessibility*.xpt
-%{_libdir}/%{name}/components/alerts.xpt
-%{_libdir}/%{name}/components/appshell.xpt
-%{_libdir}/%{name}/components/appstartup.xpt
-%{_libdir}/%{name}/components/autocomplete.xpt
-%{_libdir}/%{name}/components/autoconfig.xpt
-%{_libdir}/%{name}/components/caps.xpt
-%{_libdir}/%{name}/components/chardet.xpt
-%{_libdir}/%{name}/components/chrome.xpt
-%{_libdir}/%{name}/components/commandhandler.xpt
-%{_libdir}/%{name}/components/commandlines.xpt
-%{_libdir}/%{name}/components/composer.xpt
-%{_libdir}/%{name}/components/content_*.xpt
-%{_libdir}/%{name}/components/cookie.xpt
-%{_libdir}/%{name}/components/directory.xpt
-%{_libdir}/%{name}/components/docshell.xpt
-%{_libdir}/%{name}/components/dom*.xpt
-%{_libdir}/%{name}/components/downloads.xpt
-%{_libdir}/%{name}/components/editor.xpt
-%{_libdir}/%{name}/components/embed_base.xpt
-%{_libdir}/%{name}/components/extensions.xpt
-%{_libdir}/%{name}/components/exthandler.xpt
-%{_libdir}/%{name}/components/exthelper.xpt
-%{_libdir}/%{name}/components/fastfind.xpt
-%{_libdir}/%{name}/components/feeds.xpt
-%{_libdir}/%{name}/components/filepicker.xpt
-%{_libdir}/%{name}/components/find.xpt
-%{_libdir}/%{name}/components/gfx*.xpt
-%{_libdir}/%{name}/components/htmlparser.xpt
-%{_libdir}/%{name}/components/imgicon.xpt
-%{_libdir}/%{name}/components/imglib2.xpt
-%{_libdir}/%{name}/components/inspector.xpt
-%{_libdir}/%{name}/components/intl.xpt
-%{_libdir}/%{name}/components/jar.xpt
-%{_libdir}/%{name}/components/jetpack.xpt
-%{_libdir}/%{name}/components/js*.xpt
-%{_libdir}/%{name}/components/layout*.xpt
-%{_libdir}/%{name}/components/locale.xpt
-%{_libdir}/%{name}/components/loginmgr.xpt
-%{_libdir}/%{name}/components/lwbrk.xpt
-%{_libdir}/%{name}/components/mimetype.xpt
-%{_libdir}/%{name}/components/moz*.xpt
-%{_libdir}/%{name}/components/necko*.xpt
-%{_libdir}/%{name}/components/parentalcontrols.xpt
-%{_libdir}/%{name}/components/pipboot.xpt
-%{_libdir}/%{name}/components/pipnss.xpt
-%{_libdir}/%{name}/components/pippki.xpt
-%{_libdir}/%{name}/components/places.xpt
-%{_libdir}/%{name}/components/plugin.xpt
-%{_libdir}/%{name}/components/pref.xpt
-%{_libdir}/%{name}/components/prefetch.xpt
-%{_libdir}/%{name}/components/profile.xpt
-%{_libdir}/%{name}/components/proxyObject.xpt
-%{_libdir}/%{name}/components/rdf.xpt
-%{_libdir}/%{name}/components/satchel.xpt
-%{_libdir}/%{name}/components/saxparser.xpt
-%{_libdir}/%{name}/components/services-crypto-component.xpt
-%{_libdir}/%{name}/components/shistory.xpt
-%{_libdir}/%{name}/components/spellchecker.xpt
-%{_libdir}/%{name}/components/startupcache.xpt
-%{_libdir}/%{name}/components/storage.xpt
-%{_libdir}/%{name}/components/toolkitprofile.xpt
-%{_libdir}/%{name}/components/toolkitremote.xpt
-%{_libdir}/%{name}/components/txmgr.xpt
-%{_libdir}/%{name}/components/txtsvc.xpt
-%{_libdir}/%{name}/components/uconv.xpt
-%{_libdir}/%{name}/components/unicharutil.xpt
-%{_libdir}/%{name}/components/update.xpt
-%{_libdir}/%{name}/components/uriloader.xpt
-%{_libdir}/%{name}/components/url-classifier.xpt
-%{_libdir}/%{name}/components/urlformatter.xpt
-%{_libdir}/%{name}/components/webBrowser_core.xpt
-%{_libdir}/%{name}/components/webapps.xpt
-%{_libdir}/%{name}/components/webbrowserpersist.xpt
-%{_libdir}/%{name}/components/widget.xpt
-%{_libdir}/%{name}/components/windowds.xpt
-%{_libdir}/%{name}/components/windowwatcher.xpt
-%{_libdir}/%{name}/components/x*.xpt
-%{_libdir}/%{name}/components/zipwriter.xpt
-
-%{_libdir}/%{name}/components/ConsoleAPI.js
-%{_libdir}/%{name}/components/ConsoleAPI.manifest
-%{_libdir}/%{name}/components/FeedProcessor.js
-%{_libdir}/%{name}/components/FeedProcessor.manifest
-%{_libdir}/%{name}/components/GPSDGeolocationProvider.js
-%{_libdir}/%{name}/components/GPSDGeolocationProvider.manifest
-%{_libdir}/%{name}/components/NetworkGeolocationProvider.js
-%{_libdir}/%{name}/components/NetworkGeolocationProvider.manifest
-%{_libdir}/%{name}/components/PlacesCategoriesStarter.js
-%{_libdir}/%{name}/components/addonManager.js
-%{_libdir}/%{name}/components/amContentHandler.js
-%{_libdir}/%{name}/components/amWebInstallListener.js
-%{_libdir}/%{name}/components/components.manifest
-%{_libdir}/%{name}/components/contentAreaDropListener.js
-%{_libdir}/%{name}/components/contentAreaDropListener.manifest
-%{_libdir}/%{name}/components/contentSecurityPolicy.js
-%{_libdir}/%{name}/components/contentSecurityPolicy.manifest
-%{_libdir}/%{name}/components/crypto-SDR.js
-%{_libdir}/%{name}/components/extensions.manifest
-%{_libdir}/%{name}/components/interfaces.manifest
-%{_libdir}/%{name}/components/jsconsole-clhandler.js
-%{_libdir}/%{name}/components/jsconsole-clhandler.manifest
-%{_libdir}/%{name}/components/messageWakeupService.js
-%{_libdir}/%{name}/components/messageWakeupService.manifest
-%{_libdir}/%{name}/components/nsBadCertHandler.js
-%{_libdir}/%{name}/components/nsBadCertHandler.manifest
-%{_libdir}/%{name}/components/nsBlocklistService.js
-%{_libdir}/%{name}/components/nsContentDispatchChooser.js
-%{_libdir}/%{name}/components/nsContentDispatchChooser.manifest
-%{_libdir}/%{name}/components/nsContentPrefService.js
-%{_libdir}/%{name}/components/nsContentPrefService.manifest
-%{_libdir}/%{name}/components/nsDefaultCLH.js
-%{_libdir}/%{name}/components/nsDefaultCLH.manifest
-%{_libdir}/%{name}/components/nsDownloadManagerUI.js
-%{_libdir}/%{name}/components/nsDownloadManagerUI.manifest
-%{_libdir}/%{name}/components/nsFilePicker.js
-%{_libdir}/%{name}/components/nsFilePicker.manifest
-%{_libdir}/%{name}/components/nsFormAutoComplete.js
-%{_libdir}/%{name}/components/nsFormHistory.js
-%{_libdir}/%{name}/components/nsHandlerService.js
-%{_libdir}/%{name}/components/nsHandlerService.manifest
-%{_libdir}/%{name}/components/nsHelperAppDlg.js
-%{_libdir}/%{name}/components/nsHelperAppDlg.manifest
-%{_libdir}/%{name}/components/nsINIProcessor.js
-%{_libdir}/%{name}/components/nsINIProcessor.manifest
-%{_libdir}/%{name}/components/nsInputListAutoComplete.js
-%{_libdir}/%{name}/components/nsLivemarkService.js
-%{_libdir}/%{name}/components/nsLoginInfo.js
-%{_libdir}/%{name}/components/nsLoginManager.js
-%{_libdir}/%{name}/components/nsLoginManagerPrompter.js
-%{_libdir}/%{name}/components/nsMicrosummaryService.js
-%{_libdir}/%{name}/components/nsPlacesAutoComplete.js
-%{_libdir}/%{name}/components/nsPlacesAutoComplete.manifest
-%{_libdir}/%{name}/components/nsPlacesExpiration.js
-%{_libdir}/%{name}/components/nsPrompter.js
-%{_libdir}/%{name}/components/nsPrompter.manifest
-%{_libdir}/%{name}/components/nsProxyAutoConfig.js
-%{_libdir}/%{name}/components/nsProxyAutoConfig.manifest
-%{_libdir}/%{name}/components/nsSearchService.js
-%{_libdir}/%{name}/components/nsSearchSuggestions.js
-%{_libdir}/%{name}/components/nsTaggingService.js
-%{_libdir}/%{name}/components/nsTryToClose.js
-%{_libdir}/%{name}/components/nsTryToClose.manifest
-%{_libdir}/%{name}/components/nsUpdateTimerManager.js
-%{_libdir}/%{name}/components/nsUpdateTimerManager.manifest
-%{_libdir}/%{name}/components/nsURLClassifier.manifest
-%{_libdir}/%{name}/components/nsURLFormatter.js
-%{_libdir}/%{name}/components/nsURLFormatter.manifest
-%{_libdir}/%{name}/components/nsUrlClassifierLib.js
-%{_libdir}/%{name}/components/nsUrlClassifierListManager.js
-%{_libdir}/%{name}/components/nsWebHandlerApp.js
-%{_libdir}/%{name}/components/nsWebHandlerApp.manifest
-%{_libdir}/%{name}/components/nsXULAppInstall.js
-%{_libdir}/%{name}/components/nsXULAppInstall.manifest
-%{_libdir}/%{name}/components/passwordmgr.manifest
-%{_libdir}/%{name}/components/pluginGlue.manifest
-%{_libdir}/%{name}/components/satchel.manifest
-%{_libdir}/%{name}/components/storage-Legacy.js
-%{_libdir}/%{name}/components/storage-mozStorage.js
-%{_libdir}/%{name}/components/toolkitplaces.manifest
-%{_libdir}/%{name}/components/toolkitsearch.manifest
-%{_libdir}/%{name}/components/txEXSLTRegExFunctions.js
-%{_libdir}/%{name}/components/txEXSLTRegExFunctions.manifest
+%{_libdir}/%{name}/components/binary.manifest
 
 # do not use *.dat here, so check-files can catch any new files
 # (and they won't be just silently placed empty in rpm)
@@ -538,10 +366,7 @@ fi
 
 %dir %{_datadir}/%{name}
 %{_datadir}/%{name}/chrome
-%{_datadir}/%{name}/defaults
 %{_datadir}/%{name}/icons
-%{_datadir}/%{name}/modules
-%{_datadir}/%{name}/res
 
 %files libs
 %defattr(644,root,root,755)
@@ -555,12 +380,8 @@ fi
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/xpidl
-%attr(755,root,root) %{_bindir}/xpt_dump
-%attr(755,root,root) %{_bindir}/xpt_link
 %attr(755,root,root) %{_libdir}/%{name}/xpcshell
 %attr(755,root,root) %{_libdir}/%{name}/xpidl
-%attr(755,root,root) %{_libdir}/%{name}/xpt_dump
-%attr(755,root,root) %{_libdir}/%{name}/xpt_link
 %attr(755,root,root) %{_libdir}/%{name}/xulrunner-stub
 %{_includedir}/%{name}
 %{_datadir}/idl/%{name}
