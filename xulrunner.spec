@@ -22,7 +22,7 @@ Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
 Version:	6.0
-Release:	2
+Release:	3
 Epoch:		2
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
@@ -385,7 +385,16 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/xulrunner-stub
 %{_includedir}/%{name}
 %{_datadir}/idl/%{name}
-%{_libdir}/%{name}-sdk
+%dir %{_libdir}/%{name}-sdk
+%{_libdir}/%{name}-sdk/bin
+%{_libdir}/%{name}-sdk/idl
+%{_libdir}/%{name}-sdk/lib
+%{_libdir}/%{name}-sdk/include
+%{_libdir}/%{name}-sdk/*.h
+%dir %{_libdir}/%{name}-sdk/sdk
+%{_libdir}/%{name}-sdk/sdk/lib
+%dir %{_libdir}/%{name}-sdk/sdk/bin
+%attr(755,root,root) %{_libdir}/%{name}-sdk/sdk/bin/*
 %{_pkgconfigdir}/libxul.pc
 %{_pkgconfigdir}/libxul-embedding.pc
 %{_pkgconfigdir}/mozilla-js.pc
