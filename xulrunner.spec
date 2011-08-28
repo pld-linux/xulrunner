@@ -10,7 +10,7 @@
 %endif
 
 # On updating version, grab CVE links from:
-# https://www.mozilla.org/security/known-vulnerabilities/firefox36.html#firefox3.6.14
+# https://www.mozilla.org/security/known-vulnerabilities/firefox.html
 
 # The actual sqlite version (see RHBZ#480989):
 %define		sqlite_build_version %(pkg-config --silence-errors --modversion sqlite3 2>/dev/null || echo ERROR)
@@ -22,7 +22,7 @@ Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
 Version:	6.0
-Release:	1
+Release:	2
 Epoch:		2
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
@@ -174,7 +174,7 @@ cd mozilla
 # hunspell needed for factory including mozHunspell.h
 echo 'LOCAL_INCLUDES += $(MOZ_HUNSPELL_CFLAGS)' >> extensions/spellcheck/src/Makefile.in
 
-%patch0 -p1
+%patch0 -p2
 %patch1 -p1
 %patch3 -p1
 %patch4 -p1
