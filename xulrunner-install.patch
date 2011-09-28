@@ -1,6 +1,6 @@
---- xulrunner-6.0/mozilla/toolkit/mozapps/installer/packager.mk	2011-08-28 13:53:53.825505243 +0300
-+++ xulrunner-6.0/mozilla/toolkit/mozapps/installer/packager.mk	2011-08-28 21:49:24.108430943 +0300
-@@ -612,7 +612,7 @@
+--- xulrunner-7.0/mozilla/toolkit/mozapps/installer/packager.mk.orig	2011-09-22 22:20:42.000000000 +0200
++++ xulrunner-7.0/mozilla/toolkit/mozapps/installer/packager.mk	2011-09-28 11:14:05.247518747 +0200
+@@ -632,7 +632,7 @@
  	@$(NSINSTALL) -D $(DIST)/xpt
  	@($(XPIDL_LINK) $(DIST)/xpt/$(MOZ_PKG_APPNAME).xpt $(DIST)/$(STAGEPATH)$(MOZ_PKG_DIR)$(_BINPATH)/components/*.xpt && rm -f $(DIST)/$(STAGEPATH)$(MOZ_PKG_DIR)$(_BINPATH)/components/*.xpt && cp $(DIST)/xpt/$(MOZ_PKG_APPNAME).xpt $(DIST)/$(STAGEPATH)$(MOZ_PKG_DIR)$(_BINPATH)/components && printf "interfaces $(MOZ_PKG_APPNAME).xpt\n" >$(DIST)/$(STAGEPATH)$(MOZ_PKG_DIR)$(_BINPATH)/components/interfaces.manifest) || echo No *.xpt files found in: $(DIST)/$(STAGEPATH)$(MOZ_PKG_DIR)$(_BINPATH)/components/.  Continuing...
  else
@@ -9,7 +9,7 @@
  endif
  else
  	@cd $(DIST)/bin && tar $(TAR_CREATE_FLAGS) - * | (cd ../$(MOZ_PKG_DIR); tar -xf -)
-@@ -699,24 +699,31 @@
+@@ -725,26 +725,31 @@
  	cd $(DIST)/$(STAGEPATH)$(MOZ_PKG_DIR)$(_BINPATH) && $(PACK_OMNIJAR)
  endif
  	$(NSINSTALL) -D $(DESTDIR)$(installdir)
@@ -32,11 +32,12 @@
 +	cp -rfLp $(DIST)/idl/* $(DESTDIR)$(idldir)
  # SDK directory is the libs + a bunch of symlinks
  	$(NSINSTALL) -D $(DESTDIR)$(sdkdir)/sdk/lib
-+	$(NSINSTALL) -D $(DESTDIR)$(sdkdir)/sdk/bin
+ 	$(NSINSTALL) -D $(DESTDIR)$(sdkdir)/sdk/bin
  	if test -f $(DIST)/include/xpcom-config.h; then \
  	  $(SYSINSTALL) $(IFLAGS1) $(DIST)/include/xpcom-config.h $(DESTDIR)$(sdkdir); \
  	fi
 -	(cd $(DIST)/sdk/lib && tar $(TAR_CREATE_FLAGS) - .) | (cd $(DESTDIR)$(sdkdir)/sdk/lib && tar -xf -)
+-	(cd $(DIST)/sdk/bin && tar $(TAR_CREATE_FLAGS) - .) | (cd $(DESTDIR)$(sdkdir)/sdk/bin && tar -xf -)
 +	cp -rfLp $(DIST)/sdk/lib/* $(DESTDIR)$(sdkdir)/sdk/lib
 +	cp -rfLp $(DIST)/sdk/bin/* $(DESTDIR)$(sdkdir)/sdk/bin
 +	# replace copies with symlinks
@@ -45,7 +46,7 @@
 +	ln -sf $(installdir)/libxul.so $(DESTDIR)$(sdkdir)/sdk/lib/libxul.so
 +	ln -sf $(installdir)/libmozalloc.so $(DESTDIR)$(sdkdir)/sdk/lib/libmozalloc.so
 +	ln -sf $(installdir)/xpidl $(DESTDIR)$(sdkdir)/sdk/bin
-+	chmod a+rx $(DESTDIR)$(sdkdir)/sdk/bin/xpt.py # temp fix for https://bugzilla.mozilla.org/show_bug.cgi?id=639554
++	chmod a+rx $(DESTDIR)$(sdkdir)/sdk/bin/xpt.py # temp fix for https://bugzilla.mozilla.org/show_bug.cgi?id=63955
  	$(RM) -f $(DESTDIR)$(sdkdir)/lib $(DESTDIR)$(sdkdir)/bin $(DESTDIR)$(sdkdir)/include $(DESTDIR)$(sdkdir)/include $(DESTDIR)$(sdkdir)/sdk/idl $(DESTDIR)$(sdkdir)/idl
  	ln -s $(sdkdir)/sdk/lib $(DESTDIR)$(sdkdir)/lib
  	ln -s $(installdir) $(DESTDIR)$(sdkdir)/bin
