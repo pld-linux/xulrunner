@@ -297,7 +297,7 @@ install -d \
 mv $RPM_BUILD_ROOT%{_libdir}/%{name}/chrome $RPM_BUILD_ROOT%{_datadir}/%{name}/chrome
 #mv $RPM_BUILD_ROOT%{_libdir}/%{name}/icons $RPM_BUILD_ROOT%{_datadir}/%{name}/icons
 ln -s ../../share/%{name}/chrome $RPM_BUILD_ROOT%{_libdir}/%{name}/chrome
-ln -s ../../share/%{name}/icons $RPM_BUILD_ROOT%{_libdir}/%{name}/icons
+#ln -s ../../share/%{name}/icons $RPM_BUILD_ROOT%{_libdir}/%{name}/icons
 %{__rm} -r $RPM_BUILD_ROOT%{_libdir}/%{name}/dictionaries
 ln -s %{_datadir}/myspell $RPM_BUILD_ROOT%{_libdir}/%{name}/dictionaries
 %{__rm} -r $RPM_BUILD_ROOT%{_libdir}/%{name}/hyphenation
@@ -341,7 +341,7 @@ fi
 %{_libdir}/%{name}/chrome
 %{_libdir}/%{name}/dictionaries
 %{_libdir}/%{name}/hyphenation
-%{_libdir}/%{name}/icons
+#%%{_libdir}/%{name}/icons
 
 %{_browserpluginsconfdir}/browsers.d/%{name}.*
 %config(noreplace) %verify(not md5 mtime size) %{_browserpluginsconfdir}/blacklist.d/%{name}.*.blacklist
@@ -366,7 +366,7 @@ fi
 
 %dir %{_datadir}/%{name}
 %{_datadir}/%{name}/chrome
-%{_datadir}/%{name}/icons
+#%%{_datadir}/%{name}/icons
 
 %files libs
 %defattr(644,root,root,755)
