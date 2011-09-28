@@ -2913,7 +2913,7 @@ diff -up xulrunner-5.0/mozilla-release/embedding/browser/gtk/src/EmbedPrivate.cp
 diff -up xulrunner-5.0/mozilla-release/embedding/browser/gtk/src/EmbedPrivate.h.gtkmozembed xulrunner-5.0/mozilla-release/embedding/browser/gtk/src/EmbedPrivate.h
 --- xulrunner-5.0/mozilla-release/embedding/browser/gtk/src/EmbedPrivate.h.gtkmozembed	2011-06-22 12:14:58.795816453 +0200
 +++ xulrunner-5.0/mozilla-release/embedding/browser/gtk/src/EmbedPrivate.h	2011-06-22 12:14:58.795816453 +0200
-@@ -0,0 +1,188 @@
+@@ -0,0 +1,187 @@
 +/* ***** BEGIN LICENSE BLOCK *****
 + * Version: MPL 1.1/GPL 2.0/LGPL 2.1
 + *
