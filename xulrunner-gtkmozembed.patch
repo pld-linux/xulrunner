@@ -2962,7 +2962,6 @@ diff -up xulrunner-5.0/mozilla-release/embedding/browser/gtk/src/EmbedPrivate.h.
 +// object.
 +#include "nsIWebBrowserChrome.h"
 +#include "nsIAppShell.h"
-+#include "nsPIDOMEventTarget.h"
 +#include "nsTArray.h"
 +
 +#include "gtkmozembedprivate.h"
