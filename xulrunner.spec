@@ -22,7 +22,7 @@ Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
 Version:	7.0
-Release:	0.1
+Release:	1
 Epoch:		2
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
@@ -39,6 +39,7 @@ Patch6:		%{name}-prefs.patch
 Patch7:		%{name}-ssl_oldapi.patch
 Patch8:		%{name}-ppc.patch
 Patch9:		%{name}-gtkmozembed.patch
+Patch10:	%{name}-linux3.patch
 URL:		https://developer.mozilla.org/en/XULRunner
 %{!?with_qt:BuildRequires:	GConf2-devel >= 1.2.1}
 BuildRequires:	alsa-lib-devel
@@ -183,6 +184,7 @@ echo 'LOCAL_INCLUDES += $(MOZ_HUNSPELL_CFLAGS)' >> extensions/spellcheck/src/Mak
 %patch7 -p1
 %patch8 -p1
 %patch9 -p2
+%patch10 -p1
 
 %build
 if [ "$(grep -E '^[0-9]\.' mozilla/config/milestone.txt)" != "%{version}" ]; then
@@ -226,7 +228,7 @@ ac_add_options --enable-crash-on-assert
 ac_add_options --disable-debug
 ac_add_options --disable-debug-modules
 ac_add_options --disable-logging
-ac_add_options --enable-optimize="%{rpmcflags} -Os"
+ac_add_options --enable-optimize="%{rpmcflags} -Os -fpermissive"
 %endif
 ac_add_options --disable-strip
 ac_add_options --disable-strip-libs
