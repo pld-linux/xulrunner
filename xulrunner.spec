@@ -1,3 +1,4 @@
+# TODO: consiter --enable-libproxy
 #
 # Conditional build:
 %bcond_with	tests		# enable tests (whatever they check)
@@ -48,7 +49,7 @@ BuildRequires:	bzip2-devel
 BuildRequires:	cairo-devel >= 1.10.2-5
 BuildRequires:	dbus-glib-devel >= 0.60
 BuildRequires:	freetype-devel >= 1:2.1.8
-BuildRequires:	glib2-devel >= 1:2.16.0
+BuildRequires:	glib2-devel >= 1:2.18
 %{!?with_qt:BuildRequires:	gtk+2-devel >= 2:2.10.0}
 BuildRequires:	hunspell-devel >= 1.2.3
 BuildRequires:	libIDL-devel >= 0.8.0
@@ -122,6 +123,7 @@ Summary(pl.UTF-8):	Biblioteki współdzielone XULRunnera
 Group:		X11/Libraries
 Requires:	cairo >= 1.10.2-5
 Requires:	dbus-glib >= 0.60
+Requires:	glib2 >= 1:2.18
 %{!?with_qt:Requires:	gtk+2 >= 2:2.10.0}
 Requires:	libpng >= 1.4.1
 Requires:	libpng(APNG) >= 0.10
