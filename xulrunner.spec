@@ -16,13 +16,13 @@
 # The actual sqlite version (see RHBZ#480989):
 %define		sqlite_build_version %(pkg-config --silence-errors --modversion sqlite3 2>/dev/null || echo ERROR)
 
-%define		nspr_ver		4.8.8
-%define		nss_ver			3.12.10
+%define		nspr_ver		4.8.9
+%define		nss_ver			3.13.1
 
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
-Version:	7.0.1
+Version:	8.0
 Release:	1
 Epoch:		2
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
@@ -30,7 +30,7 @@ Group:		X11/Applications
 # Source tarball for xulrunner is in fact firefox tarball (checked on 1.9), so lets use it
 # instead of waiting for mozilla to copy file on ftp.
 Source0:	http://releases.mozilla.org/pub/mozilla.org/firefox/releases/%{version}/source/firefox-%{version}.source.tar.bz2
-# Source0-md5:	5b212db48630ba93bb30ec63cca17f4d
+# Source0-md5:	9395a5be13da119bd8d53c3225e5d17c
 Patch0:		%{name}-install.patch
 Patch1:		%{name}-rpath.patch
 Patch3:		%{name}-nss_cflags.patch
