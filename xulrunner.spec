@@ -23,7 +23,7 @@ Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
 Version:	8.0.1
-Release:	1
+Release:	2
 Epoch:		2
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
@@ -93,8 +93,6 @@ Requires:	nss >= 1:%{nss_ver}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		filterout_cpp	-D_FORTIFY_SOURCE=[0-9]+
-
-%define		specflags	-fno-strict-aliasing
 
 # no Provides from private modules (don't use %{name} here, it expands to each subpackage name...)
 %define		_noautoprovfiles	%{_libdir}/xulrunner/components %{_libdir}/xulrunner/plugins
@@ -230,7 +228,7 @@ ac_add_options --enable-crash-on-assert
 ac_add_options --disable-debug
 ac_add_options --disable-debug-modules
 ac_add_options --disable-logging
-ac_add_options --enable-optimize="%{rpmcflags} -Os -fpermissive"
+ac_add_options --enable-optimize="%{rpmcflags} -Os"
 %endif
 ac_add_options --disable-strip
 ac_add_options --disable-strip-libs
