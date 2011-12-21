@@ -22,15 +22,15 @@
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
-Version:	8.0.1
-Release:	4
+Version:	9.0
+Release:	1
 Epoch:		2
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
 # Source tarball for xulrunner is in fact firefox tarball (checked on 1.9), so lets use it
 # instead of waiting for mozilla to copy file on ftp.
 Source0:	http://releases.mozilla.org/pub/mozilla.org/firefox/releases/%{version}/source/firefox-%{version}.source.tar.bz2
-# Source0-md5:	b7d09b082e88a74860a51a8e04e29333
+# Source0-md5:	d8d0c8c79660752b02d9e9ab69a68f94
 Patch0:		%{name}-install.patch
 Patch1:		%{name}-rpath.patch
 Patch3:		%{name}-nss_cflags.patch
@@ -39,6 +39,7 @@ Patch5:		%{name}-pc.patch
 Patch6:		%{name}-prefs.patch
 Patch7:		%{name}-ssl_oldapi.patch
 Patch8:		%{name}-ppc.patch
+# http://pkgs.fedoraproject.org/gitweb/?p=xulrunner.git;a=tree
 Patch9:		%{name}-gtkmozembed.patch
 Patch10:	%{name}-linux3.patch
 URL:		https://developer.mozilla.org/en/XULRunner
@@ -185,6 +186,10 @@ echo 'LOCAL_INCLUDES += $(MOZ_HUNSPELL_CFLAGS)' >> extensions/spellcheck/src/Mak
 %patch8 -p1
 %patch9 -p2
 %patch10 -p1
+
+# config/rules.mk is patched by us and js/src/config/rules.mk
+# is supposed to be exact copy
+cp -a config/rules.mk js/src/config/rules.mk
 
 %build
 if [ "$(grep -E '^[0-9]\.' mozilla/config/milestone.txt)" != "%{version}" ]; then
@@ -383,7 +388,6 @@ fi
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/xpidl
 %attr(755,root,root) %{_libdir}/%{name}/xpcshell
-%attr(755,root,root) %{_libdir}/%{name}/xpidl
 %attr(755,root,root) %{_libdir}/%{name}/xulrunner-stub
 %{_includedir}/%{name}
 %{_datadir}/idl/%{name}
