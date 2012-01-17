@@ -42,6 +42,7 @@ Patch8:		%{name}-ppc.patch
 # http://pkgs.fedoraproject.org/gitweb/?p=xulrunner.git;a=tree
 Patch9:		%{name}-gtkmozembed.patch
 Patch10:	%{name}-linux3.patch
+Patch11:	%{name}-libpng.patch
 URL:		https://developer.mozilla.org/en/XULRunner
 %{!?with_qt:BuildRequires:	GConf2-devel >= 1.2.1}
 BuildRequires:	alsa-lib-devel
@@ -187,6 +188,7 @@ echo 'LOCAL_INCLUDES += $(MOZ_HUNSPELL_CFLAGS)' >> extensions/spellcheck/src/Mak
 %patch8 -p1
 %patch9 -p2
 %patch10 -p1
+%patch11 -p2
 
 # config/rules.mk is patched by us and js/src/config/rules.mk
 # is supposed to be exact copy
