@@ -20,3 +20,14 @@
  XPCOM_FROZEN_LDOPTS='-L$(LIBXUL_DIST)/bin -lxpcom -lmozalloc'
  LIBXUL_LIBS='$(XPCOM_FROZEN_LDOPTS) -lxul'
  XPCOM_GLUE_LDOPTS='$(LIBXUL_DIST)/lib/$(LIB_PREFIX)xpcomglue_s.$(LIB_SUFFIX) $(XPCOM_FROZEN_LDOPTS)'
+--- mozilla/toolkit/mozapps/installer/packager.mk.orig	2012-01-17 16:05:48.399452282 +0100
++++ mozilla/toolkit/mozapps/installer/packager.mk	2012-01-18 16:47:16.095761903 +0100
+@@ -436,7 +436,7 @@
+ endif
+ 
+ GENERATE_CACHE = \
+-  $(_ABS_RUN_TEST_PROGRAM) $(LIBXUL_DIST)/bin/xpcshell$(BIN_SUFFIX) -g "$(PRECOMPILE_GRE)" -a "$$PWD" -f $(call core_abspath,$(MOZILLA_DIR)/toolkit/mozapps/installer/precompile_cache.js) -e "populate_startupcache('$(PRECOMPILE_DIR)', 'omni.jar', 'startupCache.zip');" && \
++  LD_PRELOAD=$(LIBXUL_DIST)/lib/libxpcom.so:$(LIBXUL_DIST)/lib/libmozalloc.so:$(LIBXUL_DIST)/lib/libxul.so:$(LIBXUL_DIST)/lib/libmozjs.so $(_ABS_RUN_TEST_PROGRAM) $(LIBXUL_DIST)/bin/xpcshell$(BIN_SUFFIX) -g "$(PRECOMPILE_GRE)" -a "$$PWD" -f $(call core_abspath,$(MOZILLA_DIR)/toolkit/mozapps/installer/precompile_cache.js) -e "populate_startupcache('$(PRECOMPILE_DIR)', 'omni.jar', 'startupCache.zip');" && \
+   rm -rf jsloader && \
+   $(UNZIP) startupCache.zip && \
+   rm startupCache.zip && \
