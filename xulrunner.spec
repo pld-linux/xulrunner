@@ -1,4 +1,6 @@
-# TODO: consiter --enable-libproxy
+# TODO:
+# - consider --enable-libproxy
+# - system libffi (>= 3.0.9, so gcc's version should suffice)
 #
 # Conditional build:
 %bcond_with	tests		# enable tests (whatever they check)
@@ -73,7 +75,7 @@ BuildRequires:	python >= 1:2.5
 BuildRequires:	rpm >= 4.4.9-56
 BuildRequires:	rpmbuild(macros) >= 1.453
 BuildRequires:	sed >= 4.0
-BuildRequires:	sqlite3-devel >= 3.7.5-2
+BuildRequires:	sqlite3-devel >= 3.7.7.1
 BuildRequires:	startup-notification-devel >= 0.8
 %if "%{pld_release}" == "ac"
 BuildRequires:	xcursor-devel
