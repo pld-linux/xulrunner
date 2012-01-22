@@ -95,7 +95,6 @@ Requires:	browser-plugins >= 2.0
 Requires:	myspell-common
 Requires:	nspr >= 1:%{nspr_ver}
 Requires:	nss >= 1:%{nss_ver}
-Requires:	python-ply
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		filterout_cpp	-D_FORTIFY_SOURCE=[0-9]+
@@ -148,6 +147,7 @@ Group:		X11/Development/Libraries
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 Requires:	nspr-devel >= 1:%{nspr_ver}
 Requires:	nss-devel >= 1:%{nss_ver}
+Requires:	python-ply
 Obsoletes:	mozilla-devel
 Obsoletes:	mozilla-firefox-devel
 Obsoletes:	seamonkey-devel
