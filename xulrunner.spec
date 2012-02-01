@@ -196,7 +196,7 @@ echo 'LOCAL_INCLUDES += $(MOZ_HUNSPELL_CFLAGS)' >> extensions/spellcheck/src/Mak
 cp -a config/rules.mk js/src/config/rules.mk
 
 %build
-if [ "$(grep -E '^[0-9]\.' mozilla/config/milestone.txt)" != "%{version}" ]; then
+if [ "$(grep -E '^[0-9]+\.' mozilla/config/milestone.txt)" != "%{version}" ]; then
 	echo >&2
 	echo >&2 "Version %{version} does not match mozilla/config/milestone.txt!"
 	echo >&2
