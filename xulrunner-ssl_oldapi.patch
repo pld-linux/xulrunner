@@ -294,9 +294,9 @@ index 88f0c98..c4d8db9 100644
            && !socketInfo->GetHasCleartextPhase()) // mirror PR_CONNECT_RESET_ERROR treament
        {
 @@ -3577,6 +3636,50 @@ nsNSSBadCertHandler(void *arg, PRFileDesc *sslSocket)
-         rv = proxy_bcl->NotifyCertProblem(csi, status, hostWithPortString, 
-                                           &suppressMessage);
-       }
+       nsIInterfaceRequestor *csi = static_cast<nsIInterfaceRequestor*>(mInfoObject);
+       nsrv = bcl->NotifyCertProblem(csi, status, hostWithPortString, &suppressMessage);
+     }
 +    } else {
 +      nsCOMPtr<nsIBadCertListener> handler = do_GetInterface(callbacks);
 +      nsIBadCertListener *badCertHandler = nsnull;
@@ -341,9 +341,9 @@ index 88f0c98..c4d8db9 100644
 +          return SECSuccess;
 +        suppressMessage = true;
 +      }
-     }
    }
  
+   nsCOMPtr<nsIRecentBadCertsService> recentBadCertsService = 
 diff --git a/security/manager/ssl/src/nsNSSIOLayer.h b/security/manager/ssl/src/nsNSSIOLayer.h
 index c619282..fbca648 100644
 --- a/security/manager/ssl/src/nsNSSIOLayer.h
