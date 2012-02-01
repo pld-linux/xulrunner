@@ -1,6 +1,6 @@
-diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/Makefile.in.gtkmozembed xulrunner-9.0/mozilla-beta/embedding/browser/gtk/Makefile.in
---- xulrunner-9.0/mozilla-beta/embedding/browser/gtk/Makefile.in.gtkmozembed	2011-12-09 14:55:38.370423755 +0100
-+++ xulrunner-9.0/mozilla-beta/embedding/browser/gtk/Makefile.in	2011-12-09 14:55:38.370423755 +0100
+diff -up xulrunner-10.0/mozilla-beta/embedding/browser/gtk/Makefile.in.gtkmozembed xulrunner-10.0/mozilla-beta/embedding/browser/gtk/Makefile.in
+--- xulrunner-10.0/mozilla-beta/embedding/browser/gtk/Makefile.in.gtkmozembed	2012-01-18 16:44:32.465289972 +0100
++++ xulrunner-10.0/mozilla-beta/embedding/browser/gtk/Makefile.in	2012-01-18 16:44:32.465289972 +0100
 @@ -0,0 +1,54 @@
 +# 
 +# ***** BEGIN LICENSE BLOCK *****
@@ -56,9 +56,9 @@ diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/Makefile.in.gtkmozembe
 +endif
 +
 +include $(topsrcdir)/config/rules.mk
-diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedCertificates.cpp.gtkmozembed xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedCertificates.cpp
---- xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedCertificates.cpp.gtkmozembed	2011-12-09 14:55:38.370423755 +0100
-+++ xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedCertificates.cpp	2011-12-09 14:55:38.371423759 +0100
+diff -up xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedCertificates.cpp.gtkmozembed xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedCertificates.cpp
+--- xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedCertificates.cpp.gtkmozembed	2012-01-18 16:44:32.466289972 +0100
++++ xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedCertificates.cpp	2012-01-18 16:44:32.466289972 +0100
 @@ -0,0 +1,253 @@
 +/* -*- Mode: C++; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
 +/* vim:set ts=2 sw=2 sts=2 tw=80 et cindent: */
@@ -313,9 +313,9 @@ diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedCertificates.
 +  return NS_OK;
 +}
 +
-diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedCertificates.h.gtkmozembed xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedCertificates.h
---- xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedCertificates.h.gtkmozembed	2011-12-09 14:55:38.371423759 +0100
-+++ xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedCertificates.h	2011-12-09 14:55:38.371423759 +0100
+diff -up xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedCertificates.h.gtkmozembed xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedCertificates.h
+--- xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedCertificates.h.gtkmozembed	2012-01-18 16:44:32.467289972 +0100
++++ xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedCertificates.h	2012-01-18 16:44:32.467289972 +0100
 @@ -0,0 +1,84 @@
 +/* -*- Mode: C++; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
 +/* vim:set ts=2 sw=2 sts=2 et cindent: */
@@ -401,9 +401,9 @@ diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedCertificates.
 +  nsCOMPtr<nsIStringBundle> mPIPStringBundle;
 +};
 +#endif /* __EmbedCertificates_h */
-diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedContentListener.cpp.gtkmozembed xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedContentListener.cpp
---- xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedContentListener.cpp.gtkmozembed	2011-12-09 14:55:38.371423759 +0100
-+++ xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedContentListener.cpp	2011-12-09 14:55:38.371423759 +0100
+diff -up xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedContentListener.cpp.gtkmozembed xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedContentListener.cpp
+--- xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedContentListener.cpp.gtkmozembed	2012-01-18 16:44:32.468289973 +0100
++++ xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedContentListener.cpp	2012-01-19 10:10:40.325459303 +0100
 @@ -0,0 +1,156 @@
 +/* ***** BEGIN LICENSE BLOCK *****
 + * Version: MPL 1.1/GPL 2.0/LGPL 2.1
@@ -473,7 +473,7 @@ diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedContentListen
 +
 +NS_IMETHODIMP
 +EmbedContentListener::OnStartURIOpen(nsIURI     *aURI,
-+				     PRBool     *aAbortOpen)
++				     bool     *aAbortOpen)
 +{
 +  nsresult rv;
 +
@@ -495,10 +495,10 @@ diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedContentListen
 +
 +NS_IMETHODIMP
 +EmbedContentListener::DoContent(const char         *aContentType,
-+				PRBool             aIsContentPreferred,
++				bool             aIsContentPreferred,
 +				nsIRequest         *aRequest,
 +				nsIStreamListener **aContentHandler,
-+				PRBool             *aAbortProcess)
++				bool             *aAbortProcess)
 +{
 +  return NS_ERROR_NOT_IMPLEMENTED;
 +}
@@ -506,7 +506,7 @@ diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedContentListen
 +NS_IMETHODIMP
 +EmbedContentListener::IsPreferred(const char        *aContentType,
 +				  char             **aDesiredContentType,
-+				  PRBool            *aCanHandleContent)
++				  bool            *aCanHandleContent)
 +{
 +  return CanHandleContent(aContentType, PR_TRUE, aDesiredContentType,
 +			  aCanHandleContent);
@@ -514,9 +514,9 @@ diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedContentListen
 +
 +NS_IMETHODIMP
 +EmbedContentListener::CanHandleContent(const char        *aContentType,
-+				       PRBool           aIsContentPreferred,
++				       bool           aIsContentPreferred,
 +				       char             **aDesiredContentType,
-+				       PRBool            *_retval)
++				       bool            *_retval)
 +{
 +  *_retval = PR_FALSE;
 +  *aDesiredContentType = nsnull;
@@ -561,9 +561,9 @@ diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedContentListen
 +  return NS_ERROR_NOT_IMPLEMENTED;
 +}
 +
-diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedContentListener.h.gtkmozembed xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedContentListener.h
---- xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedContentListener.h.gtkmozembed	2011-12-09 14:55:38.371423759 +0100
-+++ xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedContentListener.h	2011-12-09 14:55:38.372423763 +0100
+diff -up xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedContentListener.h.gtkmozembed xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedContentListener.h
+--- xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedContentListener.h.gtkmozembed	2012-01-18 16:44:32.469289973 +0100
++++ xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedContentListener.h	2012-01-18 16:44:32.469289973 +0100
 @@ -0,0 +1,66 @@
 +/* ***** BEGIN LICENSE BLOCK *****
 + * Version: MPL 1.1/GPL 2.0/LGPL 2.1
@@ -631,9 +631,9 @@ diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedContentListen
 +};
 +
 +#endif /* __EmbedContentListener_h */
-diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedContextMenuInfo.cpp.gtkmozembed xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedContextMenuInfo.cpp
---- xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedContextMenuInfo.cpp.gtkmozembed	2011-12-09 14:55:38.372423763 +0100
-+++ xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedContextMenuInfo.cpp	2011-12-09 14:55:38.372423763 +0100
+diff -up xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedContextMenuInfo.cpp.gtkmozembed xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedContextMenuInfo.cpp
+--- xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedContextMenuInfo.cpp.gtkmozembed	2012-01-18 16:44:32.471289973 +0100
++++ xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedContextMenuInfo.cpp	2012-01-18 16:44:32.471289973 +0100
 @@ -0,0 +1,618 @@
 +/* -*- Mode: C++; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
 +/* vim:set ts=2 sw=2 sts=2 tw=80 et cindent: */
@@ -1253,9 +1253,9 @@ diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedContextMenuIn
 +  mEmbedCtxType |= GTK_MOZ_EMBED_CTX_DOCUMENT;
 +  return NS_OK;
 +}
-diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedContextMenuInfo.h.gtkmozembed xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedContextMenuInfo.h
---- xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedContextMenuInfo.h.gtkmozembed	2011-12-09 14:55:38.372423763 +0100
-+++ xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedContextMenuInfo.h	2011-12-09 14:55:38.372423763 +0100
+diff -up xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedContextMenuInfo.h.gtkmozembed xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedContextMenuInfo.h
+--- xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedContextMenuInfo.h.gtkmozembed	2012-01-18 16:44:32.472289973 +0100
++++ xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedContextMenuInfo.h	2012-01-18 16:44:32.472289973 +0100
 @@ -0,0 +1,101 @@
 +/* -*- Mode: C++; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
 +/* vim:set ts=2 sw=2 sts=2 tw=80 et cindent: */
@@ -1358,9 +1358,9 @@ diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedContextMenuIn
 +  nsString                mCtxDocTitle;
 +}; // class EmbedContextMenuInfo
 +#endif // EmbedContextMenuInfo_h__
-diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedEventListener.cpp.gtkmozembed xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedEventListener.cpp
---- xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedEventListener.cpp.gtkmozembed	2011-12-09 14:55:38.373423767 +0100
-+++ xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedEventListener.cpp	2011-12-09 14:55:38.373423767 +0100
+diff -up xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedEventListener.cpp.gtkmozembed xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedEventListener.cpp
+--- xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedEventListener.cpp.gtkmozembed	2012-01-18 16:44:32.473289973 +0100
++++ xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedEventListener.cpp	2012-01-18 16:44:32.473289973 +0100
 @@ -0,0 +1,280 @@
 +/* ***** BEGIN LICENSE BLOCK *****
 + * Version: MPL 1.1/GPL 2.0/LGPL 2.1
@@ -1642,9 +1642,9 @@ diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedEventListener
 +  NS_ERROR("Unexpected event type");
 +  return NS_OK;
 +}
-diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedEventListener.h.gtkmozembed xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedEventListener.h
---- xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedEventListener.h.gtkmozembed	2011-12-09 14:55:38.373423767 +0100
-+++ xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedEventListener.h	2011-12-09 14:55:38.373423767 +0100
+diff -up xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedEventListener.h.gtkmozembed xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedEventListener.h
+--- xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedEventListener.h.gtkmozembed	2012-01-18 16:44:32.474289973 +0100
++++ xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedEventListener.h	2012-01-18 16:44:32.474289973 +0100
 @@ -0,0 +1,89 @@
 +/* ***** BEGIN LICENSE BLOCK *****
 + * Version: MPL 1.1/GPL 2.0/LGPL 2.1
@@ -1735,9 +1735,9 @@ diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedEventListener
 +};
 +
 +#endif /* __EmbedEventListener_h */
-diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedGtkTools.cpp.gtkmozembed xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedGtkTools.cpp
---- xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedGtkTools.cpp.gtkmozembed	2011-12-09 14:55:38.374423771 +0100
-+++ xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedGtkTools.cpp	2011-12-09 14:55:38.374423771 +0100
+diff -up xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedGtkTools.cpp.gtkmozembed xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedGtkTools.cpp
+--- xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedGtkTools.cpp.gtkmozembed	2012-01-18 16:44:32.476289973 +0100
++++ xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedGtkTools.cpp	2012-01-18 16:44:32.476289973 +0100
 @@ -0,0 +1,88 @@
 +/* -*- Mode: C++; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
 +/* vim:set ts=2 sw=4 sts=2 tw=80 et cindent: */
@@ -1827,9 +1827,9 @@ diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedGtkTools.cpp.
 +  NS_ENSURE_TRUE(docShell, NS_ERROR_FAILURE);
 +  return docShell->GetContentViewer(aViewer);
 +}
-diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedGtkTools.h.gtkmozembed xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedGtkTools.h
---- xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedGtkTools.h.gtkmozembed	2011-12-09 14:55:38.375423775 +0100
-+++ xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedGtkTools.h	2011-12-09 14:55:38.375423775 +0100
+diff -up xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedGtkTools.h.gtkmozembed xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedGtkTools.h
+--- xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedGtkTools.h.gtkmozembed	2012-01-18 16:44:32.476289973 +0100
++++ xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedGtkTools.h	2012-01-18 16:44:32.477289973 +0100
 @@ -0,0 +1,67 @@
 +/* -*- Mode: C++; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
 +/* vim:set ts=2 sw=2 sts=2 et cindent: */
@@ -1898,9 +1898,9 @@ diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedGtkTools.h.gt
 +GetContentViewer(nsIWebBrowser *webBrowser, nsIContentViewer **aViewer);
 +
 +#endif /* __EmbedTools_h */
-diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedPrivate.cpp.gtkmozembed xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedPrivate.cpp
---- xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedPrivate.cpp.gtkmozembed	2011-12-09 14:55:38.375423775 +0100
-+++ xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedPrivate.cpp	2011-12-09 14:55:38.375423775 +0100
+diff -up xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedPrivate.cpp.gtkmozembed xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedPrivate.cpp
+--- xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedPrivate.cpp.gtkmozembed	2012-01-18 16:44:32.478289973 +0100
++++ xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedPrivate.cpp	2012-01-19 10:08:33.847456417 +0100
 @@ -0,0 +1,1016 @@
 +/* ***** BEGIN LICENSE BLOCK *****
 + * Version: MPL 1.1/GPL 2.0/LGPL 2.1
@@ -2027,7 +2027,7 @@ diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedPrivate.cpp.g
 +}
 +
 +NS_IMETHODIMP
-+GTKEmbedDirectoryProvider::GetFile(const char *aKey, PRBool *aPersist,
++GTKEmbedDirectoryProvider::GetFile(const char *aKey, bool *aPersist,
 +                                   nsIFile* *aResult)
 +{
 +  if (EmbedPrivate::sAppFileLocProvider) {
@@ -2518,7 +2518,7 @@ diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedPrivate.cpp.g
 +    rv = sProfileDir->AppendNative(nsDependentCString(aName));
 +
 +  if (NS_SUCCEEDED(rv)) {
-+    PRBool exists = PR_FALSE;
++    bool exists = PR_FALSE;
 +    rv = sProfileDir->Exists(&exists);
 +    if (!exists)
 +      rv = sProfileDir->Create(nsIFile::DIRECTORY_TYPE, 0700);
@@ -2662,7 +2662,7 @@ diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedPrivate.cpp.g
 +
 +    // and since we're done loading show the window, assuming that the
 +    // visibility flag has been set.
-+    PRBool visibility;
++    bool visibility;
 +    mWindow->GetVisibility(&visibility);
 +    if (visibility)
 +      mWindow->SetVisibility(PR_TRUE);
@@ -2918,9 +2918,9 @@ diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedPrivate.cpp.g
 +  gtk_widget_destroy(sOffscreenWindow);
 +  sOffscreenWindow = 0;
 +}
-diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedPrivate.h.gtkmozembed xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedPrivate.h
---- xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedPrivate.h.gtkmozembed	2011-12-09 14:55:38.376423779 +0100
-+++ xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedPrivate.h	2011-12-09 14:55:38.376423779 +0100
+diff -up xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedPrivate.h.gtkmozembed xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedPrivate.h
+--- xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedPrivate.h.gtkmozembed	2012-01-18 16:44:32.479289973 +0100
++++ xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedPrivate.h	2012-01-18 16:44:32.480289973 +0100
 @@ -0,0 +1,188 @@
 +/* ***** BEGIN LICENSE BLOCK *****
 + * Version: MPL 1.1/GPL 2.0/LGPL 2.1
@@ -3110,9 +3110,9 @@ diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedPrivate.h.gtk
 +};
 +
 +#endif /* __EmbedPrivate_h */
-diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedProgress.cpp.gtkmozembed xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedProgress.cpp
---- xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedProgress.cpp.gtkmozembed	2011-12-09 14:55:38.376423779 +0100
-+++ xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedProgress.cpp	2011-12-09 14:55:38.376423779 +0100
+diff -up xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedProgress.cpp.gtkmozembed xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedProgress.cpp
+--- xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedProgress.cpp.gtkmozembed	2012-01-18 16:44:32.481289973 +0100
++++ xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedProgress.cpp	2012-01-18 16:44:32.481289973 +0100
 @@ -0,0 +1,215 @@
 +/* ***** BEGIN LICENSE BLOCK *****
 + * Version: MPL 1.1/GPL 2.0/LGPL 2.1
@@ -3329,9 +3329,9 @@ diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedProgress.cpp.
 +  
 +  uri->GetSpec(aString);
 +}
-diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedProgress.h.gtkmozembed xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedProgress.h
---- xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedProgress.h.gtkmozembed	2011-12-09 14:55:38.376423779 +0100
-+++ xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedProgress.h	2011-12-09 14:55:38.376423779 +0100
+diff -up xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedProgress.h.gtkmozembed xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedProgress.h
+--- xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedProgress.h.gtkmozembed	2012-01-18 16:44:32.483289973 +0100
++++ xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedProgress.h	2012-01-18 16:44:32.483289973 +0100
 @@ -0,0 +1,66 @@
 +/* ***** BEGIN LICENSE BLOCK *****
 + * Version: MPL 1.1/GPL 2.0/LGPL 2.1
@@ -3399,9 +3399,9 @@ diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedProgress.h.gt
 +};
 +
 +#endif /* __EmbedProgress_h */
-diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedPrompter.cpp.gtkmozembed xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedPrompter.cpp
---- xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedPrompter.cpp.gtkmozembed	2011-12-09 14:55:38.377423783 +0100
-+++ xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedPrompter.cpp	2011-12-09 14:55:38.377423783 +0100
+diff -up xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedPrompter.cpp.gtkmozembed xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedPrompter.cpp
+--- xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedPrompter.cpp.gtkmozembed	2012-01-18 16:44:32.484289973 +0100
++++ xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedPrompter.cpp	2012-01-19 10:42:07.334502360 +0100
 @@ -0,0 +1,411 @@
 +/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 +/* vim:expandtab:shiftwidth=4:tabstop=4: */
@@ -3723,15 +3723,15 @@ diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedPrompter.cpp.
 +}
 +
 +void
-+EmbedPrompter::GetCheckValue(PRBool *aValue)
++EmbedPrompter::GetCheckValue(bool *aValue)
 +{
-+    *aValue = mCheckValue;
++    *aValue = (bool)mCheckValue;
 +}
 +
 +void
-+EmbedPrompter::GetConfirmValue(PRBool *aConfirmValue)
++EmbedPrompter::GetConfirmValue(bool *aConfirmValue)
 +{
-+    *aConfirmValue = mConfirmResult;
++    *aConfirmValue = (bool)mConfirmResult;
 +}
 + 
 +void
@@ -3814,9 +3814,9 @@ diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedPrompter.cpp.
 +        }
 +    }
 +}
-diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedPrompter.h.gtkmozembed xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedPrompter.h
---- xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedPrompter.h.gtkmozembed	2011-12-09 14:55:38.377423783 +0100
-+++ xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedPrompter.h	2011-12-09 14:55:38.377423783 +0100
+diff -up xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedPrompter.h.gtkmozembed xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedPrompter.h
+--- xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedPrompter.h.gtkmozembed	2012-01-18 16:44:32.485289973 +0100
++++ xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedPrompter.h	2012-01-19 10:42:24.478502751 +0100
 @@ -0,0 +1,113 @@
 +/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 +/* vim:expandtab:shiftwidth=4:tabstop=4: */
@@ -3895,8 +3895,8 @@ diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedPrompter.h.gt
 +                        const PRUnichar* aButton2Label);
 +    void     SetItems(const PRUnichar **aItemArray, PRUint32 aCount);
 +
-+    void     GetCheckValue(PRBool *aValue);
-+    void     GetConfirmValue(PRBool *aConfirmValue);
++    void     GetCheckValue(bool *aValue);
++    void     GetConfirmValue(bool *aConfirmValue);
 +    void     GetTextValue(PRUnichar **aTextValue);
 +    void     GetUser(PRUnichar **aUser);
 +    void     GetPassword(PRUnichar **aPass);
@@ -3931,9 +3931,9 @@ diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedPrompter.h.gt
 +    GtkWidget   *mComboBox;
 +    GtkWidget   *mCheckBox;
 +};
-diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedWindow.cpp.gtkmozembed xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedWindow.cpp
---- xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedWindow.cpp.gtkmozembed	2011-12-09 14:55:38.377423783 +0100
-+++ xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedWindow.cpp	2011-12-09 14:55:38.377423783 +0100
+diff -up xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedWindow.cpp.gtkmozembed xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedWindow.cpp
+--- xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedWindow.cpp.gtkmozembed	2012-01-18 16:44:32.487289973 +0100
++++ xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedWindow.cpp	2012-01-19 10:09:43.082457998 +0100
 @@ -0,0 +1,474 @@
 +/*
 + * vim:ts=2:et:sw=2
@@ -4153,7 +4153,7 @@ diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedWindow.cpp.gt
 +}
 +
 +NS_IMETHODIMP
-+EmbedWindow::IsWindowModal(PRBool *_retval)
++EmbedWindow::IsWindowModal(bool *_retval)
 +{
 +  *_retval = mIsModal;
 +  return NS_OK;
@@ -4272,7 +4272,7 @@ diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedWindow.cpp.gt
 +}
 +
 +NS_IMETHODIMP
-+EmbedWindow::GetVisibility(PRBool *aVisibility)
++EmbedWindow::GetVisibility(bool *aVisibility)
 +{
 +  // XXX See bug 312998
 +  // Work around the problem that sometimes the window
@@ -4286,7 +4286,7 @@ diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedWindow.cpp.gt
 +}
 +
 +NS_IMETHODIMP
-+EmbedWindow::SetVisibility(PRBool aVisibility)
++EmbedWindow::SetVisibility(bool aVisibility)
 +{
 +  // We always set the visibility so that if it's chrome and we finish
 +  // the load we know that we have to show the window.
@@ -4409,9 +4409,9 @@ diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedWindow.cpp.gt
 +
 +  return rv;
 +}
-diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedWindowCreator.cpp.gtkmozembed xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedWindowCreator.cpp
---- xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedWindowCreator.cpp.gtkmozembed	2011-12-09 14:55:38.378423787 +0100
-+++ xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedWindowCreator.cpp	2011-12-09 14:55:38.378423787 +0100
+diff -up xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedWindowCreator.cpp.gtkmozembed xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedWindowCreator.cpp
+--- xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedWindowCreator.cpp.gtkmozembed	2012-01-18 16:44:32.488289973 +0100
++++ xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedWindowCreator.cpp	2012-01-18 16:44:32.488289973 +0100
 @@ -0,0 +1,106 @@
 +/* ***** BEGIN LICENSE BLOCK *****
 + * Version: MPL 1.1/GPL 2.0/LGPL 2.1
@@ -4519,9 +4519,9 @@ diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedWindowCreator
 +
 +  return NS_ERROR_FAILURE;
 +}
-diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedWindowCreator.h.gtkmozembed xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedWindowCreator.h
---- xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedWindowCreator.h.gtkmozembed	2011-12-09 14:55:38.378423787 +0100
-+++ xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedWindowCreator.h	2011-12-09 14:55:38.378423787 +0100
+diff -up xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedWindowCreator.h.gtkmozembed xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedWindowCreator.h
+--- xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedWindowCreator.h.gtkmozembed	2012-01-18 16:44:32.488289973 +0100
++++ xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedWindowCreator.h	2012-01-18 16:44:32.488289973 +0100
 @@ -0,0 +1,54 @@
 +/* ***** BEGIN LICENSE BLOCK *****
 + * Version: MPL 1.1/GPL 2.0/LGPL 2.1
@@ -4577,9 +4577,9 @@ diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedWindowCreator
 +};
 +
 +#endif /* __EmbedWindowCreator_h */
-diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedWindow.h.gtkmozembed xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedWindow.h
---- xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedWindow.h.gtkmozembed	2011-12-09 14:55:38.378423787 +0100
-+++ xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedWindow.h	2011-12-09 14:55:38.378423787 +0100
+diff -up xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedWindow.h.gtkmozembed xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedWindow.h
+--- xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedWindow.h.gtkmozembed	2012-01-18 16:44:32.489289973 +0100
++++ xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/EmbedWindow.h	2012-01-18 16:44:32.489289973 +0100
 @@ -0,0 +1,101 @@
 +/* ***** BEGIN LICENSE BLOCK *****
 + * Version: MPL 1.1/GPL 2.0/LGPL 2.1
@@ -4682,9 +4682,9 @@ diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/EmbedWindow.h.gtkm
 +  
 +
 +#endif /* __EmbedWindow_h */
-diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/gtkmozembed2.cpp.gtkmozembed xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/gtkmozembed2.cpp
---- xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/gtkmozembed2.cpp.gtkmozembed	2011-12-09 14:55:38.379423791 +0100
-+++ xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/gtkmozembed2.cpp	2011-12-09 14:55:38.379423791 +0100
+diff -up xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/gtkmozembed2.cpp.gtkmozembed xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/gtkmozembed2.cpp
+--- xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/gtkmozembed2.cpp.gtkmozembed	2012-01-18 16:44:32.491289973 +0100
++++ xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/gtkmozembed2.cpp	2012-01-19 10:06:52.015454094 +0100
 @@ -0,0 +1,1132 @@
 +/* ***** BEGIN LICENSE BLOCK *****
 + * Version: MPL 1.1/GPL 2.0/LGPL 2.1
@@ -5395,7 +5395,7 @@ diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/gtkmozembed2.cpp.g
 +gboolean
 +gtk_moz_embed_can_go_back(GtkMozEmbed *embed)
 +{
-+  PRBool retval = PR_FALSE;
++  bool retval = PR_FALSE;
 +  EmbedPrivate *embedPrivate;
 +
 +  g_return_val_if_fail ((embed != NULL), FALSE);
@@ -5411,7 +5411,7 @@ diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/gtkmozembed2.cpp.g
 +gboolean
 +gtk_moz_embed_can_go_forward(GtkMozEmbed *embed)
 +{
-+  PRBool retval = PR_FALSE;
++  bool retval = PR_FALSE;
 +  EmbedPrivate *embedPrivate;
 +
 +  g_return_val_if_fail ((embed != NULL), FALSE);
@@ -5818,9 +5818,9 @@ diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/gtkmozembed2.cpp.g
 +                aNewEmbed, aChromeFlags);
 +
 +}
-diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/gtkmozembed_glue.cpp.gtkmozembed xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/gtkmozembed_glue.cpp
---- xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/gtkmozembed_glue.cpp.gtkmozembed	2011-12-09 14:55:38.379423791 +0100
-+++ xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/gtkmozembed_glue.cpp	2011-12-09 14:55:38.379423791 +0100
+diff -up xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/gtkmozembed_glue.cpp.gtkmozembed xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/gtkmozembed_glue.cpp
+--- xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/gtkmozembed_glue.cpp.gtkmozembed	2012-01-18 16:44:32.493289973 +0100
++++ xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/gtkmozembed_glue.cpp	2012-01-18 16:44:32.494289973 +0100
 @@ -0,0 +1,116 @@
 +/* ***** BEGIN LICENSE BLOCK *****
 + * Version: MPL 1.1/GPL 2.0/LGPL 2.1
@@ -5938,9 +5938,9 @@ diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/gtkmozembed_glue.c
 +  return XPCOMGlueLoadXULFunctions(GtkSymbolsInternal);
 +}
 +
-diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/gtkmozembed.h.gtkmozembed xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/gtkmozembed.h
---- xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/gtkmozembed.h.gtkmozembed	2011-12-09 14:55:38.380423795 +0100
-+++ xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/gtkmozembed.h	2011-12-09 14:55:38.380423795 +0100
+diff -up xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/gtkmozembed.h.gtkmozembed xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/gtkmozembed.h
+--- xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/gtkmozembed.h.gtkmozembed	2012-01-18 16:44:32.495289973 +0100
++++ xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/gtkmozembed.h	2012-01-18 16:44:32.495289973 +0100
 @@ -0,0 +1,287 @@
 +/* ***** BEGIN LICENSE BLOCK *****
 + * Version: MPL 1.1/GPL 2.0/LGPL 2.1
@@ -6229,9 +6229,9 @@ diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/gtkmozembed.h.gtkm
 +#endif /* __cplusplus */
 +
 +#endif /* gtkmozembed_h */
-diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/gtkmozembed_internal.h.gtkmozembed xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/gtkmozembed_internal.h
---- xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/gtkmozembed_internal.h.gtkmozembed	2011-12-09 14:55:38.380423795 +0100
-+++ xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/gtkmozembed_internal.h	2011-12-09 14:55:38.380423795 +0100
+diff -up xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/gtkmozembed_internal.h.gtkmozembed xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/gtkmozembed_internal.h
+--- xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/gtkmozembed_internal.h.gtkmozembed	2012-01-18 16:44:32.495289973 +0100
++++ xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/gtkmozembed_internal.h	2012-01-18 16:44:32.495289973 +0100
 @@ -0,0 +1,70 @@
 +/* ***** BEGIN LICENSE BLOCK *****
 + * Version: MPL 1.1/GPL 2.0/LGPL 2.1
@@ -6303,9 +6303,9 @@ diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/gtkmozembed_intern
 +
 +#endif /* gtkmozembed_internal_h */
 +
-diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/gtkmozembedmarshal.list.gtkmozembed xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/gtkmozembedmarshal.list
---- xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/gtkmozembedmarshal.list.gtkmozembed	2011-12-09 14:55:38.380423795 +0100
-+++ xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/gtkmozembedmarshal.list	2011-12-09 14:55:38.380423795 +0100
+diff -up xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/gtkmozembedmarshal.list.gtkmozembed xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/gtkmozembedmarshal.list
+--- xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/gtkmozembedmarshal.list.gtkmozembed	2012-01-18 16:44:32.496289973 +0100
++++ xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/gtkmozembedmarshal.list	2012-01-18 16:44:32.496289973 +0100
 @@ -0,0 +1,34 @@
 +BOOL:STRING
 +BOOL:STRING,STRING
@@ -6341,9 +6341,9 @@ diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/gtkmozembedmarshal
 +BOOL:POINTER
 +VOID:POINTER
 +BOOL:STRING,STRING,POINTER
-diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/gtkmozembedprivate.h.gtkmozembed xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/gtkmozembedprivate.h
---- xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/gtkmozembedprivate.h.gtkmozembed	2011-12-09 14:55:38.380423795 +0100
-+++ xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/gtkmozembedprivate.h	2011-12-09 14:55:38.381423799 +0100
+diff -up xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/gtkmozembedprivate.h.gtkmozembed xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/gtkmozembedprivate.h
+--- xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/gtkmozembedprivate.h.gtkmozembed	2012-01-18 16:44:32.498289973 +0100
++++ xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/gtkmozembedprivate.h	2012-01-18 16:44:32.498289973 +0100
 @@ -0,0 +1,91 @@
 +/* ***** BEGIN LICENSE BLOCK *****
 + * Version: MPL 1.1/GPL 2.0/LGPL 2.1
@@ -6436,9 +6436,9 @@ diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/gtkmozembedprivate
 +#endif /* __cplusplus */
 +
 +#endif /* gtkmozembedprivate_h */
-diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/GtkPromptService.cpp.gtkmozembed xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/GtkPromptService.cpp
---- xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/GtkPromptService.cpp.gtkmozembed	2011-12-09 14:55:38.381423799 +0100
-+++ xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/GtkPromptService.cpp	2011-12-09 14:55:38.381423799 +0100
+diff -up xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/GtkPromptService.cpp.gtkmozembed xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/GtkPromptService.cpp
+--- xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/GtkPromptService.cpp.gtkmozembed	2012-01-18 16:44:32.499289973 +0100
++++ xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/GtkPromptService.cpp	2012-01-19 10:43:20.021504018 +0100
 @@ -0,0 +1,349 @@
 +/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 +/* vim:expandtab:shiftwidth=4:tabstop=4: */
@@ -6516,7 +6516,7 @@ diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/GtkPromptService.c
 +GtkPromptService::AlertCheck(nsIDOMWindow* aParent,
 +                             const PRUnichar* aDialogTitle,
 +                             const PRUnichar* aDialogText,
-+                             const PRUnichar* aCheckMsg, PRBool* aCheckValue)
++                             const PRUnichar* aCheckMsg, bool* aCheckValue)
 +{
 +    NS_ENSURE_ARG_POINTER(aCheckValue);
 +
@@ -6535,7 +6535,7 @@ diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/GtkPromptService.c
 +NS_IMETHODIMP
 +GtkPromptService::Confirm(nsIDOMWindow* aParent,
 +                          const PRUnichar* aDialogTitle,
-+                          const PRUnichar* aDialogText, PRBool* aConfirm)
++                          const PRUnichar* aDialogText, bool* aConfirm)
 +{
 +    EmbedPrompter prompter;
 +    prompter.SetTitle(aDialogTitle ? aDialogTitle : NS_LITERAL_STRING("Confirm").get());
@@ -6552,7 +6552,7 @@ diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/GtkPromptService.c
 +                               const PRUnichar* aDialogTitle,
 +                               const PRUnichar* aDialogText,
 +                               const PRUnichar* aCheckMsg,
-+                               PRBool* aCheckValue, PRBool* aConfirm)
++                               bool* aCheckValue, bool* aConfirm)
 +{
 +    NS_ENSURE_ARG_POINTER(aCheckValue);
 +
@@ -6577,7 +6577,7 @@ diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/GtkPromptService.c
 +                            const PRUnichar* aButton0Title,
 +                            const PRUnichar* aButton1Title,
 +                            const PRUnichar* aButton2Title,
-+                            const PRUnichar* aCheckMsg, PRBool* aCheckValue,
++                            const PRUnichar* aCheckMsg, bool* aCheckValue,
 +                            PRInt32* aRetVal)
 +{
 +    EmbedPrompter prompter;
@@ -6611,8 +6611,8 @@ diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/GtkPromptService.c
 +NS_IMETHODIMP
 +GtkPromptService::Prompt(nsIDOMWindow* aParent, const PRUnichar* aDialogTitle,
 +                         const PRUnichar* aDialogText, PRUnichar** aValue,
-+                         const PRUnichar* aCheckMsg, PRBool* aCheckValue,
-+                         PRBool* aConfirm)
++                         const PRUnichar* aCheckMsg, bool* aCheckValue,
++                         bool* aConfirm)
 +{
 +    EmbedPrompter prompter;
 +    prompter.SetTitle(aDialogTitle ? aDialogTitle : NS_LITERAL_STRING("Prompt").get());
@@ -6644,8 +6644,8 @@ diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/GtkPromptService.c
 +                                            PRUnichar** aUsername,
 +                                            PRUnichar** aPassword,
 +                                            const PRUnichar* aCheckMsg,
-+                                            PRBool* aCheckValue,
-+                                            PRBool* aConfirm)
++                                            bool* aCheckValue,
++                                            bool* aConfirm)
 +{
 +    EmbedPrompter prompter;
 +    prompter.SetTitle(aDialogTitle ? aDialogTitle : NS_LITERAL_STRING("Prompt").get());
@@ -6681,7 +6681,7 @@ diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/GtkPromptService.c
 +                                 const PRUnichar* aDialogText,
 +                                 PRUnichar** aPassword,
 +                                 const PRUnichar* aCheckMsg,
-+                                 PRBool* aCheckValue, PRBool* aConfirm)
++                                 bool* aCheckValue, bool* aConfirm)
 +{
 +    EmbedPrompter prompter;
 +    prompter.SetTitle(aDialogTitle ? aDialogTitle : NS_LITERAL_STRING("Prompt").get());
@@ -6710,7 +6710,7 @@ diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/GtkPromptService.c
 +GtkPromptService::Select(nsIDOMWindow* aParent, const PRUnichar* aDialogTitle,
 +                         const PRUnichar* aDialogText, PRUint32 aCount,
 +                         const PRUnichar** aSelectList, PRInt32* outSelection,
-+                         PRBool* aConfirm)
++                         bool* aConfirm)
 +{
 +    EmbedPrompter prompter;
 +    prompter.SetTitle(aDialogTitle ? aDialogTitle : NS_LITERAL_STRING("Select").get());
@@ -6789,9 +6789,9 @@ diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/GtkPromptService.c
 +        NS_WARNING("Unexpected button flags");
 +    }
 +}
-diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/GtkPromptService.h.gtkmozembed xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/GtkPromptService.h
---- xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/GtkPromptService.h.gtkmozembed	2011-12-09 14:55:38.381423799 +0100
-+++ xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/GtkPromptService.h	2011-12-09 14:55:38.381423799 +0100
+diff -up xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/GtkPromptService.h.gtkmozembed xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/GtkPromptService.h
+--- xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/GtkPromptService.h.gtkmozembed	2012-01-18 16:44:32.500289973 +0100
++++ xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/GtkPromptService.h	2012-01-18 16:44:32.500289973 +0100
 @@ -0,0 +1,59 @@
 +/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 +/* vim:expandtab:shiftwidth=4:tabstop=4: */
@@ -6852,9 +6852,9 @@ diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/GtkPromptService.h
 +    void GetButtonLabel(PRUint32 aFlags, PRUint32 aPos,
 +                        const PRUnichar* aStringValue, nsAString &aLabel);
 +};
-diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/Makefile.in.gtkmozembed xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/Makefile.in
---- xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/Makefile.in.gtkmozembed	2011-12-09 14:55:38.381423799 +0100
-+++ xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/Makefile.in	2011-12-09 14:55:38.381423799 +0100
+diff -up xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/Makefile.in.gtkmozembed xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/Makefile.in
+--- xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/Makefile.in.gtkmozembed	2012-01-18 16:44:32.501289973 +0100
++++ xulrunner-10.0/mozilla-beta/embedding/browser/gtk/src/Makefile.in	2012-01-18 16:44:32.501289973 +0100
 @@ -0,0 +1,112 @@
 +# 
 +# ***** BEGIN LICENSE BLOCK *****
@@ -6968,9 +6968,9 @@ diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/src/Makefile.in.gtkmoz
 +
 +GARBAGE += $(MARSHAL_FILE).h $(MARSHAL_FILE).c
 +
-diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/tests/Makefile.in.gtkmozembed xulrunner-9.0/mozilla-beta/embedding/browser/gtk/tests/Makefile.in
---- xulrunner-9.0/mozilla-beta/embedding/browser/gtk/tests/Makefile.in.gtkmozembed	2011-12-09 14:55:38.382423803 +0100
-+++ xulrunner-9.0/mozilla-beta/embedding/browser/gtk/tests/Makefile.in	2011-12-09 14:55:38.382423803 +0100
+diff -up xulrunner-10.0/mozilla-beta/embedding/browser/gtk/tests/Makefile.in.gtkmozembed xulrunner-10.0/mozilla-beta/embedding/browser/gtk/tests/Makefile.in
+--- xulrunner-10.0/mozilla-beta/embedding/browser/gtk/tests/Makefile.in.gtkmozembed	2012-01-18 16:44:32.502289973 +0100
++++ xulrunner-10.0/mozilla-beta/embedding/browser/gtk/tests/Makefile.in	2012-01-18 16:44:32.502289973 +0100
 @@ -0,0 +1,101 @@
 +# 
 +# ***** BEGIN LICENSE BLOCK *****
@@ -7073,9 +7073,9 @@ diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/tests/Makefile.in.gtkm
 +DEFINES           += -D_TIME_H=1
 +endif
 +endif
-diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/tests/TestGtkEmbedChild.cpp.gtkmozembed xulrunner-9.0/mozilla-beta/embedding/browser/gtk/tests/TestGtkEmbedChild.cpp
---- xulrunner-9.0/mozilla-beta/embedding/browser/gtk/tests/TestGtkEmbedChild.cpp.gtkmozembed	2011-12-09 14:55:38.382423803 +0100
-+++ xulrunner-9.0/mozilla-beta/embedding/browser/gtk/tests/TestGtkEmbedChild.cpp	2011-12-09 14:55:38.382423803 +0100
+diff -up xulrunner-10.0/mozilla-beta/embedding/browser/gtk/tests/TestGtkEmbedChild.cpp.gtkmozembed xulrunner-10.0/mozilla-beta/embedding/browser/gtk/tests/TestGtkEmbedChild.cpp
+--- xulrunner-10.0/mozilla-beta/embedding/browser/gtk/tests/TestGtkEmbedChild.cpp.gtkmozembed	2012-01-18 16:44:32.504289973 +0100
++++ xulrunner-10.0/mozilla-beta/embedding/browser/gtk/tests/TestGtkEmbedChild.cpp	2012-01-18 16:44:32.716289979 +0100
 @@ -0,0 +1,185 @@
 +/* ***** BEGIN LICENSE BLOCK *****
 + * Version: MPL 1.1/GPL 2.0/LGPL 2.1
@@ -7262,9 +7262,9 @@ diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/tests/TestGtkEmbedChil
 +  gtk_moz_embed_load_url(GTK_MOZ_EMBED(embed), text);
 +  g_free(text);
 +}
-diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/tests/TestGtkEmbed.cpp.gtkmozembed xulrunner-9.0/mozilla-beta/embedding/browser/gtk/tests/TestGtkEmbed.cpp
---- xulrunner-9.0/mozilla-beta/embedding/browser/gtk/tests/TestGtkEmbed.cpp.gtkmozembed	2011-12-09 14:55:38.383423807 +0100
-+++ xulrunner-9.0/mozilla-beta/embedding/browser/gtk/tests/TestGtkEmbed.cpp	2011-12-09 14:55:38.383423807 +0100
+diff -up xulrunner-10.0/mozilla-beta/embedding/browser/gtk/tests/TestGtkEmbed.cpp.gtkmozembed xulrunner-10.0/mozilla-beta/embedding/browser/gtk/tests/TestGtkEmbed.cpp
+--- xulrunner-10.0/mozilla-beta/embedding/browser/gtk/tests/TestGtkEmbed.cpp.gtkmozembed	2012-01-18 16:44:32.719289978 +0100
++++ xulrunner-10.0/mozilla-beta/embedding/browser/gtk/tests/TestGtkEmbed.cpp	2012-01-18 16:44:32.719289978 +0100
 @@ -0,0 +1,1145 @@
 +/* ***** BEGIN LICENSE BLOCK *****
 + * Version: MPL 1.1/GPL 2.0/LGPL 2.1
@@ -8411,9 +8411,9 @@ diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/tests/TestGtkEmbed.cpp
 +    gtk_widget_set_sensitive(browser->forwardButton, FALSE);
 + }
 +
-diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/tests/TestGtkEmbedMDI.cpp.gtkmozembed xulrunner-9.0/mozilla-beta/embedding/browser/gtk/tests/TestGtkEmbedMDI.cpp
---- xulrunner-9.0/mozilla-beta/embedding/browser/gtk/tests/TestGtkEmbedMDI.cpp.gtkmozembed	2011-12-09 14:55:38.383423807 +0100
-+++ xulrunner-9.0/mozilla-beta/embedding/browser/gtk/tests/TestGtkEmbedMDI.cpp	2011-12-09 14:55:38.383423807 +0100
+diff -up xulrunner-10.0/mozilla-beta/embedding/browser/gtk/tests/TestGtkEmbedMDI.cpp.gtkmozembed xulrunner-10.0/mozilla-beta/embedding/browser/gtk/tests/TestGtkEmbedMDI.cpp
+--- xulrunner-10.0/mozilla-beta/embedding/browser/gtk/tests/TestGtkEmbedMDI.cpp.gtkmozembed	2012-01-18 16:44:32.789289981 +0100
++++ xulrunner-10.0/mozilla-beta/embedding/browser/gtk/tests/TestGtkEmbedMDI.cpp	2012-01-18 16:44:32.789289981 +0100
 @@ -0,0 +1,142 @@
 +/** simplemdi.c **/
 +/*
@@ -8557,9 +8557,9 @@ diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/tests/TestGtkEmbedMDI.
 +    gtk_main_quit();
 +    return(0);
 +}
-diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/tests/TestGtkEmbedNotebook.cpp.gtkmozembed xulrunner-9.0/mozilla-beta/embedding/browser/gtk/tests/TestGtkEmbedNotebook.cpp
---- xulrunner-9.0/mozilla-beta/embedding/browser/gtk/tests/TestGtkEmbedNotebook.cpp.gtkmozembed	2011-12-09 14:55:38.384423811 +0100
-+++ xulrunner-9.0/mozilla-beta/embedding/browser/gtk/tests/TestGtkEmbedNotebook.cpp	2011-12-09 14:55:38.384423811 +0100
+diff -up xulrunner-10.0/mozilla-beta/embedding/browser/gtk/tests/TestGtkEmbedNotebook.cpp.gtkmozembed xulrunner-10.0/mozilla-beta/embedding/browser/gtk/tests/TestGtkEmbedNotebook.cpp
+--- xulrunner-10.0/mozilla-beta/embedding/browser/gtk/tests/TestGtkEmbedNotebook.cpp.gtkmozembed	2012-01-18 16:44:32.807289982 +0100
++++ xulrunner-10.0/mozilla-beta/embedding/browser/gtk/tests/TestGtkEmbedNotebook.cpp	2012-01-18 16:44:32.808289981 +0100
 @@ -0,0 +1,86 @@
 +#include <gtk/gtk.h>
 +#include <gtkmozembed.h>
@@ -8647,9 +8647,9 @@ diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/tests/TestGtkEmbedNote
 +	
 +	return 0;
 +}
-diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/tests/TestGtkEmbedSocket.cpp.gtkmozembed xulrunner-9.0/mozilla-beta/embedding/browser/gtk/tests/TestGtkEmbedSocket.cpp
---- xulrunner-9.0/mozilla-beta/embedding/browser/gtk/tests/TestGtkEmbedSocket.cpp.gtkmozembed	2011-12-09 14:55:38.385423815 +0100
-+++ xulrunner-9.0/mozilla-beta/embedding/browser/gtk/tests/TestGtkEmbedSocket.cpp	2011-12-09 14:55:38.385423815 +0100
+diff -up xulrunner-10.0/mozilla-beta/embedding/browser/gtk/tests/TestGtkEmbedSocket.cpp.gtkmozembed xulrunner-10.0/mozilla-beta/embedding/browser/gtk/tests/TestGtkEmbedSocket.cpp
+--- xulrunner-10.0/mozilla-beta/embedding/browser/gtk/tests/TestGtkEmbedSocket.cpp.gtkmozembed	2012-01-18 16:44:32.808289981 +0100
++++ xulrunner-10.0/mozilla-beta/embedding/browser/gtk/tests/TestGtkEmbedSocket.cpp	2012-01-18 16:44:32.808289981 +0100
 @@ -0,0 +1,109 @@
 +/* ***** BEGIN LICENSE BLOCK *****
 + * Version: MPL 1.1/GPL 2.0/LGPL 2.1
@@ -8760,10 +8760,10 @@ diff -up xulrunner-9.0/mozilla-beta/embedding/browser/gtk/tests/TestGtkEmbedSock
 +    fprintf(stderr, "Can't fork.\n");
 +  }
 +}
-diff -up xulrunner-9.0/mozilla-beta/toolkit/library/Makefile.in.gtkmozembed xulrunner-9.0/mozilla-beta/toolkit/library/Makefile.in
---- xulrunner-9.0/mozilla-beta/toolkit/library/Makefile.in.gtkmozembed	2011-12-07 07:28:06.000000000 +0100
-+++ xulrunner-9.0/mozilla-beta/toolkit/library/Makefile.in	2011-12-09 14:55:38.385423815 +0100
-@@ -75,6 +75,8 @@ CPPSRCS += dlldeps-xul.cpp
+diff -up xulrunner-10.0/mozilla-beta/toolkit/library/Makefile.in.gtkmozembed xulrunner-10.0/mozilla-beta/toolkit/library/Makefile.in
+--- xulrunner-10.0/mozilla-beta/toolkit/library/Makefile.in.gtkmozembed	2012-01-11 18:15:04.000000000 +0100
++++ xulrunner-10.0/mozilla-beta/toolkit/library/Makefile.in	2012-01-18 16:44:32.809289980 +0100
+@@ -73,6 +73,8 @@ CPPSRCS += dlldeps-xul.cpp
  endif
  
  ifneq (,$(MOZ_ENABLE_GTK2))
@@ -8772,10 +8772,10 @@ diff -up xulrunner-9.0/mozilla-beta/toolkit/library/Makefile.in.gtkmozembed xulr
  DEFINES += -DMOZ_ENABLE_GTK2
  endif
  
-diff -up xulrunner-9.0/mozilla-beta/toolkit/toolkit-makefiles.sh.gtkmozembed xulrunner-9.0/mozilla-beta/toolkit/toolkit-makefiles.sh
---- xulrunner-9.0/mozilla-beta/toolkit/toolkit-makefiles.sh.gtkmozembed	2011-12-07 07:28:07.000000000 +0100
-+++ xulrunner-9.0/mozilla-beta/toolkit/toolkit-makefiles.sh	2011-12-09 14:55:38.385423815 +0100
-@@ -555,6 +555,9 @@ MAKEFILES_embedding="
+diff -up xulrunner-10.0/mozilla-beta/toolkit/toolkit-makefiles.sh.gtkmozembed xulrunner-10.0/mozilla-beta/toolkit/toolkit-makefiles.sh
+--- xulrunner-10.0/mozilla-beta/toolkit/toolkit-makefiles.sh.gtkmozembed	2012-01-11 18:15:08.000000000 +0100
++++ xulrunner-10.0/mozilla-beta/toolkit/toolkit-makefiles.sh	2012-01-18 16:44:32.810289980 +0100
+@@ -554,6 +554,9 @@ MAKEFILES_embedding="
    embedding/browser/Makefile
    embedding/browser/build/Makefile
    embedding/browser/webBrowser/Makefile
@@ -8783,12 +8783,12 @@ diff -up xulrunner-9.0/mozilla-beta/toolkit/toolkit-makefiles.sh.gtkmozembed xul
 +  embedding/browser/gtk/src/Makefile
 +  embedding/browser/gtk/tests/Makefile
    embedding/components/Makefile
-   embedding/components/appstartup/Makefile
    embedding/components/appstartup/src/Makefile
-diff -up xulrunner-9.0/mozilla-beta/toolkit/toolkit-tiers.mk.gtkmozembed xulrunner-9.0/mozilla-beta/toolkit/toolkit-tiers.mk
---- xulrunner-9.0/mozilla-beta/toolkit/toolkit-tiers.mk.gtkmozembed	2011-12-07 07:28:07.000000000 +0100
-+++ xulrunner-9.0/mozilla-beta/toolkit/toolkit-tiers.mk	2011-12-09 14:55:38.386423819 +0100
-@@ -220,6 +220,12 @@ endif
+   embedding/components/build/Makefile
+diff -up xulrunner-10.0/mozilla-beta/toolkit/toolkit-tiers.mk.gtkmozembed xulrunner-10.0/mozilla-beta/toolkit/toolkit-tiers.mk
+--- xulrunner-10.0/mozilla-beta/toolkit/toolkit-tiers.mk.gtkmozembed	2012-01-11 18:15:08.000000000 +0100
++++ xulrunner-10.0/mozilla-beta/toolkit/toolkit-tiers.mk	2012-01-18 16:44:32.811289981 +0100
+@@ -221,6 +221,12 @@ endif
  
  tier_platform_dirs += services/crypto/component
  
@@ -8800,15 +8800,15 @@ diff -up xulrunner-9.0/mozilla-beta/toolkit/toolkit-tiers.mk.gtkmozembed xulrunn
 +
  tier_platform_dirs += startupcache
  
- tier_platform_dirs += js/ductwork
-@@ -268,4 +274,3 @@ tier_platform_dirs += testing/xpcshell 
- tier_platform_dirs += testing/mozmill
+ tier_platform_dirs += js/ductwork/debugger
+@@ -268,4 +274,3 @@ tier_platform_dirs += testing/mochitest
+ tier_platform_dirs += testing/xpcshell
  tier_platform_dirs += testing/tools/screenshot
  endif
 -
-diff -up xulrunner-9.0/mozilla-beta/xulrunner/installer/Makefile.in.gtkmozembed xulrunner-9.0/mozilla-beta/xulrunner/installer/Makefile.in
---- xulrunner-9.0/mozilla-beta/xulrunner/installer/Makefile.in.gtkmozembed	2011-12-09 14:55:38.366423739 +0100
-+++ xulrunner-9.0/mozilla-beta/xulrunner/installer/Makefile.in	2011-12-09 14:55:38.386423819 +0100
+diff -up xulrunner-10.0/mozilla-beta/xulrunner/installer/Makefile.in.gtkmozembed xulrunner-10.0/mozilla-beta/xulrunner/installer/Makefile.in
+--- xulrunner-10.0/mozilla-beta/xulrunner/installer/Makefile.in.gtkmozembed	2012-01-18 16:44:32.403289971 +0100
++++ xulrunner-10.0/mozilla-beta/xulrunner/installer/Makefile.in	2012-01-18 16:44:32.817289981 +0100
 @@ -78,6 +78,8 @@ pkg_config_files = \
  	libxul-embedding.pc \
  	mozilla-js.pc \
@@ -8818,9 +8818,9 @@ diff -up xulrunner-9.0/mozilla-beta/xulrunner/installer/Makefile.in.gtkmozembed 
  	$(NULL)
  
  ifdef MOZ_NATIVE_NSPR
-diff -up xulrunner-9.0/mozilla-beta/xulrunner/installer/mozilla-gtkmozembed-embedding.pc.in.gtkmozembed xulrunner-9.0/mozilla-beta/xulrunner/installer/mozilla-gtkmozembed-embedding.pc.in
---- xulrunner-9.0/mozilla-beta/xulrunner/installer/mozilla-gtkmozembed-embedding.pc.in.gtkmozembed	2011-12-09 14:55:38.386423819 +0100
-+++ xulrunner-9.0/mozilla-beta/xulrunner/installer/mozilla-gtkmozembed-embedding.pc.in	2011-12-09 14:56:32.550629518 +0100
+diff -up xulrunner-10.0/mozilla-beta/xulrunner/installer/mozilla-gtkmozembed-embedding.pc.in.gtkmozembed xulrunner-10.0/mozilla-beta/xulrunner/installer/mozilla-gtkmozembed-embedding.pc.in
+--- xulrunner-10.0/mozilla-beta/xulrunner/installer/mozilla-gtkmozembed-embedding.pc.in.gtkmozembed	2012-01-18 16:44:32.812289981 +0100
++++ xulrunner-10.0/mozilla-beta/xulrunner/installer/mozilla-gtkmozembed-embedding.pc.in	2012-01-18 16:44:32.812289981 +0100
 @@ -0,0 +1,9 @@
 +prefix=%prefix%
 +sdkdir=%sdkdir%
@@ -8831,9 +8831,9 @@ diff -up xulrunner-9.0/mozilla-beta/xulrunner/installer/mozilla-gtkmozembed-embe
 +Description: Static version-independent Mozilla Embedding Widget for Gtk+
 +Version: %MOZILLA_VERSION%
 +Requires: libxul-embedding = %MOZILLA_VERSION%
-diff -up xulrunner-9.0/mozilla-beta/xulrunner/installer/mozilla-gtkmozembed.pc.in.gtkmozembed xulrunner-9.0/mozilla-beta/xulrunner/installer/mozilla-gtkmozembed.pc.in
---- xulrunner-9.0/mozilla-beta/xulrunner/installer/mozilla-gtkmozembed.pc.in.gtkmozembed	2011-12-09 14:55:38.387423823 +0100
-+++ xulrunner-9.0/mozilla-beta/xulrunner/installer/mozilla-gtkmozembed.pc.in	2011-12-09 14:56:25.270603216 +0100
+diff -up xulrunner-10.0/mozilla-beta/xulrunner/installer/mozilla-gtkmozembed.pc.in.gtkmozembed xulrunner-10.0/mozilla-beta/xulrunner/installer/mozilla-gtkmozembed.pc.in
+--- xulrunner-10.0/mozilla-beta/xulrunner/installer/mozilla-gtkmozembed.pc.in.gtkmozembed	2012-01-18 16:44:32.813289981 +0100
++++ xulrunner-10.0/mozilla-beta/xulrunner/installer/mozilla-gtkmozembed.pc.in	2012-01-18 16:44:32.813289981 +0100
 @@ -0,0 +1,9 @@
 +prefix=%prefix%
 +sdkdir=%sdkdir%
