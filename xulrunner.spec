@@ -39,7 +39,6 @@ Patch3:		%{name}-nss_cflags.patch
 Patch4:		%{name}-paths.patch
 Patch5:		%{name}-pc.patch
 Patch6:		%{name}-prefs.patch
-Patch7:		%{name}-ssl_oldapi.patch
 Patch8:		%{name}-ppc.patch
 # http://pkgs.fedoraproject.org/gitweb/?p=xulrunner.git;a=tree
 Patch9:		%{name}-gtkmozembed.patch
@@ -186,7 +185,6 @@ echo 'LOCAL_INCLUDES += $(MOZ_HUNSPELL_CFLAGS)' >> extensions/spellcheck/src/Mak
 %patch4 -p1
 %patch5 -p1
 %patch6 -p1
-%patch7 -p1
 %patch8 -p1
 %patch9 -p2
 %patch10 -p1
