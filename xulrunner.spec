@@ -309,8 +309,6 @@ ln -s ../../share/%{name}/chrome $RPM_BUILD_ROOT%{_libdir}/%{name}/chrome
 #ln -s ../../share/%{name}/icons $RPM_BUILD_ROOT%{_libdir}/%{name}/icons
 %{__rm} -r $RPM_BUILD_ROOT%{_libdir}/%{name}/dictionaries
 ln -s %{_datadir}/myspell $RPM_BUILD_ROOT%{_libdir}/%{name}/dictionaries
-%{__rm} -r $RPM_BUILD_ROOT%{_libdir}/%{name}/hyphenation
-ln -s %{_datadir}/hyphenation $RPM_BUILD_ROOT%{_libdir}/%{name}/hyphenation
 
 # files created by regxpcom
 touch $RPM_BUILD_ROOT%{_libdir}/%{name}/components/compreg.dat
@@ -349,7 +347,6 @@ fi
 # symlinks
 %{_libdir}/%{name}/chrome
 %{_libdir}/%{name}/dictionaries
-%{_libdir}/%{name}/hyphenation
 #%%{_libdir}/%{name}/icons
 
 %{_browserpluginsconfdir}/browsers.d/%{name}.*
@@ -359,7 +356,7 @@ fi
 %dir %{_libdir}/%{name}/components
 
 %{_libdir}/%{name}/chrome.manifest
-%{_libdir}/%{name}/omni.jar
+%{_libdir}/%{name}/omni.ja
 
 %attr(755,root,root) %{_libdir}/%{name}/*.sh
 %attr(755,root,root) %{_libdir}/%{name}/mozilla-xremote-client
