@@ -25,7 +25,7 @@ Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
 Version:	10.0
-Release:	2
+Release:	3
 Epoch:		2
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
@@ -43,6 +43,7 @@ Patch8:		%{name}-ppc.patch
 # http://pkgs.fedoraproject.org/gitweb/?p=xulrunner.git;a=tree
 Patch9:		%{name}-gtkmozembed.patch
 Patch10:	%{name}-linux3.patch
+Patch11:	idl-parser.patch
 URL:		https://developer.mozilla.org/en/XULRunner
 %{!?with_qt:BuildRequires:	GConf2-devel >= 1.2.1}
 BuildRequires:	alsa-lib-devel
@@ -188,6 +189,7 @@ echo 'LOCAL_INCLUDES += $(MOZ_HUNSPELL_CFLAGS)' >> extensions/spellcheck/src/Mak
 %patch8 -p1
 %patch9 -p2
 %patch10 -p1
+%patch11 -p1
 
 # config/rules.mk is patched by us and js/src/config/rules.mk
 # is supposed to be exact copy
