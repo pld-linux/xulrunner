@@ -25,7 +25,7 @@ Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
 Version:	10.0.2
-Release:	2
+Release:	3
 Epoch:		2
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
@@ -65,7 +65,7 @@ BuildRequires:	libjpeg-devel >= 6b
 BuildRequires:	libpng(APNG)-devel >= 0.10
 BuildRequires:	libpng-devel >= 1.4.1
 BuildRequires:	libstdc++-devel
-BuildRequires:	libvpx-devel
+BuildRequires:	libvpx-devel >= 1.0.0
 BuildRequires:	nspr-devel >= 1:%{nspr_ver}
 BuildRequires:	nss-devel >= 1:%{nss_ver}
 BuildRequires:	pango-devel >= 1:1.14.0
@@ -175,6 +175,10 @@ GConf, GIO, libnotify%{?with_gnomeui: oraz GNOME UI}.
 %setup -qc
 mv -f mozilla-release mozilla
 cd mozilla
+
+# libvpx fix
+grep -q VPX_CODEC_USE_INPUT_PARTITION configure.in && sed -i 's#VPX_CODEC_USE_INPUT_PARTITION#VPX_CODEC_USE_INPUT_FRAGMENTS#' configure* || exit 1
+
 # avoid using included headers (-I. is before HUNSPELL_CFLAGS)
 %{__rm} extensions/spellcheck/hunspell/src/{*.hxx,hunspell.h}
 # hunspell needed for factory including mozHunspell.h
