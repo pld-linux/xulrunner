@@ -1,6 +1,5 @@
 # TODO:
 # - consider --enable-libproxy
-# - system libffi (>= 3.0.9, so gcc's version should suffice)
 #
 # Conditional build:
 %bcond_with	tests		# enable tests (whatever they check)
@@ -25,7 +24,7 @@ Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
 Version:	10.0.2
-Release:	3
+Release:	4
 Epoch:		2
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
@@ -53,11 +52,13 @@ BuildRequires:	cairo-devel >= 1.10.2-5
 BuildRequires:	dbus-glib-devel >= 0.60
 BuildRequires:	freetype-devel >= 1:2.1.8
 BuildRequires:	glib2-devel >= 1:2.18
-%{!?with_qt:BuildRequires:	gtk+2-devel >= 2:2.10.0}
+%{!?with_qt:BuildRequires:	gtk+2-devel >= 2:2.14}
 BuildRequires:	hunspell-devel >= 1.2.3
 BuildRequires:	libIDL-devel >= 0.8.0
 BuildRequires:	libdnet-devel
 BuildRequires:	libevent-devel >= 1.4.7
+# standalone libffi 3.0.9 or gcc's from 4.5(?)+
+BuildRequires:	libffi-devel >= 6:3.0.9
 %{?with_gnomeui:BuildRequires:	libgnomeui-devel >= 2.2.0}
 BuildRequires:	libiw-devel
 BuildRequires:	libjpeg-devel >= 6b
@@ -70,6 +71,7 @@ BuildRequires:	nspr-devel >= 1:%{nspr_ver}
 BuildRequires:	nss-devel >= 1:%{nss_ver}
 BuildRequires:	pango-devel >= 1:1.14.0
 BuildRequires:	pkgconfig
+BuildRequires:	pkgconfig(libffi) >= 3.0.9
 BuildRequires:	python >= 1:2.5
 BuildRequires:	rpm >= 4.4.9-56
 BuildRequires:	rpmbuild(macros) >= 1.453
@@ -126,7 +128,7 @@ Group:		X11/Libraries
 Requires:	cairo >= 1.10.2-5
 Requires:	dbus-glib >= 0.60
 Requires:	glib2 >= 1:2.18
-%{!?with_qt:Requires:	gtk+2 >= 2:2.10.0}
+%{!?with_qt:Requires:	gtk+2 >= 2:2.14}
 Requires:	libpng >= 1.4.1
 Requires:	libpng(APNG) >= 0.10
 Requires:	pango >= 1:1.14.0
@@ -271,6 +273,7 @@ ac_add_options --enable-pango
 ac_add_options --enable-shared-js
 ac_add_options --enable-startup-notification
 ac_add_options --enable-system-cairo
+ac_add_options --enable-system-ffi
 ac_add_options --enable-system-hunspell
 ac_add_options --enable-system-sqlite
 ac_add_options --with-distribution-id=org.pld-linux
