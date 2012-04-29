@@ -78,6 +78,7 @@ BuildRequires:	rpmbuild(macros) >= 1.453
 BuildRequires:	sed >= 4.0
 BuildRequires:	sqlite3-devel >= 3.7.7.1
 BuildRequires:	startup-notification-devel >= 0.8
+BuildRequires:	unzip
 %if "%{pld_release}" == "ac"
 BuildRequires:	xcursor-devel
 BuildRequires:	xft-devel >= 2.1-2
