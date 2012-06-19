@@ -64,7 +64,7 @@ BuildRequires:	libiw-devel
 BuildRequires:	libjpeg-devel >= 6b
 %{!?with_qt:BuildRequires:	libnotify-devel >= 0.4}
 BuildRequires:	libpng(APNG)-devel >= 0.10
-BuildRequires:	libpng-devel >= 1.4.1
+BuildRequires:	libpng-devel >= 1.5.9
 BuildRequires:	libstdc++-devel
 BuildRequires:	libvpx-devel >= 1.0.0
 BuildRequires:	nspr-devel >= 1:%{nspr_ver}
