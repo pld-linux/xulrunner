@@ -325,7 +325,6 @@ touch $RPM_BUILD_ROOT%{_libdir}/%{name}/components/xpti.dat
 # remove unecessary stuff
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/%{name}/xulrunner
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/%{name}/LICENSE
-%{__rm} $RPM_BUILD_ROOT%{_libdir}/%{name}/README.txt
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/%{name}/dependentlibs.list
 
 %clean
