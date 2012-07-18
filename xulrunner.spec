@@ -23,7 +23,7 @@
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
-Version:	13.0.1
+Version:	14.0.1
 Release:	1
 Epoch:		2
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
@@ -31,17 +31,15 @@ Group:		X11/Applications
 # Source tarball for xulrunner is in fact firefox tarball (checked on 1.9), so lets use it
 # instead of waiting for mozilla to copy file on ftp.
 Source0:	http://releases.mozilla.org/pub/mozilla.org/firefox/releases/%{version}/source/firefox-%{version}.source.tar.bz2
-# Source0-md5:	82deadb501c7fc0e9fa6b025f51f05a1
+# Source0-md5:	c2f884f0f6c41c65cf20f678a1ee7191
 Patch0:		%{name}-install.patch
 Patch1:		%{name}-rpath.patch
-Patch3:		%{name}-nss_cflags.patch
 Patch4:		%{name}-paths.patch
 Patch5:		%{name}-pc.patch
 Patch6:		%{name}-prefs.patch
 Patch7:		system-cairo.patch
 # http://pkgs.fedoraproject.org/gitweb/?p=xulrunner.git;a=tree
 Patch9:		%{name}-gtkmozembed.patch
-Patch10:	%{name}-linux3.patch
 Patch11:	idl-parser.patch
 URL:		https://developer.mozilla.org/en/XULRunner
 %{!?with_qt:BuildRequires:	GConf2-devel >= 1.2.1}
@@ -186,13 +184,11 @@ echo 'LOCAL_INCLUDES += $(MOZ_HUNSPELL_CFLAGS)' >> extensions/spellcheck/src/Mak
 
 %patch0 -p2
 %patch1 -p1
-%patch3 -p1
 %patch4 -p1
 %patch5 -p1
 %patch6 -p1
 %patch7 -p2
 %patch9 -p2
-%patch10 -p1
 %patch11 -p2
 
 # config/rules.mk is patched by us and js/src/config/rules.mk
