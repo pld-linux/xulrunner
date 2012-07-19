@@ -307,9 +307,7 @@ install -d \
 
 # move arch independant ones to datadir
 mv $RPM_BUILD_ROOT%{_libdir}/%{name}/chrome $RPM_BUILD_ROOT%{_datadir}/%{name}/chrome
-#mv $RPM_BUILD_ROOT%{_libdir}/%{name}/icons $RPM_BUILD_ROOT%{_datadir}/%{name}/icons
 ln -s ../../share/%{name}/chrome $RPM_BUILD_ROOT%{_libdir}/%{name}/chrome
-#ln -s ../../share/%{name}/icons $RPM_BUILD_ROOT%{_libdir}/%{name}/icons
 %{__rm} -r $RPM_BUILD_ROOT%{_libdir}/%{name}/dictionaries
 ln -s %{_datadir}/myspell $RPM_BUILD_ROOT%{_libdir}/%{name}/dictionaries
 
@@ -319,6 +317,10 @@ touch $RPM_BUILD_ROOT%{_libdir}/%{name}/components/xpti.dat
 
 %{__make} -C obj-%{_target_cpu}/build/unix install \
 	DESTDIR=$RPM_BUILD_ROOT
+
+# Install xpcshell and run-mozilla.sh
+%{__cp} -pL obj-%{_target_cpu}/dist/bin/xpcshell $RPM_BUILD_ROOT/%{_libdir}/%{name}
+%{__cp} -pL obj-%{_target_cpu}/dist/bin/run-mozilla.sh $RPM_BUILD_ROOT/%{_libdir}/%{name}
 
 %browser_plugins_add_browser %{name} -p %{_libdir}/%{name}/plugins
 
@@ -349,7 +351,6 @@ fi
 # symlinks
 %{_libdir}/%{name}/chrome
 %{_libdir}/%{name}/dictionaries
-#%%{_libdir}/%{name}/icons
 
 %{_browserpluginsconfdir}/browsers.d/%{name}.*
 %config(noreplace) %verify(not md5 mtime size) %{_browserpluginsconfdir}/blacklist.d/%{name}.*.blacklist
@@ -374,7 +375,6 @@ fi
 
 %dir %{_datadir}/%{name}
 %{_datadir}/%{name}/chrome
-#%%{_datadir}/%{name}/icons
 
 %files libs
 %defattr(644,root,root,755)
