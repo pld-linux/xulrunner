@@ -23,7 +23,7 @@
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
-Version:	14.0.1
+Version:	15.0
 Release:	1
 Epoch:		2
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
@@ -31,7 +31,7 @@ Group:		X11/Applications
 # Source tarball for xulrunner is in fact firefox tarball (checked on 1.9), so lets use it
 # instead of waiting for mozilla to copy file on ftp.
 Source0:	http://releases.mozilla.org/pub/mozilla.org/firefox/releases/%{version}/source/firefox-%{version}.source.tar.bz2
-# Source0-md5:	c2f884f0f6c41c65cf20f678a1ee7191
+# Source0-md5:	64220887a349515f16e5aa990acb4db3
 Patch0:		%{name}-install.patch
 Patch1:		%{name}-rpath.patch
 Patch4:		%{name}-paths.patch
@@ -41,6 +41,8 @@ Patch7:		system-cairo.patch
 # http://pkgs.fedoraproject.org/gitweb/?p=xulrunner.git;a=tree
 Patch9:		%{name}-gtkmozembed.patch
 Patch11:	idl-parser.patch
+# Edit patch below and restore --system-site-packages when system virtualenv gets 1.7 upgrade
+Patch12:	system-virtualenv.patch
 URL:		https://developer.mozilla.org/en/XULRunner
 %{!?with_qt:BuildRequires:	GConf2-devel >= 1.2.1}
 BuildRequires:	alsa-lib-devel
@@ -71,6 +73,7 @@ BuildRequires:	pango-devel >= 1:1.14.0
 BuildRequires:	pkgconfig
 BuildRequires:	pkgconfig(libffi) >= 3.0.9
 BuildRequires:	python >= 1:2.5
+BuildRequires:	python-virtualenv
 BuildRequires:	rpm >= 4.4.9-56
 BuildRequires:	rpmbuild(macros) >= 1.453
 BuildRequires:	sed >= 4.0
@@ -190,6 +193,7 @@ echo 'LOCAL_INCLUDES += $(MOZ_HUNSPELL_CFLAGS)' >> extensions/spellcheck/src/Mak
 %patch7 -p2
 %patch9 -p2
 %patch11 -p2
+%patch12 -p2
 
 # config/rules.mk is patched by us and js/src/config/rules.mk
 # is supposed to be exact copy
@@ -295,11 +299,17 @@ EOF
 rm -rf $RPM_BUILD_ROOT
 cd mozilla
 
+# work around broken build system
+touch obj-%{_target_cpu}/dist/sdk/empty.pyc
+
 %{__make} -C obj-%{_target_cpu}/xulrunner/installer install \
 	DESTDIR=$RPM_BUILD_ROOT \
 	MOZ_PKG_APPDIR=%{_libdir}/%{name} \
 	INSTALL_SDK=1 \
 	PKG_SKIP_STRIP=1
+
+# fix for halfway done xulrunner-bin -> xulrunner rename
+ln -sf %{_libdir}/%{name}/xulrunner $RPM_BUILD_ROOT%{_bindir}/xulrunner
 
 install -d \
 	$RPM_BUILD_ROOT%{_datadir}/%{name}/components \
@@ -325,7 +335,6 @@ touch $RPM_BUILD_ROOT%{_libdir}/%{name}/components/xpti.dat
 %browser_plugins_add_browser %{name} -p %{_libdir}/%{name}/plugins
 
 # remove unecessary stuff
-%{__rm} $RPM_BUILD_ROOT%{_libdir}/%{name}/xulrunner
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/%{name}/LICENSE
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/%{name}/dependentlibs.list
 
@@ -346,7 +355,7 @@ fi
 %files
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/xulrunner
-%attr(755,root,root) %{_libdir}/%{name}/xulrunner-bin
+%attr(755,root,root) %{_libdir}/%{name}/xulrunner
 
 # symlinks
 %{_libdir}/%{name}/chrome

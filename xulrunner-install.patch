@@ -9,8 +9,8 @@
  endif
  else
  	@cd $(DIST)/bin && tar $(TAR_CREATE_FLAGS) - * | (cd ../$(MOZ_PKG_DIR); tar -xf -)
-@@ -725,26 +725,29 @@
- 	cd $(DIST)/$(STAGEPATH)$(MOZ_PKG_DIR)$(_BINPATH) && $(PACK_OMNIJAR)
+@@ -725,27 +725,30 @@
+ endif
  endif
  	$(NSINSTALL) -D $(DESTDIR)$(installdir)
 -	(cd $(DIST)/$(MOZ_PKG_DIR) && tar $(TAR_CREATE_FLAGS) - .) | \
@@ -35,6 +35,7 @@
  	if test -f $(DIST)/include/xpcom-config.h; then \
  	  $(SYSINSTALL) $(IFLAGS1) $(DIST)/include/xpcom-config.h $(DESTDIR)$(sdkdir); \
  	fi
+ 	find $(DIST)/sdk -name "*.pyc" | xargs rm
 -	(cd $(DIST)/sdk/lib && tar $(TAR_CREATE_FLAGS) - .) | (cd $(DESTDIR)$(sdkdir)/sdk/lib && tar -xf -)
 -	(cd $(DIST)/sdk/bin && tar $(TAR_CREATE_FLAGS) - .) | (cd $(DESTDIR)$(sdkdir)/sdk/bin && tar -xf -)
 +	cp -rfLp $(DIST)/sdk/lib/* $(DESTDIR)$(sdkdir)/sdk/lib
