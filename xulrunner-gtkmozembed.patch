@@ -8761,18 +8761,17 @@ diff -up xulrunner-11.0/mozilla-beta/embedding/browser/gtk/tests/TestGtkEmbedSoc
 +    fprintf(stderr, "Can't fork.\n");
 +  }
 +}
-diff -up xulrunner-11.0/mozilla-beta/toolkit/library/Makefile.in.gtkmozembed xulrunner-11.0/mozilla-beta/toolkit/library/Makefile.in
---- xulrunner-11.0/mozilla-beta/toolkit/library/Makefile.in.gtkmozembed	2012-03-09 01:40:05.000000000 +0100
-+++ xulrunner-11.0/mozilla-beta/toolkit/library/Makefile.in	2012-03-09 15:19:22.268678765 +0100
-@@ -73,6 +73,8 @@ CPPSRCS += dlldeps-xul.cpp
- endif
+--- xulrunner-16.0.1/mozilla/toolkit/library/Makefile.in~	2012-10-11 00:43:51.000000000 +0300
++++ xulrunner-16.0.1/mozilla/toolkit/library/Makefile.in	2012-10-19 01:36:08.665153714 +0300
+@@ -177,6 +177,8 @@
  
- ifneq (,$(MOZ_ENABLE_GTK2))
+ ifdef MOZ_XUL
+ ifdef MOZ_ENABLE_GTK2
 +SHARED_LIBRARY_LIBS += \
 +  $(DEPTH)/embedding/browser/gtk/src/$(LIB_PREFIX)gtkembedmoz.$(LIB_SUFFIX)
- DEFINES += -DMOZ_ENABLE_GTK2
- endif
- 
+ COMPONENT_LIBS += \
+   unixproxy \
+   $(NULL)
 diff -up xulrunner-11.0/mozilla-beta/toolkit/toolkit-makefiles.sh.gtkmozembed xulrunner-11.0/mozilla-beta/toolkit/toolkit-makefiles.sh
 --- xulrunner-11.0/mozilla-beta/toolkit/toolkit-makefiles.sh.gtkmozembed	2012-03-09 01:40:06.000000000 +0100
 +++ xulrunner-11.0/mozilla-beta/toolkit/toolkit-makefiles.sh	2012-03-09 15:19:22.268678765 +0100

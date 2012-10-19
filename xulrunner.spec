@@ -23,18 +23,18 @@
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
-Version:	15.0
-Release:	1
+Version:	16.0.1
+Release:	0.1
 Epoch:		2
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
 # Source tarball for xulrunner is in fact firefox tarball (checked on 1.9), so lets use it
 # instead of waiting for mozilla to copy file on ftp.
 Source0:	http://releases.mozilla.org/pub/mozilla.org/firefox/releases/%{version}/source/firefox-%{version}.source.tar.bz2
-# Source0-md5:	64220887a349515f16e5aa990acb4db3
+# Source0-md5:	78e641c67dc4a40cb3f48fce3e782d41
 Patch0:		%{name}-install.patch
 Patch1:		%{name}-rpath.patch
-Patch4:		%{name}-paths.patch
+#Patch4:		%{name}-paths.patch
 Patch5:		%{name}-pc.patch
 Patch6:		%{name}-prefs.patch
 Patch7:		system-cairo.patch
@@ -187,7 +187,7 @@ echo 'LOCAL_INCLUDES += $(MOZ_HUNSPELL_CFLAGS)' >> extensions/spellcheck/src/Mak
 
 %patch0 -p2
 %patch1 -p1
-%patch4 -p1
+#%patch4 -p1
 %patch5 -p1
 %patch6 -p1
 %patch7 -p2
