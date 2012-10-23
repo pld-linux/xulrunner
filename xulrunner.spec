@@ -34,7 +34,7 @@ Source0:	http://releases.mozilla.org/pub/mozilla.org/firefox/releases/%{version}
 # Source0-md5:	78e641c67dc4a40cb3f48fce3e782d41
 Patch0:		%{name}-install.patch
 Patch1:		%{name}-rpath.patch
-#Patch4:		%{name}-paths.patch
+Patch4:		%{name}-paths.patch
 Patch5:		%{name}-pc.patch
 Patch6:		%{name}-prefs.patch
 Patch7:		system-cairo.patch
@@ -43,6 +43,7 @@ Patch9:		%{name}-gtkmozembed.patch
 Patch11:	idl-parser.patch
 # Edit patch below and restore --system-site-packages when system virtualenv gets 1.7 upgrade
 Patch12:	system-virtualenv.patch
+Patch13:	missed-api-in-embedding.patch
 URL:		https://developer.mozilla.org/en/XULRunner
 %{!?with_qt:BuildRequires:	GConf2-devel >= 1.2.1}
 BuildRequires:	alsa-lib-devel
@@ -187,13 +188,14 @@ echo 'LOCAL_INCLUDES += $(MOZ_HUNSPELL_CFLAGS)' >> extensions/spellcheck/src/Mak
 
 %patch0 -p2
 %patch1 -p1
-#%patch4 -p1
+%patch4 -p2
 %patch5 -p1
 %patch6 -p1
 %patch7 -p2
 %patch9 -p2
 %patch11 -p2
 %patch12 -p2
+%patch13 -p2
 
 # config/rules.mk is patched by us and js/src/config/rules.mk
 # is supposed to be exact copy
