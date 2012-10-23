@@ -402,16 +402,16 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/xulrunner-stub
 %{_includedir}/%{name}
 %{_datadir}/idl/%{name}
-%dir %{_libdir}/%{name}-sdk
-%{_libdir}/%{name}-sdk/bin
-%{_libdir}/%{name}-sdk/idl
-%{_libdir}/%{name}-sdk/lib
-%{_libdir}/%{name}-sdk/include
-%{_libdir}/%{name}-sdk/*.h
-%dir %{_libdir}/%{name}-sdk/sdk
-%{_libdir}/%{name}-sdk/sdk/lib
-%dir %{_libdir}/%{name}-sdk/sdk/bin
-%attr(755,root,root) %{_libdir}/%{name}-sdk/sdk/bin/*
+%dir %{_libdir}/%{name}-devel
+%{_libdir}/%{name}-devel/bin
+%{_libdir}/%{name}-devel/idl
+%{_libdir}/%{name}-devel/lib
+%{_libdir}/%{name}-devel/include
+%{_libdir}/%{name}-devel/*.h
+%dir %{_libdir}/%{name}-devel/sdk
+%{_libdir}/%{name}-devel/sdk/lib
+%dir %{_libdir}/%{name}-devel/sdk/bin
+%attr(755,root,root) %{_libdir}/%{name}-devel/sdk/bin/*
 %{_pkgconfigdir}/libxul.pc
 %{_pkgconfigdir}/libxul-embedding.pc
 %{_pkgconfigdir}/mozilla-js.pc
