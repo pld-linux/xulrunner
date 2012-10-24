@@ -1993,7 +1993,7 @@ diff -up xulrunner-11.0/mozilla-beta/embedding/browser/gtk/src/EmbedPrivate.cpp.
 +char                    *EmbedPrivate::sPath        = nsnull;
 +char                    *EmbedPrivate::sCompPath    = nsnull;
 +nsTArray<EmbedPrivate*> *EmbedPrivate::sWindowList  = nsnull;
-+nsILocalFile            *EmbedPrivate::sProfileDir  = nsnull;
++nsIFile                 *EmbedPrivate::sProfileDir  = nsnull;
 +nsISupports             *EmbedPrivate::sProfileLock = nsnull;
 +GtkWidget               *EmbedPrivate::sOffscreenWindow = 0;
 +GtkWidget               *EmbedPrivate::sOffscreenFixed  = 0;
@@ -2411,7 +2411,7 @@ diff -up xulrunner-11.0/mozilla-beta/embedding/browser/gtk/src/EmbedPrivate.cpp.
 +  if (sWidgetCount == 1) {
 +    nsresult rv;
 +
-+    nsCOMPtr<nsILocalFile> binDir;
++    nsCOMPtr<nsIFile> binDir;
 +    if (sCompPath) {
 +      rv = NS_NewNativeLocalFile(nsDependentCString(sCompPath), 1, getter_AddRefs(binDir));
 +      if (NS_FAILED(rv))
@@ -2426,7 +2426,7 @@ diff -up xulrunner-11.0/mozilla-beta/embedding/browser/gtk/src/EmbedPrivate.cpp.
 +    if (!grePath)
 +      return;
 +
-+    nsCOMPtr<nsILocalFile> greDir;
++    nsCOMPtr<nsIFile> greDir;
 +    rv = NS_NewNativeLocalFile(nsDependentCString(grePath), PR_TRUE,
 +                               getter_AddRefs(greDir));
 +    if (NS_FAILED(rv))
@@ -3071,7 +3071,7 @@ diff -up xulrunner-11.0/mozilla-beta/embedding/browser/gtk/src/EmbedPrivate.h.gt
 +  // the list of all open windows
 +  static nsTArray<EmbedPrivate*> *sWindowList;
 +  // what is our profile path?
-+  static nsILocalFile           *sProfileDir;
++  static nsIFile                *sProfileDir;
 +  static nsISupports            *sProfileLock;
 +
 +  static nsIDirectoryServiceProvider * sAppFileLocProvider;
@@ -3935,7 +3935,7 @@ diff -up xulrunner-11.0/mozilla-beta/embedding/browser/gtk/src/EmbedPrompter.h.g
 diff -up xulrunner-11.0/mozilla-beta/embedding/browser/gtk/src/EmbedWindow.cpp.gtkmozembed xulrunner-11.0/mozilla-beta/embedding/browser/gtk/src/EmbedWindow.cpp
 --- xulrunner-11.0/mozilla-beta/embedding/browser/gtk/src/EmbedWindow.cpp.gtkmozembed	2012-03-09 15:19:22.258678715 +0100
 +++ xulrunner-11.0/mozilla-beta/embedding/browser/gtk/src/EmbedWindow.cpp	2012-03-09 15:19:22.258678715 +0100
-@@ -0,0 +1,474 @@
+@@ -0,0 +1,482 @@
 +/*
 + * vim:ts=2:et:sw=2
 + *
@@ -4409,6 +4409,14 @@ diff -up xulrunner-11.0/mozilla-beta/embedding/browser/gtk/src/EmbedWindow.cpp.g
 +  }
 +
 +  return rv;
++}
++
++NS_IMETHODIMP
++EmbedWindow::Blur()
++{
++  NS_NOTREACHED("EmbedWindow::Blur not supported in EmbedWindow");
++
++  return NS_ERROR_NOT_IMPLEMENTED;
 +}
 diff -up xulrunner-11.0/mozilla-beta/embedding/browser/gtk/src/EmbedWindowCreator.cpp.gtkmozembed xulrunner-11.0/mozilla-beta/embedding/browser/gtk/src/EmbedWindowCreator.cpp
 --- xulrunner-11.0/mozilla-beta/embedding/browser/gtk/src/EmbedWindowCreator.cpp.gtkmozembed	2012-03-09 15:19:22.258678715 +0100
