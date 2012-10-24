@@ -43,7 +43,6 @@ Patch9:		%{name}-gtkmozembed.patch
 Patch11:	idl-parser.patch
 # Edit patch below and restore --system-site-packages when system virtualenv gets 1.7 upgrade
 Patch12:	system-virtualenv.patch
-Patch13:	missed-api-in-embedding.patch
 URL:		https://developer.mozilla.org/en/XULRunner
 %{!?with_qt:BuildRequires:	GConf2-devel >= 1.2.1}
 BuildRequires:	alsa-lib-devel
@@ -195,7 +194,6 @@ echo 'LOCAL_INCLUDES += $(MOZ_HUNSPELL_CFLAGS)' >> extensions/spellcheck/src/Mak
 %patch9 -p2
 %patch11 -p2
 %patch12 -p2
-%patch13 -p2
 
 # config/rules.mk is patched by us and js/src/config/rules.mk
 # is supposed to be exact copy
