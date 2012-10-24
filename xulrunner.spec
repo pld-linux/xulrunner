@@ -411,8 +411,6 @@ fi
 %{_pkgconfigdir}/libxul-embedding.pc
 %{_pkgconfigdir}/mozilla-js.pc
 %{_pkgconfigdir}/mozilla-plugin.pc
-%{_pkgconfigdir}/mozilla-gtkmozembed.pc
-%{_pkgconfigdir}/mozilla-gtkmozembed-embedding.pc
 
 %if %{without qt}
 %files gnome
