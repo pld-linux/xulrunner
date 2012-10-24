@@ -38,8 +38,6 @@ Patch4:		%{name}-paths.patch
 Patch5:		%{name}-pc.patch
 Patch6:		%{name}-prefs.patch
 Patch7:		system-cairo.patch
-# http://pkgs.fedoraproject.org/gitweb/?p=xulrunner.git;a=tree
-Patch9:		%{name}-gtkmozembed.patch
 Patch11:	idl-parser.patch
 # Edit patch below and restore --system-site-packages when system virtualenv gets 1.7 upgrade
 Patch12:	system-virtualenv.patch
@@ -191,7 +189,6 @@ echo 'LOCAL_INCLUDES += $(MOZ_HUNSPELL_CFLAGS)' >> extensions/spellcheck/src/Mak
 %patch5 -p1
 %patch6 -p1
 %patch7 -p2
-#patch9 -p2
 %patch11 -p2
 %patch12 -p2
 
