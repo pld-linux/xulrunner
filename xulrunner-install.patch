@@ -35,7 +35,7 @@
  	if test -f $(DIST)/include/xpcom-config.h; then \
  	  $(SYSINSTALL) $(IFLAGS1) $(DIST)/include/xpcom-config.h $(DESTDIR)$(sdkdir); \
  	fi
- 	find $(DIST)/sdk -name "*.pyc" | xargs rm
+ 	find $(DIST)/sdk -name "*.pyc" | xargs rm -f
 -	(cd $(DIST)/sdk/lib && tar $(TAR_CREATE_FLAGS) - .) | (cd $(DESTDIR)$(sdkdir)/sdk/lib && tar -xf -)
 -	(cd $(DIST)/sdk/bin && tar $(TAR_CREATE_FLAGS) - .) | (cd $(DESTDIR)$(sdkdir)/sdk/bin && tar -xf -)
 +	cp -rfLp $(DIST)/sdk/lib/* $(DESTDIR)$(sdkdir)/sdk/lib
