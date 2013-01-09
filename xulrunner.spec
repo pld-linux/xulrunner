@@ -17,8 +17,8 @@
 # The actual sqlite version (see RHBZ#480989):
 %define		sqlite_build_version %(pkg-config --silence-errors --modversion sqlite3 2>/dev/null || echo ERROR)
 
-%define		nspr_ver		4.9
-%define		nss_ver			3.13.3
+%define		nspr_ver		4.9.3
+%define		nss_ver			3.14.1
 
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
