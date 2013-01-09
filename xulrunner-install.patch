@@ -10,10 +10,10 @@
  else
  	@cd $(DIST)/bin && tar $(TAR_CREATE_FLAGS) - * | (cd ../$(MOZ_PKG_DIR); tar -xf -)
 @@ -725,27 +725,30 @@
- endif
+ 	$(error "make install" is not supported on this platform. Use "make package" instead.)
  endif
  	$(NSINSTALL) -D $(DESTDIR)$(installdir)
--	(cd $(DIST)/$(MOZ_PKG_DIR) && tar $(TAR_CREATE_FLAGS) - .) | \
+-	(cd $(DIST)/$(MOZ_PKG_DIR) && tar --exclude=precomplete $(TAR_CREATE_FLAGS) - .) | \
 -	  (cd $(DESTDIR)$(installdir) && tar -xf -)
 +	cp -rfLp $(DIST)/$(MOZ_PKG_DIR)/* $(DESTDIR)$(installdir)
  	$(NSINSTALL) -D $(DESTDIR)$(bindir)
