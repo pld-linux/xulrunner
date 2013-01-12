@@ -333,8 +333,8 @@ touch $RPM_BUILD_ROOT%{_libdir}/%{name}/components/xpti.dat
 	DESTDIR=$RPM_BUILD_ROOT
 
 # Install xpcshell and run-mozilla.sh
-%{__cp} -pL obj-%{_target_cpu}/dist/bin/xpcshell $RPM_BUILD_ROOT/%{_libdir}/%{name}
-%{__cp} -pL obj-%{_target_cpu}/dist/bin/run-mozilla.sh $RPM_BUILD_ROOT/%{_libdir}/%{name}
+%{__cp} -pL obj-%{_target_cpu}/dist/bin/xpcshell $RPM_BUILD_ROOT%{_libdir}/%{name}
+%{__cp} -pL obj-%{_target_cpu}/dist/bin/run-mozilla.sh $RPM_BUILD_ROOT%{_libdir}/%{name}
 
 %browser_plugins_add_browser %{name} -p %{_libdir}/%{name}/plugins
 
