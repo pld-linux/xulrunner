@@ -34,13 +34,13 @@ Source0:	http://releases.mozilla.org/pub/mozilla.org/firefox/releases/%{version}
 # Source0-md5:	485d02563854c20a3788d89db07b0687
 Patch0:		%{name}-install.patch
 Patch1:		%{name}-rpath.patch
-Patch4:		%{name}-paths.patch
-Patch5:		%{name}-pc.patch
-Patch6:		%{name}-prefs.patch
-Patch7:		system-cairo.patch
-Patch11:	idl-parser.patch
+Patch2:		%{name}-paths.patch
+Patch3:		%{name}-pc.patch
+Patch4:		%{name}-prefs.patch
+Patch5:		system-cairo.patch
+Patch6:		idl-parser.patch
 # Edit patch below and restore --system-site-packages when system virtualenv gets 1.7 upgrade
-Patch12:	system-virtualenv.patch
+Patch7:		system-virtualenv.patch
 URL:		https://developer.mozilla.org/en/XULRunner
 %{!?with_qt:BuildRequires:	GConf2-devel >= 1.2.1}
 BuildRequires:	alsa-lib-devel
@@ -59,7 +59,9 @@ BuildRequires:	libevent-devel >= 1.4.7
 BuildRequires:	libffi-devel >= 6:3.0.9
 %{?with_gnomeui:BuildRequires:	libgnomeui-devel >= 2.2.0}
 BuildRequires:	libiw-devel
+# requires libjpeg-turbo implementing at least libjpeg 6b API
 BuildRequires:	libjpeg-devel >= 6b
+BuildRequires:	libjpeg-turbo-devel
 %{!?with_qt:BuildRequires:	libnotify-devel >= 0.4}
 BuildRequires:	libpng(APNG)-devel >= 0.10
 BuildRequires:	libpng-devel >= 1.5.9
@@ -133,6 +135,7 @@ Requires:	cairo >= 1.10.2-5
 Requires:	dbus-glib >= 0.60
 Requires:	glib2 >= 1:2.18
 %{!?with_qt:Requires:	gtk+2 >= 2:2.14}
+Requires:	libjpeg-turbo
 Requires:	libpng >= 1.4.1
 Requires:	libpng(APNG) >= 0.10
 Requires:	pango >= 1:1.14.0
@@ -189,12 +192,12 @@ echo 'LOCAL_INCLUDES += $(MOZ_HUNSPELL_CFLAGS)' >> extensions/spellcheck/src/Mak
 
 %patch0 -p2
 %patch1 -p1
-%patch4 -p2
-%patch5 -p1
-%patch6 -p1
+%patch2 -p2
+%patch3 -p1
+%patch4 -p1
+%patch5 -p2
+%patch6 -p2
 %patch7 -p2
-%patch11 -p2
-%patch12 -p2
 
 # config/rules.mk is patched by us and js/src/config/rules.mk
 # is supposed to be exact copy
