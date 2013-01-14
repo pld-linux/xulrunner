@@ -41,6 +41,7 @@ Patch5:		system-cairo.patch
 Patch6:		idl-parser.patch
 # Edit patch below and restore --system-site-packages when system virtualenv gets 1.7 upgrade
 Patch7:		system-virtualenv.patch
+Patch8:		%{name}-gyp-slashism.patch
 URL:		https://developer.mozilla.org/en/XULRunner
 %{!?with_qt:BuildRequires:	GConf2-devel >= 1.2.1}
 BuildRequires:	alsa-lib-devel
@@ -109,7 +110,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 # disable debuginfo package due to debugedit not being able to do its job on libxul.so
 # same problem as: https://bugzilla.redhat.com/show_bug.cgi?id=304121
-%define		_enable_debug_packages		0
+#define		_enable_debug_packages		0
 
 %description
 XULRunner is a Mozilla runtime package that can be used to bootstrap
@@ -198,6 +199,7 @@ echo 'LOCAL_INCLUDES += $(MOZ_HUNSPELL_CFLAGS)' >> extensions/spellcheck/src/Mak
 %patch5 -p2
 %patch6 -p2
 %patch7 -p2
+%patch8 -p2
 
 # config/rules.mk is patched by us and js/src/config/rules.mk
 # is supposed to be exact copy
