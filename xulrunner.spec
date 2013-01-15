@@ -108,10 +108,6 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 # no need to require them (we have strict deps for these)
 %define		_noautoreq		libmozjs.so libxpcom.so libxul.so libmozalloc.so
 
-# disable debuginfo package due to debugedit not being able to do its job on libxul.so
-# same problem as: https://bugzilla.redhat.com/show_bug.cgi?id=304121
-#define		_enable_debug_packages		0
-
 %description
 XULRunner is a Mozilla runtime package that can be used to bootstrap
 XUL+XPCOM applications that are as rich as Firefox and Thunderbird. It
