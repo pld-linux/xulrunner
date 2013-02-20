@@ -74,7 +74,7 @@ BuildRequires:	pango-devel >= 1:1.14.0
 BuildRequires:	pkgconfig
 BuildRequires:	pkgconfig(libffi) >= 3.0.9
 BuildRequires:	python >= 1:2.5
-BuildRequires:	python-virtualenv
+BuildRequires:	python-virtualenv >= 1.8.4
 BuildRequires:  python-simplejson
 BuildRequires:	rpm >= 4.4.9-56
 BuildRequires:	rpmbuild(macros) >= 1.453
