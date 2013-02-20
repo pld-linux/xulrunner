@@ -75,7 +75,7 @@ BuildRequires:	pkgconfig
 BuildRequires:	pkgconfig(libffi) >= 3.0.9
 BuildRequires:	python >= 1:2.5
 BuildRequires:	python-simplejson
-BuildRequires:	python-virtualenv >= 1.8.4
+BuildRequires:	python-virtualenv >= 1.8.4-2
 BuildRequires:	rpm >= 4.4.9-56
 BuildRequires:	rpmbuild(macros) >= 1.453
 BuildRequires:	sed >= 4.0
