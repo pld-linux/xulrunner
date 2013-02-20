@@ -1,24 +1,24 @@
-Restore --system-site-packages when system virtualenv gets 1.7 upgrade
-
---- xulrunner-15.0/mozilla/configure.in~	2012-08-29 11:06:34.517985819 +0200
-+++ xulrunner-15.0/mozilla/configure.in	2012-08-29 11:23:47.234616054 +0200
-@@ -9069,7 +9069,7 @@
- AC_MSG_RESULT([Creating Python virtualenv])
- rm -rf _virtualenv
- mkdir -p _virtualenv
--MACOSX_DEPLOYMENT_TARGET= PYTHONDONTWRITEBYTECODE= $PYTHON $_topsrcdir/python/virtualenv/virtualenv.py --system-site-packages ./_virtualenv
-+MACOSX_DEPLOYMENT_TARGET= PYTHONDONTWRITEBYTECODE= /usr/bin/virtualenv ./_virtualenv
+--- xulrunner-19.0/mozilla/configure.in~	2013-02-20 12:29:36.493788864 +0100
++++ xulrunner-19.0/mozilla/configure.in	2013-02-20 12:46:55.030421705 +0100
+@@ -132,8 +132,7 @@
+ dnl This verifies our Python version is sane and ensures the Python
+ dnl virtualenv is present and up to date. It sanitizes the environment
+ dnl for us, so we don't need to clean anything out.
+-$PYTHON $_topsrcdir/build/virtualenv/populate_virtualenv.py \
+-    $_topsrcdir $MOZ_BUILD_ROOT/_virtualenv || exit 1
++PYTHONDONTWRITEBYTECODE= /usr/bin/virtualenv $MOZ_BUILD_ROOT/_virtualenv || exit 1
+ 
+ dnl Create a virtualenv where we can install local Python packages
+ case "$host_os" in
+--- xulrunner-19.0/mozilla/configure~	2013-02-20 12:39:40.270435866 +0100
++++ xulrunner-19.0/mozilla/configure	2013-02-20 12:39:58.623768601 +0100
+@@ -1336,8 +1336,7 @@
+ fi
+ 
+ echo "$ac_t""Creating Python environment" 1>&6
+-$PYTHON $_topsrcdir/build/virtualenv/populate_virtualenv.py \
+-    $_topsrcdir $MOZ_BUILD_ROOT/_virtualenv || exit 1
++PYTHONDONTWRITEBYTECODE= /usr/bin/virtualenv $MOZ_BUILD_ROOT/_virtualenv || exit 1
+ 
  case "$host_os" in
  mingw*)
-     PYTHON=`pwd`/_virtualenv/Scripts/python.exe
---- xulrunner-15.0/mozilla/configure~	2012-08-29 11:25:28.121279162 +0200
-+++ xulrunner-15.0/mozilla/configure	2012-08-29 11:27:27.981274936 +0200
-@@ -25468,7 +25468,7 @@
- echo "$ac_t""Creating Python virtualenv" 1>&6
- rm -rf _virtualenv
- mkdir -p _virtualenv
--MACOSX_DEPLOYMENT_TARGET= PYTHONDONTWRITEBYTECODE= $PYTHON $_topsrcdir/python/virtualenv/virtualenv.py --system-site-packages ./_virtualenv
-+MACOSX_DEPLOYMENT_TARGET= PYTHONDONTWRITEBYTECODE= /usr/bin/virtualenv ./_virtualenv
- case "$host_os" in
- mingw*)
-     PYTHON=`pwd`/_virtualenv/Scripts/python.exe
