@@ -17,7 +17,7 @@
 # The actual sqlite version (see RHBZ#480989):
 %define		sqlite_build_version %(pkg-config --silence-errors --modversion sqlite3 2>/dev/null || echo ERROR)
 
-%define		nspr_ver		4.9.3
+%define		nspr_ver		4.9.4
 %define		nss_ver			3.14.1
 
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
@@ -50,7 +50,7 @@ BuildRequires:	bzip2-devel
 BuildRequires:	cairo-devel >= 1.10.2-5
 BuildRequires:	dbus-glib-devel >= 0.60
 BuildRequires:	freetype-devel >= 1:2.1.8
-BuildRequires:	glib2-devel >= 1:2.18
+BuildRequires:	glib2-devel >= 1:2.20
 %{!?with_qt:BuildRequires:	gtk+2-devel >= 2:2.14}
 BuildRequires:	hunspell-devel >= 1.2.3
 BuildRequires:	libIDL-devel >= 0.8.0
@@ -65,7 +65,7 @@ BuildRequires:	libjpeg-devel >= 6b
 BuildRequires:	libjpeg-turbo-devel
 %{!?with_qt:BuildRequires:	libnotify-devel >= 0.4}
 BuildRequires:	libpng(APNG)-devel >= 0.10
-BuildRequires:	libpng-devel >= 1.5.9
+BuildRequires:	libpng-devel >= 1.5.13
 BuildRequires:	libstdc++-devel
 BuildRequires:	libvpx-devel >= 1.0.0
 BuildRequires:	nspr-devel >= 1:%{nspr_ver}
@@ -79,7 +79,7 @@ BuildRequires:	python-virtualenv >= 1.8.4-2
 BuildRequires:	rpm >= 4.4.9-56
 BuildRequires:	rpmbuild(macros) >= 1.453
 BuildRequires:	sed >= 4.0
-BuildRequires:	sqlite3-devel >= 3.7.10
+BuildRequires:	sqlite3-devel >= 3.7.14.1
 BuildRequires:	startup-notification-devel >= 0.8
 BuildRequires:	unzip
 %if "%{pld_release}" == "ac"
@@ -131,10 +131,10 @@ Summary(pl.UTF-8):	Biblioteki współdzielone XULRunnera
 Group:		X11/Libraries
 Requires:	cairo >= 1.10.2-5
 Requires:	dbus-glib >= 0.60
-Requires:	glib2 >= 1:2.18
+Requires:	glib2 >= 1:2.20
 %{!?with_qt:Requires:	gtk+2 >= 2:2.14}
 Requires:	libjpeg-turbo
-Requires:	libpng >= 1.4.1
+Requires:	libpng >= 1.5.13
 Requires:	libpng(APNG) >= 0.10
 Requires:	pango >= 1:1.14.0
 Requires:	sqlite3 >= %{sqlite_build_version}
