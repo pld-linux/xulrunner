@@ -23,7 +23,7 @@
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
-Version:	19.0
+Version:	20.0.1
 Release:	1
 Epoch:		2
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
@@ -31,7 +31,7 @@ Group:		X11/Applications
 # Source tarball for xulrunner is in fact firefox tarball (checked on 1.9), so lets use it
 # instead of waiting for mozilla to copy file on ftp.
 Source0:	http://releases.mozilla.org/pub/mozilla.org/firefox/releases/%{version}/source/firefox-%{version}.source.tar.bz2
-# Source0-md5:	3dc732b6ce177792b43324f4bc7164d8
+# Source0-md5:	b822ff4b2348410587dec563235d9320
 Patch0:		%{name}-install.patch
 Patch1:		%{name}-rpath.patch
 Patch2:		%{name}-paths.patch
@@ -79,7 +79,7 @@ BuildRequires:	python-virtualenv >= 1.8.4-2
 BuildRequires:	rpm >= 4.4.9-56
 BuildRequires:	rpmbuild(macros) >= 1.453
 BuildRequires:	sed >= 4.0
-BuildRequires:	sqlite3-devel >= 3.7.14.1
+BuildRequires:	sqlite3-devel >= 3.7.15.2
 BuildRequires:	startup-notification-devel >= 0.8
 BuildRequires:	unzip
 %if "%{pld_release}" == "ac"
@@ -315,6 +315,7 @@ touch obj-%{_target_cpu}/dist/sdk/empty.pyc
 ln -sf %{_libdir}/%{name}/xulrunner $RPM_BUILD_ROOT%{_bindir}/xulrunner
 
 install -d \
+	$RPM_BUILD_ROOT%{_libdir}/%{name}/plugins \
 	$RPM_BUILD_ROOT%{_datadir}/%{name}/components \
 	$RPM_BUILD_ROOT%{_sbindir}
 
