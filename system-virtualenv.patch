@@ -1,23 +1,11 @@
---- xulrunner-19.0/mozilla/configure.in~	2013-02-20 12:29:36.493788864 +0100
-+++ xulrunner-19.0/mozilla/configure.in	2013-02-20 12:46:55.030421705 +0100
-@@ -132,8 +132,7 @@
- dnl This verifies our Python version is sane and ensures the Python
- dnl virtualenv is present and up to date. It sanitizes the environment
- dnl for us, so we don't need to clean anything out.
--$PYTHON $_topsrcdir/build/virtualenv/populate_virtualenv.py \
--    $_topsrcdir $MOZ_BUILD_ROOT/_virtualenv || exit 1
-+PYTHONDONTWRITEBYTECODE= /usr/bin/virtualenv $MOZ_BUILD_ROOT/_virtualenv || exit 1
- 
- dnl Create a virtualenv where we can install local Python packages
- case "$host_os" in
 --- xulrunner-19.0/mozilla/configure~	2013-02-20 12:39:40.270435866 +0100
 +++ xulrunner-19.0/mozilla/configure	2013-02-20 12:39:58.623768601 +0100
 @@ -1336,8 +1336,7 @@
- fi
  
- echo "$ac_t""Creating Python environment" 1>&6
--$PYTHON $_topsrcdir/build/virtualenv/populate_virtualenv.py \
--    $_topsrcdir $MOZ_BUILD_ROOT/_virtualenv || exit 1
+ if test -z $DONT_POPULATE_VIRTUALENV; then
+   echo "$ac_t""Creating Python environment" 1>&6
+-        $PYTHON $_virtualenv_populate_path \
+-    $_virtualenv_topsrcdir $MOZ_BUILD_ROOT/_virtualenv || exit 1
 +PYTHONDONTWRITEBYTECODE= /usr/bin/virtualenv $MOZ_BUILD_ROOT/_virtualenv || exit 1
  
  case "$host_os" in

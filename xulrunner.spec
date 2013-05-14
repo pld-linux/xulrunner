@@ -23,16 +23,15 @@
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
-Version:	20.0.1
-Release:	1
+Version:	21.0
+Release:	0.1
 Epoch:		2
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
 # Source tarball for xulrunner is in fact firefox tarball (checked on 1.9), so lets use it
 # instead of waiting for mozilla to copy file on ftp.
 Source0:	http://releases.mozilla.org/pub/mozilla.org/firefox/releases/%{version}/source/firefox-%{version}.source.tar.bz2
-# Source0-md5:	b822ff4b2348410587dec563235d9320
-Patch0:		%{name}-install.patch
+# Source0-md5:	6e2510e9466b280c367de0e4c05a8840
 Patch1:		%{name}-rpath.patch
 Patch2:		%{name}-paths.patch
 Patch3:		%{name}-pc.patch
@@ -188,7 +187,6 @@ cd mozilla
 # hunspell needed for factory including mozHunspell.h
 echo 'LOCAL_INCLUDES += $(MOZ_HUNSPELL_CFLAGS)' >> extensions/spellcheck/src/Makefile.in
 
-%patch0 -p2
 %patch1 -p1
 %patch2 -p2
 %patch3 -p1
@@ -300,24 +298,21 @@ EOF
 
 %install
 rm -rf $RPM_BUILD_ROOT
-cd mozilla
+install -d $RPM_BUILD_ROOT%{_libdir}/%{name}/plugins \
+	$RPM_BUILD_ROOT%{_datadir}/%{name}/components \
+	$RPM_BUILD_ROOT%{_sbindir}
 
-# work around broken build system
-touch obj-%{_target_cpu}/dist/sdk/empty.pyc
-
-%{__make} -C obj-%{_target_cpu}/xulrunner/installer install \
+cd mozilla/obj-%{_target_cpu}
+%{__make} -C xulrunner/installer stage-package \
 	DESTDIR=$RPM_BUILD_ROOT \
-	MOZ_PKG_APPDIR=%{_libdir}/%{name} \
+	installdir=%{_libdir}/%{name} \
 	INSTALL_SDK=1 \
 	PKG_SKIP_STRIP=1
 
-# fix for halfway done xulrunner-bin -> xulrunner rename
-ln -sf %{_libdir}/%{name}/xulrunner $RPM_BUILD_ROOT%{_bindir}/xulrunner
+cp -a dist/xulrunner/* $RPM_BUILD_ROOT%{_libdir}/%{name}/
 
-install -d \
-	$RPM_BUILD_ROOT%{_libdir}/%{name}/plugins \
-	$RPM_BUILD_ROOT%{_datadir}/%{name}/components \
-	$RPM_BUILD_ROOT%{_sbindir}
+# fix for halfway done xulrunner-bin -> xulrunner rename
+#ln -sf %{_libdir}/%{name}/xulrunner $RPM_BUILD_ROOT%{_bindir}/xulrunner
 
 # move arch independant ones to datadir
 mv $RPM_BUILD_ROOT%{_libdir}/%{name}/chrome $RPM_BUILD_ROOT%{_datadir}/%{name}/chrome
