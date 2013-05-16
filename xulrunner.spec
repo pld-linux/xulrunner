@@ -300,19 +300,42 @@ EOF
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_libdir}/%{name}/plugins \
 	$RPM_BUILD_ROOT%{_datadir}/%{name}/components \
-	$RPM_BUILD_ROOT%{_sbindir}
+	$RPM_BUILD_ROOT%{_bindir} \
+	$RPM_BUILD_ROOT%{_libdir}/%{name}-devel/sdk/{lib,bin} \
+	$RPM_BUILD_ROOT%{_includedir}/%{name} \
+	$RPM_BUILD_ROOT%{_datadir}/idl/%{name} \
+	$RPM_BUILD_ROOT%{_pkgconfigdir}
 
 cd mozilla/obj-%{_target_cpu}
-%{__make} -C xulrunner/installer stage-package \
+%{__make} -C xulrunner/installer stage-package libxul.pc libxul-embedding.pc mozilla-js.pc mozilla-plugin.pc\
 	DESTDIR=$RPM_BUILD_ROOT \
 	installdir=%{_libdir}/%{name} \
 	INSTALL_SDK=1 \
 	PKG_SKIP_STRIP=1
 
-cp -a dist/xulrunner/* $RPM_BUILD_ROOT%{_libdir}/%{name}/
+cp -aL xulrunner/installer/*.pc $RPM_BUILD_ROOT%{_pkgconfigdir}
+cp -aL dist/xulrunner/* $RPM_BUILD_ROOT%{_libdir}/%{name}
+cp -aL dist/include/* $RPM_BUILD_ROOT%{_includedir}/%{name}
+cp -aL dist/include/xpcom-config.h $RPM_BUILD_ROOT%{_libdir}/%{name}-devel
+cp -aL dist/idl/* $RPM_BUILD_ROOT%{_datadir}/idl/%{name}
+cp -aL dist/sdk/lib/* $RPM_BUILD_ROOT%{_libdir}/%{name}-devel/sdk/lib
+cp -aL dist/sdk/bin/* $RPM_BUILD_ROOT%{_libdir}/%{name}-devel/sdk/bin
+find $RPM_BUILD_ROOT%{_libdir}/%{name}-devel/sdk -name "*.pyc" | xargs rm -f
 
-# fix for halfway done xulrunner-bin -> xulrunner rename
-#ln -sf %{_libdir}/%{name}/xulrunner $RPM_BUILD_ROOT%{_bindir}/xulrunner
+ln -s %{_libdir}/%{name} $RPM_BUILD_ROOT%{_libdir}/%{name}-devel/bin
+ln -s %{_includedir}/%{name} $RPM_BUILD_ROOT%{_libdir}/%{name}-devel/include
+ln -s %{_datadir}/idl/%{name} $RPM_BUILD_ROOT%{_libdir}/%{name}-devel/idl
+ln -s %{_libdir}/%{name}-devel/sdk/lib $RPM_BUILD_ROOT%{_libdir}/%{name}-devel/lib
+
+# replace copies with symlinks
+ln -sf %{_libdir}/%{name}/libmozjs.so $RPM_BUILD_ROOT%{_libdir}/%{name}-devel/sdk/lib/libmozjs.so
+ln -sf %{_libdir}/%{name}/libxpcom.so $RPM_BUILD_ROOT%{_libdir}/%{name}-devel/sdk/lib/libxpcom.so
+ln -sf %{_libdir}/%{name}/libxul.so $RPM_BUILD_ROOT%{_libdir}/%{name}-devel/sdk/lib/libxul.so
+ln -sf %{_libdir}/%{name}/libmozalloc.so $RPM_BUILD_ROOT%{_libdir}/%{name}-devel/sdk/lib/libmozalloc.so
+# temp fix for https://bugzilla.mozilla.org/show_bug.cgi?id=63955
+chmod a+rx $RPM_BUILD_ROOT%{_libdir}/%{name}-devel/sdk/bin/xpt.py
+
+ln -sf %{_libdir}/%{name}/xulrunner $RPM_BUILD_ROOT%{_bindir}/xulrunner
 
 # move arch independant ones to datadir
 mv $RPM_BUILD_ROOT%{_libdir}/%{name}/chrome $RPM_BUILD_ROOT%{_datadir}/%{name}/chrome
@@ -323,9 +346,6 @@ ln -s %{_datadir}/myspell $RPM_BUILD_ROOT%{_libdir}/%{name}/dictionaries
 # files created by regxpcom
 touch $RPM_BUILD_ROOT%{_libdir}/%{name}/components/compreg.dat
 touch $RPM_BUILD_ROOT%{_libdir}/%{name}/components/xpti.dat
-
-%{__make} -C build/unix install \
-	DESTDIR=$RPM_BUILD_ROOT
 
 # Install xpcshell and run-mozilla.sh
 %{__cp} -pL dist/bin/xpcshell $RPM_BUILD_ROOT%{_libdir}/%{name}
@@ -374,7 +394,7 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/plugin-container
 
 %attr(755,root,root) %{_libdir}/%{name}/components/libdbusservice.so
-%{_libdir}/%{name}/components/binary.manifest
+%{_libdir}/%{name}/components/components.manifest
 
 # do not use *.dat here, so check-files can catch any new files
 # (and they won't be just silently placed empty in rpm)
