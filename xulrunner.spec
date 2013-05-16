@@ -17,7 +17,7 @@
 # The actual sqlite version (see RHBZ#480989):
 %define		sqlite_build_version %(pkg-config --silence-errors --modversion sqlite3 2>/dev/null || echo ERROR)
 
-%define		nspr_ver		4.9.4
+%define		nspr_ver		4.9.6
 %define		nss_ver			3.14.1
 
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
@@ -74,7 +74,7 @@ BuildRequires:	pkgconfig
 BuildRequires:	pkgconfig(libffi) >= 3.0.9
 BuildRequires:	python >= 1:2.5
 BuildRequires:	python-simplejson
-BuildRequires:	python-virtualenv >= 1.8.4-2
+BuildRequires:	python-virtualenv >= 1.9.1-4
 BuildRequires:	rpm >= 4.4.9-56
 BuildRequires:	rpmbuild(macros) >= 1.453
 BuildRequires:	sed >= 4.0
@@ -324,12 +324,12 @@ ln -s %{_datadir}/myspell $RPM_BUILD_ROOT%{_libdir}/%{name}/dictionaries
 touch $RPM_BUILD_ROOT%{_libdir}/%{name}/components/compreg.dat
 touch $RPM_BUILD_ROOT%{_libdir}/%{name}/components/xpti.dat
 
-%{__make} -C obj-%{_target_cpu}/build/unix install \
+%{__make} -C build/unix install \
 	DESTDIR=$RPM_BUILD_ROOT
 
 # Install xpcshell and run-mozilla.sh
-%{__cp} -pL obj-%{_target_cpu}/dist/bin/xpcshell $RPM_BUILD_ROOT%{_libdir}/%{name}
-%{__cp} -pL obj-%{_target_cpu}/dist/bin/run-mozilla.sh $RPM_BUILD_ROOT%{_libdir}/%{name}
+%{__cp} -pL dist/bin/xpcshell $RPM_BUILD_ROOT%{_libdir}/%{name}
+%{__cp} -pL dist/bin/run-mozilla.sh $RPM_BUILD_ROOT%{_libdir}/%{name}
 
 %browser_plugins_add_browser %{name} -p %{_libdir}/%{name}/plugins
 
