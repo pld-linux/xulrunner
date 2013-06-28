@@ -24,7 +24,7 @@ Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
 Version:	22.0
-Release:	2
+Release:	3
 Epoch:		2
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
@@ -355,7 +355,6 @@ touch $RPM_BUILD_ROOT%{_libdir}/%{name}/components/xpti.dat
 
 # remove unecessary stuff
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/%{name}/LICENSE
-%{__rm} $RPM_BUILD_ROOT%{_libdir}/%{name}/dependentlibs.list
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -410,6 +409,7 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/libmozalloc.so
 %attr(755,root,root) %{_libdir}/%{name}/libmozjs.so
 %attr(755,root,root) %{_libdir}/%{name}/libxul.so
+%{_libdir}/%{name}/dependentlibs.list
 %{_libdir}/%{name}/omni.ja
 
 %files devel
