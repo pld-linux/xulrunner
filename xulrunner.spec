@@ -3,13 +3,6 @@
 #
 # Conditional build:
 %bcond_with	tests		# enable tests (whatever they check)
-%bcond_without	gnomeui		# disable gnomeui support
-%bcond_without	gnome		# synonym for gnomeui (gconf, libnotify and gio are still enabled)
-%bcond_with	qt		# build with qt toolkit
-
-%if %{without gnome}
-%undefine	with_gnomeui
-%endif
 
 # On updating version, grab CVE links from:
 # https://www.mozilla.org/security/known-vulnerabilities/firefox.html
@@ -24,7 +17,7 @@ Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
 Version:	23.0
-Release:	1
+Release:	2
 Epoch:		2
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
@@ -42,7 +35,7 @@ Patch6:		idl-parser.patch
 Patch7:		system-virtualenv.patch
 Patch8:		%{name}-gyp-slashism.patch
 URL:		https://developer.mozilla.org/en/XULRunner
-%{!?with_qt:BuildRequires:	GConf2-devel >= 1.2.1}
+BuildRequires:	GConf2-devel >= 1.2.1
 BuildRequires:	alsa-lib-devel
 BuildRequires:	automake
 BuildRequires:	bzip2-devel
@@ -50,19 +43,18 @@ BuildRequires:	cairo-devel >= 1.10.2-5
 BuildRequires:	dbus-glib-devel >= 0.60
 BuildRequires:	freetype-devel >= 1:2.1.8
 BuildRequires:	glib2-devel >= 1:2.20
-%{!?with_qt:BuildRequires:	gtk+2-devel >= 2:2.14}
+BuildRequires:	gtk+2-devel >= 2:2.14
 BuildRequires:	hunspell-devel >= 1.2.3
 BuildRequires:	libIDL-devel >= 0.8.0
 BuildRequires:	libdnet-devel
 BuildRequires:	libevent-devel >= 1.4.7
 # standalone libffi 3.0.9 or gcc's from 4.5(?)+
 BuildRequires:	libffi-devel >= 6:3.0.9
-%{?with_gnomeui:BuildRequires:	libgnomeui-devel >= 2.2.0}
 BuildRequires:	libiw-devel
 # requires libjpeg-turbo implementing at least libjpeg 6b API
 BuildRequires:	libjpeg-devel >= 6b
 BuildRequires:	libjpeg-turbo-devel
-%{!?with_qt:BuildRequires:	libnotify-devel >= 0.4}
+BuildRequires:	libnotify-devel >= 0.4
 BuildRequires:	libpng(APNG)-devel >= 0.10
 BuildRequires:	libpng-devel >= 1.5.13
 BuildRequires:	libstdc++-devel
@@ -132,7 +124,7 @@ Group:		X11/Libraries
 Requires:	cairo >= 1.10.2-5
 Requires:	dbus-glib >= 0.60
 Requires:	glib2 >= 1:2.20
-%{!?with_qt:Requires:	gtk+2 >= 2:2.14}
+Requires:	gtk+2 >= 2:2.14
 Requires:	libjpeg-turbo
 Requires:	libpng >= 1.5.13
 Requires:	libpng(APNG) >= 0.10
@@ -172,11 +164,11 @@ Requires:	%{name} = %{epoch}:%{version}-%{release}
 
 %description gnome
 GNOME support package for XULRunner. It integrates GConf, GIO,
-libnotify%{?with_gnomeui: and GNOME UI}.
+libnotify.
 
 %description gnome -l pl.UTF-8
 Pakiet wspierający integrację XULRunnera z GNOME. Obejmuje komponenty
-GConf, GIO, libnotify%{?with_gnomeui: oraz GNOME UI}.
+GConf, GIO, libnotify.
 
 %prep
 %setup -qc
@@ -247,35 +239,40 @@ ac_add_options --enable-optimize="%{rpmcflags} -Os"
 %endif
 ac_add_options --disable-strip
 ac_add_options --disable-strip-libs
+ac_add_options --disable-install-strip
 %if %{with tests}
 ac_add_options --enable-tests
 %else
 ac_add_options --disable-tests
 %endif
-%if %{with gnomeui}
-ac_add_options --enable-gnomeui
-%else
-ac_add_options --disable-gnomeui
-%endif
-ac_add_options --disable-gnomevfs
 ac_add_options --disable-crashreporter
+ac_add_options --disable-elf-dynstr-gc
+ac_add_options --disable-gconf
+ac_add_options --disable-gnomeui
+ac_add_options --disable-gnomevfs
 ac_add_options --disable-installer
 ac_add_options --disable-javaxpcom
+ac_add_options --disable-long-long-warning
+ac_add_options --disable-pedantic
 ac_add_options --disable-updater
-%if %{with qt}
-ac_add_options --enable-default-toolkit=cairo-qt
-%else
+ac_add_options --disable-xterm-updates
+ac_add_options --enable-canvas
 ac_add_options --enable-default-toolkit=cairo-gtk2
-%endif
+ac_add_options --enable-extensions="default,cookie,permissions,spellcheck,gio"
 ac_add_options --enable-gio
 ac_add_options --enable-libxul
+ac_add_options --enable-mathml
 ac_add_options --enable-pango
+ac_add_options --enable-readline
 ac_add_options --enable-shared-js
 ac_add_options --enable-startup-notification
+ac_add_options --enable-svg
 ac_add_options --enable-system-cairo
 ac_add_options --enable-system-ffi
 ac_add_options --enable-system-hunspell
 ac_add_options --enable-system-sqlite
+ac_add_options --enable-url-classifier
+ac_add_options --with-default-mozilla-five-home=%{_libdir}/%{name}
 ac_add_options --with-distribution-id=org.pld-linux
 ac_add_options --with-pthreads
 ac_add_options --with-system-bz2
@@ -284,12 +281,9 @@ ac_add_options --with-system-libevent
 ac_add_options --with-system-libvpx
 ac_add_options --with-system-nspr
 ac_add_options --with-system-nss
+ac_add_options --with-system-ply
 ac_add_options --with-system-png
 ac_add_options --with-system-zlib
-ac_add_options --with-default-mozilla-five-home=%{_libdir}/%{name}
-ac_add_options --disable-pedantic
-ac_add_options --disable-xterm-updates
-ac_add_options --enable-extensions="default,cookie,permissions,spellcheck"
 ac_add_options --with-x
 EOF
 
@@ -433,8 +427,6 @@ fi
 %{_pkgconfigdir}/mozilla-js.pc
 %{_pkgconfigdir}/mozilla-plugin.pc
 
-%if %{without qt}
 %files gnome
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/%{name}/components/libmozgnome.so
-%endif
