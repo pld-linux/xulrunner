@@ -1,0 +1,10 @@
+--- xulrunner-24.0/mozilla/js/public/RootingAPI.h~	2013-09-11 01:15:04.000000000 +0200
++++ xulrunner-24.0/mozilla/js/public/RootingAPI.h	2013-10-06 18:02:51.468909970 +0200
+@@ -7,6 +7,7 @@
+ #ifndef js_RootingAPI_h
+ #define js_RootingAPI_h
+ 
++#include "mozilla/Attributes.h"
+ #include "mozilla/GuardObjects.h"
+ #include "mozilla/TypeTraits.h"
+ 
