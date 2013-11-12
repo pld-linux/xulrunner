@@ -1,5 +1,6 @@
 # TODO:
 # - consider --enable-libproxy
+# - package js-gdb.py for gdb
 #
 # Conditional build:
 %bcond_with	tests		# enable tests (whatever they check)
@@ -302,6 +303,7 @@ install -d $RPM_BUILD_ROOT%{_libdir}/%{name}/plugins \
 	$RPM_BUILD_ROOT%{_pkgconfigdir}
 
 cd mozilla/obj-%{_target_cpu}
+export LD_LIBRARY_PATH=$(pwd)/dist/lib
 %{__make} -C xulrunner/installer stage-package libxul.pc libxul-embedding.pc mozilla-js.pc mozilla-plugin.pc\
 	DESTDIR=$RPM_BUILD_ROOT \
 	installdir=%{_libdir}/%{name} \
