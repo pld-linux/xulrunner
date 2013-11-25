@@ -26,6 +26,7 @@ Group:		X11/Applications
 # instead of waiting for mozilla to copy file on ftp.
 Source0:	http://releases.mozilla.org/pub/mozilla.org/firefox/releases/%{version}/source/firefox-%{version}.source.tar.bz2
 # Source0-md5:	b5b57d3ea937a339e0ed7ebea604b430
+Patch0:		%{name}-new-libxul.patch
 Patch1:		%{name}-rpath.patch
 Patch2:		%{name}-paths.patch
 Patch3:		%{name}-pc.patch
@@ -87,7 +88,6 @@ BuildRequires:	xorg-lib-libXt-devel
 BuildRequires:	zip
 BuildRequires:	zlib-devel >= 1.2.3
 BuildConflicts:	xulrunner-devel < %{epoch}:%{name}-%{version}
-BuildConflicts:	xulrunner-libs < %{epoch}:%{name}-%{version}
 Requires(post):	mktemp >= 1.5-18
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 Requires:	browser-plugins >= 2.0
@@ -182,6 +182,7 @@ cd mozilla
 # hunspell needed for factory including mozHunspell.h
 echo 'LOCAL_INCLUDES += $(MOZ_HUNSPELL_CFLAGS)' >> extensions/spellcheck/src/Makefile.in
 
+%patch0 -p1
 %patch1 -p1
 %patch2 -p2
 %patch3 -p1
