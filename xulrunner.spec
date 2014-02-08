@@ -17,15 +17,15 @@
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
-Version:	26.0
-Release:	1
+Version:	27.0
+Release:	0.1
 Epoch:		2
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
 # Source tarball for xulrunner is in fact firefox tarball (checked on 1.9), so lets use it
 # instead of waiting for mozilla to copy file on ftp.
 Source0:	http://releases.mozilla.org/pub/mozilla.org/firefox/releases/%{version}/source/firefox-%{version}.source.tar.bz2
-# Source0-md5:	91ce51cc6474f1269484e5327643a59c
+# Source0-md5:	212827908144b43e7c80ed9d56a08ca9
 Patch0:		%{name}-new-libxul.patch
 Patch1:		%{name}-rpath.patch
 Patch2:		%{name}-paths.patch
@@ -73,7 +73,7 @@ BuildRequires:	python-virtualenv >= 1.9.1-4
 BuildRequires:	rpm >= 4.4.9-56
 BuildRequires:	rpmbuild(macros) >= 1.453
 BuildRequires:	sed >= 4.0
-BuildRequires:	sqlite3-devel >= 3.7.17
+BuildRequires:	sqlite3-devel >= 3.8.0.2
 BuildRequires:	startup-notification-devel >= 0.8
 BuildRequires:	unzip
 %if "%{pld_release}" == "ac"
