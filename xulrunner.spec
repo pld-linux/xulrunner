@@ -17,15 +17,15 @@
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
-Version:	27.0
-Release:	0.1
+Version:	28.0
+Release:	1
 Epoch:		2
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
 # Source tarball for xulrunner is in fact firefox tarball (checked on 1.9), so lets use it
 # instead of waiting for mozilla to copy file on ftp.
 Source0:	http://releases.mozilla.org/pub/mozilla.org/firefox/releases/%{version}/source/firefox-%{version}.source.tar.bz2
-# Source0-md5:	212827908144b43e7c80ed9d56a08ca9
+# Source0-md5:	db06b6da6b826cfc6a49c15bca115a6b
 Patch0:		%{name}-new-libxul.patch
 Patch1:		%{name}-rpath.patch
 Patch2:		%{name}-paths.patch
@@ -35,7 +35,6 @@ Patch6:		idl-parser.patch
 # Edit patch below and restore --system-site-packages when system virtualenv gets 1.7 upgrade
 Patch7:		system-virtualenv.patch
 Patch8:		%{name}-gyp-slashism.patch
-Patch9:		missing-def.patch
 URL:		https://developer.mozilla.org/en/XULRunner
 BuildRequires:	GConf2-devel >= 1.2.1
 BuildRequires:	alsa-lib-devel
@@ -59,7 +58,7 @@ BuildRequires:	libjpeg-devel >= 6b
 BuildRequires:	libjpeg-turbo-devel
 BuildRequires:	libnotify-devel >= 0.4
 BuildRequires:	libpng(APNG)-devel >= 0.10
-BuildRequires:	libpng-devel >= 1.6.0
+BuildRequires:	libpng-devel >= 1.6.7
 BuildRequires:	libstdc++-devel >= 6:4.4
 BuildRequires:	libvpx-devel >= 1.0.0
 BuildRequires:	nspr-devel >= 1:%{nspr_ver}
@@ -71,7 +70,7 @@ BuildRequires:	python >= 1:2.5
 BuildRequires:	python-simplejson
 BuildRequires:	python-virtualenv >= 1.9.1-4
 BuildRequires:	rpm >= 4.4.9-56
-BuildRequires:	rpmbuild(macros) >= 1.453
+BuildRequires:	rpmbuild(macros) >= 1.657
 BuildRequires:	sed >= 4.0
 BuildRequires:	sqlite3-devel >= 3.8.0.2
 BuildRequires:	startup-notification-devel >= 0.8
@@ -128,7 +127,7 @@ Requires:	dbus-glib >= 0.60
 Requires:	glib2 >= 1:2.20
 Requires:	gtk+2 >= 2:2.14
 Requires:	libjpeg-turbo
-Requires:	libpng >= 1.6.0
+Requires:	libpng >= 1.6.7
 Requires:	libpng(APNG) >= 0.10
 Requires:	pango >= 1:1.14.0
 Requires:	sqlite3 >= %{sqlite_build_version}
@@ -190,7 +189,6 @@ echo 'LOCAL_INCLUDES += $(MOZ_HUNSPELL_CFLAGS)' >> extensions/spellcheck/src/Mak
 %patch6 -p2
 %patch7 -p2
 %patch8 -p2
-%patch9 -p2
 
 # config/rules.mk is patched by us and js/src/config/rules.mk
 # is supposed to be exact copy
@@ -245,9 +243,12 @@ ac_add_options --disable-strip-libs
 ac_add_options --disable-install-strip
 %if %{with tests}
 ac_add_options --enable-tests
+ac_add_options --enable-mochitest
 %else
 ac_add_options --disable-tests
+ac_add_options --disable-mochitest
 %endif
+ac_add_options --disable-cpp-exceptions
 ac_add_options --disable-crashreporter
 ac_add_options --disable-elf-dynstr-gc
 ac_add_options --disable-gconf
@@ -256,17 +257,21 @@ ac_add_options --disable-gnomevfs
 ac_add_options --disable-installer
 ac_add_options --disable-javaxpcom
 ac_add_options --disable-long-long-warning
+ac_add_options --disable-necko-wifi
 ac_add_options --disable-pedantic
 ac_add_options --disable-updater
 ac_add_options --disable-xterm-updates
 ac_add_options --enable-canvas
+ac_add_options --enable-chrome-format=omni
 ac_add_options --enable-default-toolkit=cairo-gtk2
-ac_add_options --enable-extensions="default,cookie,permissions,spellcheck,gio"
+ac_add_options --enable-extensions=default
 ac_add_options --enable-gio
+ac_add_options --enable-libnotify
 ac_add_options --enable-libxul
 ac_add_options --enable-mathml
 ac_add_options --enable-pango
 ac_add_options --enable-readline
+ac_add_options --enable-safe-browsing
 ac_add_options --enable-shared-js
 ac_add_options --enable-startup-notification
 ac_add_options --enable-svg
@@ -275,6 +280,7 @@ ac_add_options --enable-system-ffi
 ac_add_options --enable-system-hunspell
 ac_add_options --enable-system-sqlite
 ac_add_options --enable-url-classifier
+ac_add_options --enable-xinerama
 ac_add_options --with-default-mozilla-five-home=%{_libdir}/%{name}
 ac_add_options --with-distribution-id=org.pld-linux
 ac_add_options --with-pthreads
@@ -292,7 +298,8 @@ EOF
 
 %{__make} -j1 -f client.mk build \
 	CC="%{__cc}" \
-	CXX="%{__cxx}"
+	CXX="%{__cxx}" \
+	MOZ_MAKE_FLAGS="%{_smp_mflags}"
 
 %install
 rm -rf $RPM_BUILD_ROOT
