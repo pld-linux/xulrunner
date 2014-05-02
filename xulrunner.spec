@@ -18,7 +18,7 @@ Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
 Version:	29.0
-Release:	1
+Release:	2
 Epoch:		2
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
@@ -51,6 +51,7 @@ BuildRequires:	libevent-devel >= 1.4.7
 # standalone libffi 3.0.9 or gcc's from 4.5(?)+
 BuildRequires:	libffi-devel >= 6:3.0.9
 BuildRequires:	libiw-devel
+BuildRequires:	libicu-devel
 # requires libjpeg-turbo implementing at least libjpeg 6b API
 BuildRequires:	libjpeg-devel >= 6b
 BuildRequires:	libjpeg-turbo-devel
@@ -286,6 +287,7 @@ ac_add_options --with-system-nss
 ac_add_options --with-system-ply
 ac_add_options --with-system-png
 ac_add_options --with-system-zlib
+ac_add_options --with-system-icu
 ac_add_options --with-x
 EOF
 
