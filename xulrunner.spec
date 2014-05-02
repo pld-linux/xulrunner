@@ -17,7 +17,7 @@
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
-Version:	28.0
+Version:	29.0
 Release:	1
 Epoch:		2
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
@@ -25,16 +25,14 @@ Group:		X11/Applications
 # Source tarball for xulrunner is in fact firefox tarball (checked on 1.9), so lets use it
 # instead of waiting for mozilla to copy file on ftp.
 Source0:	http://releases.mozilla.org/pub/mozilla.org/firefox/releases/%{version}/source/firefox-%{version}.source.tar.bz2
-# Source0-md5:	db06b6da6b826cfc6a49c15bca115a6b
+# Source0-md5:	07c515fc487824f107a947d23f420e9d
 Patch0:		%{name}-new-libxul.patch
 Patch1:		%{name}-rpath.patch
 Patch2:		%{name}-paths.patch
 Patch3:		%{name}-pc.patch
 Patch4:		%{name}-prefs.patch
 Patch6:		idl-parser.patch
-# Edit patch below and restore --system-site-packages when system virtualenv gets 1.7 upgrade
 Patch7:		system-virtualenv.patch
-Patch8:		%{name}-gyp-slashism.patch
 URL:		https://developer.mozilla.org/en/XULRunner
 BuildRequires:	GConf2-devel >= 1.2.1
 BuildRequires:	alsa-lib-devel
@@ -188,11 +186,6 @@ echo 'LOCAL_INCLUDES += $(MOZ_HUNSPELL_CFLAGS)' >> extensions/spellcheck/src/Mak
 %patch4 -p1
 %patch6 -p2
 %patch7 -p2
-%patch8 -p2
-
-# config/rules.mk is patched by us and js/src/config/rules.mk
-# is supposed to be exact copy
-cp -a config/rules.mk js/src/config/rules.mk
 
 %build
 if [ "$(grep -E '^[0-9]+\.' mozilla/config/milestone.txt)" != "%{version}" ]; then
