@@ -3,7 +3,8 @@
 # - package js-gdb.py for gdb
 #
 # Conditional build:
-%bcond_with	tests		# enable tests (whatever they check)
+%bcond_with	tests	# enable tests (whatever they check)
+%bcond_with	gtk3	# GTK+ 3.x instead of 2.x
 
 # On updating version, grab CVE links from:
 # https://www.mozilla.org/security/known-vulnerabilities/firefox.html
@@ -11,21 +12,21 @@
 # The actual sqlite version (see RHBZ#480989):
 %define		sqlite_build_version %(pkg-config --silence-errors --modversion sqlite3 2>/dev/null || echo ERROR)
 
-%define		nspr_ver		4.10.2
-%define		nss_ver			3.15
+%define		nspr_ver		4.10.3
+%define		nss_ver			3.16
 
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
-Version:	29.0
-Release:	2
+Version:	29.0.1
+Release:	1
 Epoch:		2
-License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
+License:	MPL v2.0
 Group:		X11/Applications
 # Source tarball for xulrunner is in fact firefox tarball (checked on 1.9), so lets use it
 # instead of waiting for mozilla to copy file on ftp.
 Source0:	http://releases.mozilla.org/pub/mozilla.org/firefox/releases/%{version}/source/firefox-%{version}.source.tar.bz2
-# Source0-md5:	07c515fc487824f107a947d23f420e9d
+# Source0-md5:	ca37addc3a69ef30247e00375dd93cd0
 Patch0:		%{name}-new-libxul.patch
 Patch1:		%{name}-rpath.patch
 Patch2:		%{name}-paths.patch
@@ -43,15 +44,15 @@ BuildRequires:	dbus-glib-devel >= 0.60
 BuildRequires:	freetype-devel >= 1:2.1.8
 BuildRequires:	gcc-c++ >= 6:4.4
 BuildRequires:	glib2-devel >= 1:2.20
-BuildRequires:	gtk+2-devel >= 2:2.14
+%{!?with_gtk3:BuildRequires:	gtk+2-devel >= 2:2.14}
+%{?with_gtk3:BuildRequires:	gtk+3-devel >= 3.0.0}
 BuildRequires:	hunspell-devel >= 1.2.3
 BuildRequires:	libIDL-devel >= 0.8.0
 BuildRequires:	libdnet-devel
 BuildRequires:	libevent-devel >= 1.4.7
 # standalone libffi 3.0.9 or gcc's from 4.5(?)+
 BuildRequires:	libffi-devel >= 6:3.0.9
-BuildRequires:	libiw-devel
-BuildRequires:	libicu-devel
+BuildRequires:	libicu-devel >= 50.1
 # requires libjpeg-turbo implementing at least libjpeg 6b API
 BuildRequires:	libjpeg-devel >= 6b
 BuildRequires:	libjpeg-turbo-devel
@@ -59,10 +60,11 @@ BuildRequires:	libnotify-devel >= 0.4
 BuildRequires:	libpng(APNG)-devel >= 0.10
 BuildRequires:	libpng-devel >= 1.6.7
 BuildRequires:	libstdc++-devel >= 6:4.4
-BuildRequires:	libvpx-devel >= 1.0.0
+BuildRequires:	libvpx-devel >= 1.3.0
 BuildRequires:	nspr-devel >= 1:%{nspr_ver}
 BuildRequires:	nss-devel >= 1:%{nss_ver}
 BuildRequires:	pango-devel >= 1:1.14.0
+BuildRequires:	pixman-devel >= 0.19.2
 BuildRequires:	pkgconfig
 BuildRequires:	pkgconfig(libffi) >= 3.0.9
 BuildRequires:	python >= 1:2.5
@@ -71,7 +73,7 @@ BuildRequires:	python-virtualenv >= 1.9.1-4
 BuildRequires:	rpm >= 4.4.9-56
 BuildRequires:	rpmbuild(macros) >= 1.657
 BuildRequires:	sed >= 4.0
-BuildRequires:	sqlite3-devel >= 3.8.0.2
+BuildRequires:	sqlite3-devel >= 3.8.2
 BuildRequires:	startup-notification-devel >= 0.8
 BuildRequires:	unzip
 %if "%{pld_release}" == "ac"
@@ -124,10 +126,12 @@ Group:		X11/Libraries
 Requires:	cairo >= 1.10.2-5
 Requires:	dbus-glib >= 0.60
 Requires:	glib2 >= 1:2.20
-Requires:	gtk+2 >= 2:2.14
+%{!?with_gtk3:Requires:	gtk+2 >= 2:2.14}
+%{?with_gtk3:Requires:	gtk+3 >= 3.0.0}
 Requires:	libjpeg-turbo
 Requires:	libpng >= 1.6.7
 Requires:	libpng(APNG) >= 0.10
+Requires:	libvpx >= 1.3.0
 Requires:	pango >= 1:1.14.0
 Requires:	sqlite3 >= %{sqlite_build_version}
 Requires:	startup-notification >= 0.8
@@ -257,7 +261,7 @@ ac_add_options --disable-updater
 ac_add_options --disable-xterm-updates
 ac_add_options --enable-canvas
 ac_add_options --enable-chrome-format=omni
-ac_add_options --enable-default-toolkit=cairo-gtk2
+ac_add_options --enable-default-toolkit=%{?with_gtk3:cairo-gtk3}%{!?with_gtk3:cairo-gtk2}
 ac_add_options --enable-extensions=default
 ac_add_options --enable-gio
 ac_add_options --enable-libnotify
