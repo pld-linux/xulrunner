@@ -35,7 +35,6 @@ Patch4:		%{name}-prefs.patch
 Patch6:		idl-parser.patch
 Patch7:		system-virtualenv.patch
 URL:		https://developer.mozilla.org/en/XULRunner
-BuildRequires:	GConf2-devel >= 1.2.1
 BuildRequires:	alsa-lib-devel
 BuildRequires:	automake
 BuildRequires:	bzip2-devel
@@ -56,7 +55,6 @@ BuildRequires:	libicu-devel >= 50.1
 # requires libjpeg-turbo implementing at least libjpeg 6b API
 BuildRequires:	libjpeg-devel >= 6b
 BuildRequires:	libjpeg-turbo-devel
-BuildRequires:	libnotify-devel >= 0.4
 BuildRequires:	libpng(APNG)-devel >= 0.10
 BuildRequires:	libpng-devel >= 2:1.6.7
 BuildRequires:	libstdc++-devel >= 6:4.4
@@ -167,12 +165,11 @@ Group:		X11/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 
 %description gnome
-GNOME support package for XULRunner. It integrates GConf, GIO,
-libnotify.
+GNOME support package for XULRunner. It integrates DBus and GIO.
 
 %description gnome -l pl.UTF-8
 Pakiet wspierający integrację XULRunnera z GNOME. Obejmuje komponenty
-GConf, GIO, libnotify.
+DBus i GIO.
 
 %prep
 %setup -qc
@@ -264,7 +261,6 @@ ac_add_options --enable-chrome-format=omni
 ac_add_options --enable-default-toolkit=%{?with_gtk3:cairo-gtk3}%{!?with_gtk3:cairo-gtk2}
 ac_add_options --enable-extensions=default
 ac_add_options --enable-gio
-ac_add_options --enable-libnotify
 ac_add_options --enable-libxul
 ac_add_options --enable-mathml
 ac_add_options --enable-pango
