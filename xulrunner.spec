@@ -12,21 +12,21 @@
 # The actual sqlite version (see RHBZ#480989):
 %define		sqlite_build_version %(pkg-config --silence-errors --modversion sqlite3 2>/dev/null || echo ERROR)
 
-%define		nspr_ver		4.10.3
+%define		nspr_ver		4.10.6
 %define		nss_ver			3.16
 
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
-Version:	29.0.1
-Release:	1
+Version:	30.0
+Release:	0.1
 Epoch:		2
 License:	MPL v2.0
 Group:		X11/Applications
 # Source tarball for xulrunner is in fact firefox tarball (checked on 1.9), so lets use it
 # instead of waiting for mozilla to copy file on ftp.
 Source0:	http://releases.mozilla.org/pub/mozilla.org/firefox/releases/%{version}/source/firefox-%{version}.source.tar.bz2
-# Source0-md5:	ca37addc3a69ef30247e00375dd93cd0
+# Source0-md5:	ac7e8c801ded4e6195182bf54c81acb6
 Patch0:		%{name}-new-libxul.patch
 Patch1:		%{name}-rpath.patch
 Patch2:		%{name}-paths.patch
@@ -43,6 +43,8 @@ BuildRequires:	dbus-glib-devel >= 0.60
 BuildRequires:	freetype-devel >= 1:2.1.8
 BuildRequires:	gcc-c++ >= 6:4.4
 BuildRequires:	glib2-devel >= 1:2.20
+BuildRequires:	gstreamer-devel >= 1.0
+BuildRequires:	gstreamer-plugins-base-devel >= 1.0
 %{!?with_gtk3:BuildRequires:	gtk+2-devel >= 2:2.14}
 %{?with_gtk3:BuildRequires:	gtk+3-devel >= 3.0.0}
 BuildRequires:	hunspell-devel >= 1.2.3
@@ -71,7 +73,7 @@ BuildRequires:	python-virtualenv >= 1.9.1-4
 BuildRequires:	rpm >= 4.4.9-56
 BuildRequires:	rpmbuild(macros) >= 1.657
 BuildRequires:	sed >= 4.0
-BuildRequires:	sqlite3-devel >= 3.8.2
+BuildRequires:	sqlite3-devel >= 3.8.3.1
 BuildRequires:	startup-notification-devel >= 0.8
 BuildRequires:	unzip
 %if "%{pld_release}" == "ac"
@@ -261,6 +263,7 @@ ac_add_options --enable-chrome-format=omni
 ac_add_options --enable-default-toolkit=%{?with_gtk3:cairo-gtk3}%{!?with_gtk3:cairo-gtk2}
 ac_add_options --enable-extensions=default
 ac_add_options --enable-gio
+ac_add_options --enable-gstreamer=1.0
 ac_add_options --enable-libxul
 ac_add_options --enable-mathml
 ac_add_options --enable-pango
