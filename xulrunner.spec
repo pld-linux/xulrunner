@@ -1,10 +1,11 @@
 # TODO:
 # - consider --enable-libproxy
 # - package js-gdb.py for gdb
-#
+# - disabled shared_js - https://bugzilla.mozilla.org/show_bug.cgi?id=1039964
 # Conditional build:
 %bcond_with	tests	# enable tests (whatever they check)
 %bcond_with	gtk3	# GTK+ 3.x instead of 2.x
+%bcond_with	shared_js
 
 # On updating version, grab CVE links from:
 # https://www.mozilla.org/security/known-vulnerabilities/firefox.html
@@ -18,15 +19,15 @@
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
-Version:	30.0
-Release:	0.1
+Version:	31.0
+Release:	1
 Epoch:		2
 License:	MPL v2.0
 Group:		X11/Applications
 # Source tarball for xulrunner is in fact firefox tarball (checked on 1.9), so lets use it
 # instead of waiting for mozilla to copy file on ftp.
 Source0:	http://releases.mozilla.org/pub/mozilla.org/firefox/releases/%{version}/source/firefox-%{version}.source.tar.bz2
-# Source0-md5:	ac7e8c801ded4e6195182bf54c81acb6
+# Source0-md5:	499b70a9f08a2291d528e87eaf8804a3
 Patch0:		%{name}-new-libxul.patch
 Patch1:		%{name}-rpath.patch
 Patch2:		%{name}-paths.patch
@@ -269,7 +270,7 @@ ac_add_options --enable-mathml
 ac_add_options --enable-pango
 ac_add_options --enable-readline
 ac_add_options --enable-safe-browsing
-ac_add_options --enable-shared-js
+%{?with_shared_js:ac_add_options --enable-shared-js}
 ac_add_options --enable-startup-notification
 ac_add_options --enable-svg
 ac_add_options --enable-system-cairo
@@ -332,7 +333,7 @@ ln -s %{_datadir}/idl/%{name} $RPM_BUILD_ROOT%{_libdir}/%{name}-devel/idl
 ln -s %{_libdir}/%{name}-devel/sdk/lib $RPM_BUILD_ROOT%{_libdir}/%{name}-devel/lib
 
 # replace copies with symlinks
-ln -sf %{_libdir}/%{name}/libmozjs.so $RPM_BUILD_ROOT%{_libdir}/%{name}-devel/sdk/lib/libmozjs.so
+%{?with_shared_js:ln -sf %{_libdir}/%{name}/libmozjs.so $RPM_BUILD_ROOT%{_libdir}/%{name}-devel/sdk/lib/libmozjs.so}
 ln -sf %{_libdir}/%{name}/libxul.so $RPM_BUILD_ROOT%{_libdir}/%{name}-devel/sdk/lib/libxul.so
 ln -sf %{_libdir}/%{name}/libmozalloc.so $RPM_BUILD_ROOT%{_libdir}/%{name}-devel/sdk/lib/libmozalloc.so
 # temp fix for https://bugzilla.mozilla.org/show_bug.cgi?id=63955
@@ -410,7 +411,7 @@ fi
 %dir %{_libdir}/%{name}
 %{_libdir}/%{name}/platform.ini
 %attr(755,root,root) %{_libdir}/%{name}/libmozalloc.so
-%attr(755,root,root) %{_libdir}/%{name}/libmozjs.so
+%{?with_shared_js:%attr(755,root,root) %{_libdir}/%{name}/libmozjs.so}
 %attr(755,root,root) %{_libdir}/%{name}/libxul.so
 %{_libdir}/%{name}/dependentlibs.list
 %{_libdir}/%{name}/omni.ja
