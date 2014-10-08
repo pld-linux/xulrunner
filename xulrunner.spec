@@ -20,7 +20,7 @@ Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
 Version:	32.0.3
-Release:	1
+Release:	2
 Epoch:		2
 License:	MPL v2.0
 Group:		X11/Applications
