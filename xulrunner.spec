@@ -395,6 +395,11 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/mozilla-xremote-client
 %attr(755,root,root) %{_libdir}/%{name}/plugin-container
 
+%dir %{_libdir}/%{name}/gmp-fake
+%dir %{_libdir}/%{name}/gmp-fake/1.0
+%{_libdir}/%{name}/gmp-fake/1.0/fake.info
+%attr(755,root,root) %{_libdir}/%{name}/gmp-fake/1.0/libfake.so
+
 %attr(755,root,root) %{_libdir}/%{name}/components/libdbusservice.so
 %{_libdir}/%{name}/components/components.manifest
 
