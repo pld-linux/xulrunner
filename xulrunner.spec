@@ -2,10 +2,11 @@
 # - consider --enable-libproxy
 # - package js-gdb.py for gdb
 # - disabled shared_js - https://bugzilla.mozilla.org/show_bug.cgi?id=1039964
+#
 # Conditional build:
-%bcond_with	tests	# enable tests (whatever they check)
-%bcond_with	gtk3	# GTK+ 3.x instead of 2.x
-%bcond_with	shared_js
+%bcond_with	tests		# enable tests (whatever they check)
+%bcond_with	gtk3		# GTK+ 3.x instead of 2.x
+%bcond_with	shared_js	# shared libmozjs library [broken]
 
 # On updating version, grab CVE links from:
 # https://www.mozilla.org/security/known-vulnerabilities/firefox.html
@@ -14,7 +15,7 @@
 %define		sqlite_build_version %(pkg-config --silence-errors --modversion sqlite3 2>/dev/null || echo ERROR)
 
 %define		nspr_ver		4.10.6
-%define		nss_ver			3.16
+%define		nss_ver			3.17.1
 
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
@@ -59,12 +60,12 @@ BuildRequires:	libicu-devel >= 50.1
 BuildRequires:	libjpeg-devel >= 6b
 BuildRequires:	libjpeg-turbo-devel
 BuildRequires:	libpng(APNG)-devel >= 0.10
-BuildRequires:	libpng-devel >= 2:1.6.7
+BuildRequires:	libpng-devel >= 2:1.6.10
 BuildRequires:	libstdc++-devel >= 6:4.4
 BuildRequires:	libvpx-devel >= 1.3.0
 BuildRequires:	nspr-devel >= 1:%{nspr_ver}
 BuildRequires:	nss-devel >= 1:%{nss_ver}
-BuildRequires:	pango-devel >= 1:1.14.0
+BuildRequires:	pango-devel >= 1:1.22.0
 BuildRequires:	pixman-devel >= 0.19.2
 BuildRequires:	pkgconfig
 BuildRequires:	pkgconfig(libffi) >= 3.0.9
@@ -74,7 +75,7 @@ BuildRequires:	python-virtualenv >= 1.9.1-4
 BuildRequires:	rpm >= 4.4.9-56
 BuildRequires:	rpmbuild(macros) >= 1.657
 BuildRequires:	sed >= 4.0
-BuildRequires:	sqlite3-devel >= 3.8.3.1
+BuildRequires:	sqlite3-devel >= 3.8.5
 BuildRequires:	startup-notification-devel >= 0.8
 BuildRequires:	unzip
 %if "%{pld_release}" == "ac"
@@ -130,10 +131,10 @@ Requires:	glib2 >= 1:2.20
 %{!?with_gtk3:Requires:	gtk+2 >= 2:2.14}
 %{?with_gtk3:Requires:	gtk+3 >= 3.0.0}
 Requires:	libjpeg-turbo
-Requires:	libpng >= 2:1.6.7
+Requires:	libpng >= 2:1.6.10
 Requires:	libpng(APNG) >= 0.10
 Requires:	libvpx >= 1.3.0
-Requires:	pango >= 1:1.14.0
+Requires:	pango >= 1:1.22.0
 Requires:	sqlite3 >= %{sqlite_build_version}
 Requires:	startup-notification >= 0.8
 
