@@ -14,13 +14,13 @@
 # The actual sqlite version (see RHBZ#480989):
 %define		sqlite_build_version %(pkg-config --silence-errors --modversion sqlite3 2>/dev/null || echo ERROR)
 
-%define		nspr_ver		4.10.6
-%define		nss_ver			3.17.1
+%define		nspr_ver	4.10.6
+%define		nss_ver		3.17.1
 
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
-Version:	33.0.1
+Version:	33.0.2
 Release:	1
 Epoch:		2
 License:	MPL v2.0
@@ -28,7 +28,7 @@ Group:		X11/Applications
 # Source tarball for xulrunner is in fact firefox tarball (checked on 1.9), so lets use it
 # instead of waiting for mozilla to copy file on ftp.
 Source0:	http://releases.mozilla.org/pub/mozilla.org/firefox/releases/%{version}/source/firefox-%{version}.source.tar.bz2
-# Source0-md5:	5a1c4b0b2349e3db94b45bd3f03f9288
+# Source0-md5:	385ad037451f141b68515c73cad01704
 Patch0:		%{name}-new-libxul.patch
 Patch1:		%{name}-rpath.patch
 Patch2:		%{name}-paths.patch
@@ -69,11 +69,13 @@ BuildRequires:	pango-devel >= 1:1.22.0
 BuildRequires:	pixman-devel >= 0.19.2
 BuildRequires:	pkgconfig
 BuildRequires:	pkgconfig(libffi) >= 3.0.9
-BuildRequires:	python >= 1:2.5
+BuildRequires:	pulseaudio-devel
+BuildRequires:	python-modules >= 1:2.5
 BuildRequires:	python-simplejson
 BuildRequires:	python-virtualenv >= 1.9.1-4
+BuildRequires:	readline-devel
 BuildRequires:	rpm >= 4.4.9-56
-BuildRequires:	rpmbuild(macros) >= 1.657
+BuildRequires:	rpmbuild(macros) >= 1.601
 BuildRequires:	sed >= 4.0
 BuildRequires:	sqlite3-devel >= 3.8.5
 BuildRequires:	startup-notification-devel >= 0.8
