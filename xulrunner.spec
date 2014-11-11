@@ -91,7 +91,7 @@ BuildRequires:	xorg-lib-libXt-devel
 %endif
 BuildRequires:	zip
 BuildRequires:	zlib-devel >= 1.2.3
-BuildConflicts:	xulrunner-devel < %{epoch}:%{name}-%{version}
+BuildConflicts:	xulrunner-devel < %{epoch}:%{version}-%{release}
 Requires(post):	mktemp >= 1.5-18
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 Requires:	browser-plugins >= 2.0
