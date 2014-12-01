@@ -32,12 +32,12 @@ diff -urN mozilla-2.0/xulrunner//installer/Makefile.in mozilla-2.0.new/xulrunner
 diff -urN mozilla-2.0/xulrunner//installer/mozilla-js.pc.in mozilla-2.0.new/xulrunner//installer/mozilla-js.pc.in
 --- mozilla-2.0/xulrunner//installer/mozilla-js.pc.in	2011-03-19 00:34:14.000000000 +0100
 +++ mozilla-2.0.new/xulrunner//installer/mozilla-js.pc.in	2011-03-23 16:26:25.390008869 +0100
-@@ -7,4 +7,4 @@
+@@ -7,4 +7,4 @@ Description: The Mozilla JavaScript Libr
  Version: %MOZILLA_VERSION%
  Requires: %NSPR_NAME% >= %NSPR_VERSION%
  Libs: -L${sdkdir}/lib %MOZ_JS_LINK%
--Cflags: -I${includedir} -DXP_UNIX -DJS_THREADSAFE
-+Cflags: -I${includedir} -I${includedir}/js -DXP_UNIX -DJS_THREADSAFE
+-Cflags: -I${includedir} -DXP_UNIX
++Cflags: -I${includedir} -I${includedir}/js -DXP_UNIX
 diff -urN mozilla-2.0/xulrunner//installer/mozilla-plugin.pc.in mozilla-2.0.new/xulrunner//installer/mozilla-plugin.pc.in
 --- mozilla-2.0/xulrunner//installer/mozilla-plugin.pc.in	2011-03-19 00:34:14.000000000 +0100
 +++ mozilla-2.0.new/xulrunner//installer/mozilla-plugin.pc.in	2011-03-23 16:26:00.333333556 +0100

@@ -14,13 +14,13 @@
 # The actual sqlite version (see RHBZ#480989):
 %define		sqlite_build_version %(pkg-config --silence-errors --modversion sqlite3 2>/dev/null || echo ERROR)
 
-%define		nspr_ver	4.10.6
-%define		nss_ver		3.17.2
+%define		nspr_ver	4.10.7
+%define		nss_ver		3.17.3
 
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
-Version:	33.1.1
+Version:	34.0
 Release:	1
 Epoch:		2
 License:	MPL v2.0
@@ -28,7 +28,7 @@ Group:		X11/Applications
 # Source tarball for xulrunner is in fact firefox tarball (checked on 1.9), so lets use it
 # instead of waiting for mozilla to copy file on ftp.
 Source0:	http://releases.mozilla.org/pub/mozilla.org/firefox/releases/%{version}/source/firefox-%{version}.source.tar.bz2
-# Source0-md5:	2c23350a10d508f1d9b9a5f82df5dd93
+# Source0-md5:	8ce294a40ecaaf8a1ae6a6c6a6e2c3c9
 Patch0:		%{name}-new-libxul.patch
 Patch1:		%{name}-rpath.patch
 Patch2:		%{name}-paths.patch
@@ -77,7 +77,7 @@ BuildRequires:	readline-devel
 BuildRequires:	rpm >= 4.4.9-56
 BuildRequires:	rpmbuild(macros) >= 1.601
 BuildRequires:	sed >= 4.0
-BuildRequires:	sqlite3-devel >= 3.8.5
+BuildRequires:	sqlite3-devel >= 3.8.6
 BuildRequires:	startup-notification-devel >= 0.8
 BuildRequires:	unzip
 %if "%{pld_release}" == "ac"
@@ -419,6 +419,7 @@ fi
 %dir %{_libdir}/%{name}
 %{_libdir}/%{name}/platform.ini
 %attr(755,root,root) %{_libdir}/%{name}/libmozalloc.so
+%attr(755,root,root) %{_libdir}/%{name}/libmozsandbox.so
 %{?with_shared_js:%attr(755,root,root) %{_libdir}/%{name}/libmozjs.so}
 %attr(755,root,root) %{_libdir}/%{name}/libxul.so
 %{_libdir}/%{name}/dependentlibs.list
