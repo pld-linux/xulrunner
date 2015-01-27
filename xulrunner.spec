@@ -60,7 +60,7 @@ BuildRequires:	libicu-devel >= 50.1
 BuildRequires:	libjpeg-devel >= 6b
 BuildRequires:	libjpeg-turbo-devel
 BuildRequires:	libpng(APNG)-devel >= 0.10
-BuildRequires:	libpng-devel >= 2:1.6.10
+BuildRequires:	libpng-devel >= 2:1.6.13
 BuildRequires:	libstdc++-devel >= 6:4.4
 BuildRequires:	libvpx-devel >= 1.3.0
 BuildRequires:	nspr-devel >= 1:%{nspr_ver}
@@ -133,7 +133,7 @@ Requires:	glib2 >= 1:2.20
 %{!?with_gtk3:Requires:	gtk+2 >= 2:2.14}
 %{?with_gtk3:Requires:	gtk+3 >= 3.0.0}
 Requires:	libjpeg-turbo
-Requires:	libpng >= 2:1.6.10
+Requires:	libpng >= 2:1.6.13
 Requires:	libpng(APNG) >= 0.10
 Requires:	libvpx >= 1.3.0
 Requires:	pango >= 1:1.22.0
@@ -397,6 +397,12 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/*.sh
 %attr(755,root,root) %{_libdir}/%{name}/mozilla-xremote-client
 %attr(755,root,root) %{_libdir}/%{name}/plugin-container
+
+%dir %{_libdir}/%{name}/gmp-clearkey
+%dir %{_libdir}/%{name}/gmp-clearkey/0.1
+%{_libdir}/%{name}/gmp-clearkey/0.1/clearkey.info
+%attr(755,root,root) %{_libdir}/%{name}/gmp-clearkey/0.1/libclearkey.so
+%attr(755,root,root) %{_libdir}/%{name}/libclearkey.so
 
 %dir %{_libdir}/%{name}/gmp-fake
 %dir %{_libdir}/%{name}/gmp-fake/1.0
