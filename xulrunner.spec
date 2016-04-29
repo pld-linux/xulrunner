@@ -20,15 +20,15 @@
 Summary:	XULRunner - Mozilla Runtime Environment for XUL+XPCOM applications
 Summary(pl.UTF-8):	XULRunner - środowisko uruchomieniowe Mozilli dla aplikacji XUL+XPCOM
 Name:		xulrunner
-Version:	39.0.3
+Version:	41.0.2
 Release:	1
 Epoch:		2
 License:	MPL v2.0
 Group:		X11/Applications
 # Source tarball for xulrunner is in fact firefox tarball (checked on 1.9), so lets use it
 # instead of waiting for mozilla to copy file on ftp.
-Source0:	http://releases.mozilla.org/pub/mozilla.org/firefox/releases/%{version}/source/firefox-%{version}.source.tar.bz2
-# Source0-md5:	6ef31cbd34d9905a0648104d916269cb
+Source0:	http://releases.mozilla.org/pub/mozilla.org/firefox/releases/%{version}/source/firefox-%{version}.source.tar.xz
+# Source0-md5:	d71f0f761c51aeae03e367001afc9f8d
 Patch0:		%{name}-new-libxul.patch
 Patch1:		%{name}-rpath.patch
 Patch2:		%{name}-paths.patch
@@ -36,6 +36,7 @@ Patch3:		%{name}-pc.patch
 Patch4:		%{name}-prefs.patch
 Patch6:		idl-parser.patch
 Patch7:		system-virtualenv.patch
+Patch8:		%{name}-freetype.patch
 URL:		https://developer.mozilla.org/en/XULRunner
 BuildRequires:	alsa-lib-devel
 BuildRequires:	automake
@@ -72,7 +73,7 @@ BuildRequires:	pkgconfig(libffi) >= 3.0.9
 BuildRequires:	pulseaudio-devel
 BuildRequires:	python-modules >= 1:2.5
 BuildRequires:	python-simplejson
-BuildRequires:	python-virtualenv >= 1.9.1-4
+BuildRequires:	python-virtualenv >= 15
 BuildRequires:	readline-devel
 BuildRequires:	rpm >= 4.4.9-56
 BuildRequires:	rpmbuild(macros) >= 1.601
@@ -105,7 +106,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 # no Provides from private modules (don't use %{name} here, it expands to each subpackage name...)
 %define		_noautoprovfiles	%{_libdir}/xulrunner/components %{_libdir}/xulrunner/plugins
 # no need to require them (we have strict deps for these)
-%define		_noautoreq		libmozjs.so libxul.so libmozalloc.so
+%define		_noautoreq		libmozjs.so libxul.so
 
 %description
 XULRunner is a Mozilla runtime package that can be used to bootstrap
@@ -179,7 +180,7 @@ DBus i GIO.
 
 %prep
 %setup -qc
-mv -f mozilla-release mozilla
+%{__mv} mozilla-release mozilla
 cd mozilla
 
 # avoid using included headers (-I. is before HUNSPELL_CFLAGS)
@@ -194,6 +195,7 @@ echo 'LOCAL_INCLUDES += $(MOZ_HUNSPELL_CFLAGS)' >> extensions/spellcheck/src/Mak
 %patch4 -p1
 %patch6 -p2
 %patch7 -p2
+%patch8 -p2
 
 %build
 if [ "$(grep -E '^[0-9]+\.' mozilla/config/milestone.txt)" != "%{version}" ]; then
@@ -236,7 +238,6 @@ ac_add_options --enable-crash-on-assert
 %else
 ac_add_options --disable-debug
 ac_add_options --disable-debug-modules
-ac_add_options --disable-logging
 ac_add_options --enable-optimize="%{rpmcflags} -Os"
 %endif
 ac_add_options --disable-strip
@@ -252,6 +253,7 @@ ac_add_options --disable-mochitest
 ac_add_options --disable-cpp-exceptions
 ac_add_options --disable-crashreporter
 ac_add_options --disable-elf-dynstr-gc
+ac_add_options --disable-elf-hack
 ac_add_options --disable-gconf
 ac_add_options --disable-gnomeui
 ac_add_options --disable-gnomevfs
@@ -338,7 +340,6 @@ ln -s %{_libdir}/%{name}-devel/sdk/lib $RPM_BUILD_ROOT%{_libdir}/%{name}-devel/l
 # replace copies with symlinks
 %{?with_shared_js:ln -sf %{_libdir}/%{name}/libmozjs.so $RPM_BUILD_ROOT%{_libdir}/%{name}-devel/sdk/lib/libmozjs.so}
 ln -sf %{_libdir}/%{name}/libxul.so $RPM_BUILD_ROOT%{_libdir}/%{name}-devel/sdk/lib/libxul.so
-ln -sf %{_libdir}/%{name}/libmozalloc.so $RPM_BUILD_ROOT%{_libdir}/%{name}-devel/sdk/lib/libmozalloc.so
 # temp fix for https://bugzilla.mozilla.org/show_bug.cgi?id=63955
 chmod a+rx $RPM_BUILD_ROOT%{_libdir}/%{name}-devel/sdk/bin/xpt.py
 
@@ -405,7 +406,14 @@ fi
 %dir %{_libdir}/%{name}/gmp-fake
 %dir %{_libdir}/%{name}/gmp-fake/1.0
 %{_libdir}/%{name}/gmp-fake/1.0/fake.info
+%{_libdir}/%{name}/gmp-fake/1.0/fake.voucher
 %attr(755,root,root) %{_libdir}/%{name}/gmp-fake/1.0/libfake.so
+
+%dir %{_libdir}/%{name}/gmp-fakeopenh264
+%dir %{_libdir}/%{name}/gmp-fakeopenh264/1.0
+%{_libdir}/%{name}/gmp-fakeopenh264/1.0/fakeopenh264.info
+%{_libdir}/%{name}/gmp-fakeopenh264/1.0/fakeopenh264.voucher
+%attr(755,root,root) %{_libdir}/%{name}/gmp-fakeopenh264/1.0/libfakeopenh264.so
 
 %attr(755,root,root) %{_libdir}/%{name}/components/libdbusservice.so
 %{_libdir}/%{name}/components/components.manifest
@@ -422,7 +430,6 @@ fi
 %defattr(644,root,root,755)
 %dir %{_libdir}/%{name}
 %{_libdir}/%{name}/platform.ini
-%attr(755,root,root) %{_libdir}/%{name}/libmozalloc.so
 %{?with_shared_js:%attr(755,root,root) %{_libdir}/%{name}/libmozjs.so}
 %attr(755,root,root) %{_libdir}/%{name}/libxul.so
 %{_libdir}/%{name}/dependentlibs.list

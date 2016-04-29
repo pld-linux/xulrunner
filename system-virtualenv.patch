@@ -6,7 +6,7 @@
          """Path to virtualenv's own populator script."""
 -        return os.path.join(self.topsrcdir, 'python', 'virtualenv',
 -            'virtualenv.py')
-+        return '/usr/bin/virtualenv'
++        return '/usr/bin/virtualenv-2'
  
      @property
      def python_path(self):
