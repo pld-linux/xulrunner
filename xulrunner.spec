@@ -188,14 +188,14 @@ cd mozilla
 # hunspell needed for factory including mozHunspell.h
 echo 'LOCAL_INCLUDES += $(MOZ_HUNSPELL_CFLAGS)' >> extensions/spellcheck/src/Makefile.in
 
-%patch0 -p1
-%patch1 -p1
-%patch2 -p2
-%patch3 -p1
-%patch4 -p1
-%patch6 -p2
-%patch7 -p2
-%patch8 -p2
+%patch -P0 -p1
+%patch -P1 -p1
+%patch -P2 -p2
+%patch -P3 -p1
+%patch -P4 -p1
+%patch -P6 -p2
+%patch -P7 -p2
+%patch -P8 -p2
 
 %build
 if [ "$(grep -E '^[0-9]+\.' mozilla/config/milestone.txt)" != "%{version}" ]; then
